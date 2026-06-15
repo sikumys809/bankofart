@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARTIST（所属画家） — BANK OF ART</title>
+<meta name="description" content="バンク・オブ・アート所属画家一覧。公認画家・登録画家。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600;700&family=Shippori+Mincho+B1:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--fs-head:40px;--fs-body:18px;--brand:#01ae84;--brand-deep:#018c6a;--header-bg:#01ae84;--ink:#212121;--paper:#f5f0ea;--dark:#212121;--mid:#6e6862;--warm-gray:#e8e3da;--border:rgba(33,33,33,.18);--border-soft:rgba(33,33,33,.08);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+*{font-style:normal;}
+html{scroll-behavior:smooth;overflow-x:hidden;max-width:100%;}
+body{font-family:'Shippori Mincho B1',serif;font-weight:500;font-size:var(--fs-body);line-height:1.95;color:var(--ink);background:var(--paper);overflow-x:hidden;-webkit-font-feature-settings:"palt","kern";font-feature-settings:"palt","kern";word-break:normal;line-break:strict;overflow-wrap:anywhere;hanging-punctuation:allow-end;}
+body:not(.admin-bar){cursor:none;}
+img{max-width:100%;height:auto;display:block;}
+a{color:inherit;text-decoration:none;}
+button{background:none;border:none;font:inherit;color:inherit;cursor:inherit;}
+.boa-num{font-family:'Shippori Mincho B1',serif;font-weight:500;}
+.br-pc{display:inline;}
+@media(max-width:700px){.br-pc{display:none;}}
+#cur{width:8px;height:8px;background:var(--brand);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;}
+#cur-r{width:40px;height:40px;border:1px solid var(--brand);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s;opacity:.6;}
+body:has(a:hover) #cur,body:has(button:hover) #cur{width:18px;height:18px;}
+body:has(a:hover) #cur-r,body:has(button:hover) #cur-r{width:60px;height:60px;}
+@media(hover:none){#cur,#cur-r{display:none;}}
+/* ════════ HEADER（ABOUT準拠） ════════ */
+header {
+  position: fixed; top:0; left:0; right:0; z-index:1000;
+  height: 92px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 40px;
+  background: var(--header-bg);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  transition: box-shadow .3s ease;
+}
+header.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.25); }
+.h-menu-btn {
+  justify-self: start;
+  background: transparent; border: none;
+  color: rgba(255,255,255,.9);
+  cursor: none;
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'Cinzel', serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 8px 0; transition: color .25s;
+}
+.h-menu-btn:hover { color: var(--ink); }
+.h-menu-icon { width: 22px; height: 12px; position: relative; display: inline-block; }
+.h-menu-icon::before, .h-menu-icon::after {
+  content:''; position: absolute; left: 0;
+  width: 100%; height: 1px; background: currentColor;
+  transition: transform .3s ease;
+}
+.h-menu-icon::before { top: 2px; }
+.h-menu-icon::after  { bottom: 2px; }
+
+.h-logo {
+  justify-self: center;
+  display: flex; align-items: center;
+  height: 100%; padding: 18px 0;
+  text-decoration: none; position: relative;
+}
+.h-logo .logo-base, .h-logo .logo-hover {
+  height: 56px; width: auto; display: block;
+  transition: opacity .35s ease, transform .5s ease;
+}
+.h-logo .logo-hover {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(.92); opacity: 0;
+}
+.h-logo:hover .logo-base { opacity: 0; transform: scale(1.04); }
+.h-logo:hover .logo-hover { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+.h-actions { justify-self: end; display: flex; }
+.btn-contact {
+  font-family: 'Cinzel', serif;
+  font-size: 13px; font-weight: 500; letter-spacing: 3px;
+  color: #fff; background: transparent;
+  border: 1px solid rgba(255,255,255,.4);
+  padding: 11px 28px; text-decoration: none;
+  text-transform: uppercase; transition: all .25s;
+  cursor: none; display: inline-block;
+}
+.btn-contact:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+.contact-dropdown { position: relative; display: inline-block; }
+.contact-menu {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  min-width: 240px; background: var(--paper);
+  border: 1px solid rgba(33,33,33,.08);
+  box-shadow: 0 14px 36px rgba(0,0,0,.12);
+  opacity: 0; visibility: hidden; transform: translateY(-6px);
+  transition: opacity .25s ease, transform .25s ease, visibility .25s;
+  z-index: 1001;
+}
+.contact-dropdown.open .contact-menu {
+  opacity: 1; visibility: visible; transform: translateY(0);
+}
+.contact-menu-item {
+  display: block;
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body); font-weight: 700; letter-spacing: 2px;
+  color: var(--ink); text-decoration: none;
+  padding: 16px 22px;
+  border-bottom: 1px solid rgba(33,33,33,.06);
+  transition: background .2s, color .2s, padding-left .25s;
+}
+.contact-menu-item:last-child { border-bottom: none; }
+.contact-menu-item:hover {
+  background: rgba(1,174,132,.08); color: var(--brand); padding-left: 28px;
+}
+
+.h-drawer {
+  position: fixed; top: 92px; left: 0; right: 0;
+  background: var(--header-bg);
+  z-index: 999;
+  max-height: 0; overflow: hidden;
+  transition: max-height .5s cubic-bezier(.4,0,.2,1);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.h-drawer.open { max-height: 700px; }
+.h-drawer-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: 36px 40px 48px;
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 12px 60px;
+}
+.h-drawer a {
+  font-family: 'Cormorant SC', serif;
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 500; letter-spacing: 3px;
+  color: rgba(255,255,255,.85);
+  text-decoration: none; padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  transition: color .25s, padding .25s;
+  display: block; text-transform: uppercase;
+}
+.h-drawer a:hover { color: var(--ink); padding-left: 12px; }
+.h-drawer a .ja {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body); font-weight: 500; letter-spacing: 3px;
+  color: rgba(255,255,255,.4);
+  display: block; margin-top: 4px; text-transform: none;
+}
+
+/* ── PRELOADER ── */
+@keyframes logoSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+#preloader {
+  position: fixed; inset: 0;
+  background: var(--paper); z-index: 99999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 28px;
+  transition: opacity .8s ease, visibility .8s ease;
+}
+#preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.preloader-logo {
+  width: clamp(90px, 10vw, 130px); height: auto;
+  animation: logoSpin 6s linear infinite;
+}
+.preloader-text {
+  font-family: 'Cinzel', serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 3px; color: var(--mid);
+}
+
+/* ════════ CTA（ABOUT準拠） ════════ */
+.cta-strip {
+  padding: 80px 56px;
+  background: #4a4a4a;
+  color: #fff;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.cta-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  position: relative; z-index: 1;
+  max-width: 1100px;
+  width: 100%;
+}
+.cta-title {
+  font-family: 'Cormorant SC', serif;
+  font-size:var(--fs-head);
+  font-weight: 400;
+  letter-spacing: 3px;
+  color: #fff;
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: left;
+}
+.cta-btns { display: flex; gap: 14px; flex-shrink: 0; }
+.btn-cta-w {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #fff;
+  background: var(--brand);
+  padding: 18px 32px;
+  text-decoration: none;
+  transition: all .25s;
+  display: block;
+  border: 1px solid var(--brand);
+}
+.btn-cta-w:hover {
+  background: var(--brand-deep);
+  border-color: var(--brand-deep);
+  transform: translateY(-2px);
+}
+.btn-cta-o {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.5);
+  padding: 18px 32px;
+  text-decoration: none;
+  transition: all .25s;
+  display: block;
+}
+.btn-cta-o:hover {
+  background: #fff;
+  color: #4a4a4a;
+  border-color: #fff;
+}
+
+/* ════════ FOOTER（ABOUT準拠） ════════ */
+footer { background: #050505; padding:72px 0 0; }
+.footer-top {
+  max-width:1320px; margin:0 auto; padding:0 56px;
+  display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; gap:50px;
+  padding-bottom:60px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.foot-logo img { height: 32px; width: auto; }
+.foot-tagline {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: .22em;
+  color: rgba(255,255,255,.4);
+  margin-top: 18px;
+  line-height: 2.2;
+}
+.foot-social { display:flex; gap:10px; margin-top:24px; }
+.soc-a {
+  width:38px; height:38px;
+  border:1px solid rgba(255,255,255,.12);
+  display:flex; align-items:center; justify-content:center;
+  text-decoration:none; color:rgba(255,255,255,.45);
+  font-family: 'Cormorant SC', serif;
+  font-size:13px; font-weight:500; font-style: normal;
+  transition:all .25s;
+}
+.soc-a:hover { border-color:var(--brand); color:var(--brand); }
+.foot-col-t {
+  font-family: 'Cinzel', serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--brand);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.foot-links { list-style:none; display:flex; flex-direction:column; gap:12px; }
+.foot-links li a {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: .1em;
+  color: rgba(255,255,255,.5);
+  text-decoration: none;
+  transition: color .2s;
+  line-height: 1.6;
+}
+.foot-links li a:hover { color:#fff; }
+.footer-bottom {
+  max-width:1320px; margin:0 auto; padding:0 56px;
+  height:60px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.foot-copy {
+  font-family: 'Cormorant SC', serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: .15em;
+  color: rgba(255,255,255,.3);
+  font-style: normal;
+}
+.foot-privacy {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,.3);
+  text-decoration: none;
+  transition: color .2s;
+}
+.foot-privacy:hover { color:rgba(255,255,255,.6); }
+
+/* ════════ MATCHING バナー（横長・広告型） ════════ */
+.match-banner-sec {
+  padding: 90px 40px;
+  background: var(--paper);
+}
+.match-banner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 48px;
+  padding: 56px 64px;
+  position: relative;
+  overflow: hidden;
+}
+.match-banner-label {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 7px 16px;
+  margin-bottom: 20px;
+}
+.match-banner-title {
+  font-family: 'Cormorant SC', serif;
+  font-weight: 400;
+  letter-spacing: 3px;
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+.match-banner-sub {
+  font-family: 'Shippori Mincho B1', serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.match-banner-body {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 500;
+  letter-spacing: 1px;
+  line-height: 1.9;
+}
+.match-banner-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.match-banner-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 20px 44px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  white-space: nowrap;
+  transition: all .3s;
+}
+.match-banner-btn::after {
+  content: '';
+  width: 8px; height: 8px;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  transform: rotate(45deg);
+}
+.match-banner-meta {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+@media (max-width: 820px) {
+  .match-banner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 44px 32px;
+    text-align: center;
+  }
+  .match-banner-right { align-items: center; }
+}
+
+
+/* PAGE HERO */
+.page-hero{padding:184px 40px 84px;background:var(--paper);text-align:center;}
+.page-hero-title{font-family:'Cormorant SC',serif;font-size:96px;font-weight:400;letter-spacing:3px;line-height:1;color:var(--ink);margin-bottom:16px;}
+@media(max-width:700px){.page-hero-title{font-size:60px;}}
+.page-hero-ja{font-family:'Cinzel',serif;font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--brand);margin-bottom:40px;}
+.page-statement{max-width:720px;margin:0 auto;font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);line-height:2.2;color:var(--ink);letter-spacing:1px;}
+.page-statement p+p{margin-top:26px;}
+.page-statement .mid{color:var(--mid);}
+
+/* FILTER */
+.filter-section{background:var(--paper);padding:40px 40px 24px;border-top:1px solid var(--border-soft);}
+.filter-inner{max-width:1400px;margin:0 auto;display:flex;flex-direction:column;gap:0;}
+.filter-label{font-family:'Cinzel',serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--brand);flex-shrink:0;min-width:90px;text-align:left;}
+.filter-row{display:flex;align-items:baseline;gap:32px;flex-wrap:wrap;justify-content:flex-start;padding:16px 0;}
+.filter-row + .filter-row{border-top:1px solid var(--border-soft);}
+.filter-tags{display:flex;gap:8px 28px;flex-wrap:wrap;justify-content:flex-start;}
+.filter-tag{font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);letter-spacing:1px;color:var(--mid);padding:8px 0;position:relative;transition:color .25s;}
+.filter-tag.en{font-family:'Cinzel',serif;letter-spacing:3px;font-size:14px;}
+.filter-tag::after{content:'';position:absolute;bottom:4px;left:0;width:0;height:1px;background:var(--brand);transition:width .3s ease;}
+.filter-tag:hover{color:var(--ink);}
+.filter-tag.is-active{color:var(--ink);}
+.filter-tag.is-active::after{width:100%;}
+.filter-count{font-family:'Cinzel',serif;font-size:14px;letter-spacing:3px;color:var(--brand);flex-shrink:0;}
+.filter-count .boa-num{color:var(--brand);margin-right:4px;}
+
+/* ARTIST GRID */
+.artist-section{padding:56px 40px 110px;background:var(--paper);}
+.artist-grid{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:76px 40px;}
+@media(max-width:1100px){.artist-grid{grid-template-columns:repeat(3,1fr);gap:60px 32px;}}
+@media(max-width:800px){.artist-grid{grid-template-columns:repeat(2,1fr);gap:52px 24px;}}
+@media(max-width:480px){.artist-grid{grid-template-columns:repeat(2,1fr);gap:36px 16px;}}
+.artist-card{display:block;text-align:left;transition:transform .4s ease;}
+.artist-card:hover{transform:translateY(-6px);}
+.artist-photo{position:relative;width:100%;aspect-ratio:1/1.15;background:var(--warm-gray);overflow:hidden;margin-bottom:20px;}
+.artist-photo-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant SC',serif;font-size:56px;letter-spacing:3px;color:rgba(33,33,33,.18);transition:transform .8s cubic-bezier(.2,.7,.2,1);background-size:cover;background-position:center;}
+.artist-card:hover .artist-photo-inner{transform:scale(1.04);}
+.artist-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(33,33,33,.4) 0%,transparent 50%);opacity:0;transition:opacity .4s;pointer-events:none;}
+.artist-card:hover .artist-photo::after{opacity:1;}
+.artist-number{position:absolute;top:16px;left:16px;font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);letter-spacing:1px;color:rgba(245,240,234,.95);background:rgba(33,33,33,.4);padding:4px 12px;backdrop-filter:blur(8px);z-index:2;}
+.artist-tag-badge{position:absolute;bottom:16px;left:16px;font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);letter-spacing:1px;color:#fff;background:var(--brand);padding:5px 12px;z-index:2;opacity:0;transform:translateY(6px);transition:opacity .4s,transform .4s;}
+.artist-card:hover .artist-tag-badge{opacity:1;transform:translateY(0);}
+.artist-name{font-family:'Shippori Mincho B1',serif;font-size:20px;font-weight:700;letter-spacing:1px;color:var(--ink);margin-bottom:6px;line-height:1.4;}
+.artist-name-en{font-family:'Cinzel',serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--mid);margin-bottom:14px;}
+.artist-catch{font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:var(--fs-body);color:var(--brand);line-height:1.5;margin-bottom:12px;letter-spacing:1px;}
+.artist-theme{font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);color:var(--mid);line-height:1.75;letter-spacing:1px;}
+
+/* MATCHING BANNER（アーティスト診断＝緑バナー・ライト基調） */
+.match-banner-sec{padding:80px 40px;background:var(--paper);text-align:center;}
+.match-banner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr auto;align-items:center;gap:48px;padding:54px 64px;position:relative;overflow:hidden;background:var(--brand);text-align:left;}
+
+.match-banner-left{position:relative;z-index:2;}
+.match-banner-label{font-family:'Cinzel',serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;display:inline-block;padding:7px 16px;margin-bottom:22px;background:#fff;color:var(--brand);}
+.match-banner-title{font-family:'Cormorant SC',serif;font-size:var(--fs-head);font-weight:400;letter-spacing:3px;line-height:1.15;color:#fff;margin-bottom:14px;}
+.match-banner-sub{font-family:'Shippori Mincho B1',serif;font-size:22px;font-weight:700;letter-spacing:2px;line-height:1.6;color:#fff;margin-bottom:14px;}
+.match-banner-body{font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);font-weight:500;letter-spacing:1px;line-height:1.9;color:rgba(255,255,255,.85);}
+.match-banner-right{position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;gap:16px;}
+.match-banner-btn{font-family:'Cinzel',serif;font-size:14px;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:20px 44px;display:inline-flex;align-items:center;gap:14px;white-space:nowrap;transition:all .3s;background:var(--ink);color:#fff;}
+.match-banner-btn:hover{background:#fff;color:var(--brand);}
+.match-banner-btn::after{content:'';width:8px;height:8px;border-top:1px solid currentColor;border-right:1px solid currentColor;transform:rotate(45deg);}
+.match-banner-meta{font-family:'Cinzel',serif;font-size:13px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.85);}
+.match-banner-meta .boa-num{color:#fff;margin-right:4px;}
+@media(max-width:820px){.match-banner{grid-template-columns:1fr;gap:28px;padding:44px 32px;text-align:center;}.match-banner-right{align-items:center;}}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(30px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1);}
+.rv.on{opacity:1;transform:translateY(0);}
+.rv.d1{transition-delay:.08s;}
+.rv.d2{transition-delay:.16s;}
+.rv.d3{transition-delay:.24s;}
+
+/* ════════ スマホ対応：ヘッダー・CTA・フッター（INDEX準拠で統一） ════════ */
+.btn-contact { white-space: nowrap; }
+@media (max-width: 1024px) {
+  header { padding: 0 24px; }
+  .cta-strip { padding: 48px 32px; }
+  .cta-inner { flex-direction: column; gap: 24px; }
+}
+@media (max-width: 700px) {
+  /* 本文サイズをスマホで15pxに */
+  :root { --fs-body: 15px; --fs-head: 24px; }
+  body { line-height: 1.75; }
+  /* スマホ：本文の行間を詰める */
+  .match-banner-body, .page-statement { line-height: 1.7; }
+  /* HEADER */
+  header { padding: 0 18px; }
+  .h-menu-btn span:not(.h-menu-icon) { display: none; }
+  .h-drawer-inner { grid-template-columns: 1fr; padding: 28px 24px 36px; gap: 6px; }
+  .h-logo .logo-base, .h-logo .logo-hover { height: 32px; }
+  .btn-contact { padding: 10px 18px; letter-spacing: 2px; white-space: nowrap; }
+  /* CTA */
+  .cta-strip { padding: 48px 32px; }
+  .cta-inner { flex-direction: column; gap: 24px; text-align: center; }
+  .cta-title { text-align: center; }
+  .cta-btns { flex-direction: column; width: 100%; }
+  .btn-cta-w, .btn-cta-o { text-align: center; width: 100%; }
+  /* FOOTER */
+  .footer-top { grid-template-columns: 1fr; gap: 32px; padding: 0 24px 60px; }
+  .footer-bottom { flex-direction: column; gap: 12px; height: auto; padding: 20px 24px; }
+  /* 375px基準 — はみ出し防止 */
+  .page-hero { padding: 132px 20px 64px; }
+  .page-hero-title { font-size: 46px; }
+  .filter-section { padding: 36px 20px 20px; }
+  .artist-section { padding: 48px 20px 90px; }
+  .match-banner-sec { padding: 64px 20px; }
+  .match-banner { padding: 36px 24px; }
+  section { max-width: 100%; overflow-x: hidden; }
+  .match-banner-title, .match-banner-sub, .match-banner-body { word-break: normal; overflow-wrap: anywhere; max-width: 100%; }
+  .match-banner-left, .match-banner-right { min-width: 0; max-width: 100%; }
+  .artist-grid { grid-template-columns: repeat(2,1fr); gap: 36px 16px; }
+}
+
+
+
+@media (max-width: 430px) {
+  .artist-grid { grid-template-columns: repeat(2,1fr) !important; gap: 28px 12px !important; }
+  .page-hero { padding: 120px 16px 56px !important; }
+  .page-hero-title { font-size: 40px !important; }
+  .filter-section { padding: 32px 16px 18px !important; }
+  .artist-section { padding: 40px 16px 80px !important; }
+  .match-banner-sec { padding: 56px 16px !important; }
+  .match-banner { padding: 32px 20px !important; }
+  .match-banner-title { font-size: 22px !important; }
+  .contact-menu { min-width: 200px !important; }
+  *, *::before, *::after { max-width: 100% !important; min-width: 0 !important; box-sizing: border-box !important; }
+  img { height: auto; }
+  html, body { overflow-x: hidden !important; width: 100% !important; max-width: 100% !important; }
+  header, section, footer, .cta-strip, main, div { max-width: 100vw; }
+}
+
+/* FOR ARTISTSバナー：白背景・#212121枠・#212121文字 で Artist Matchingと差別化 */
+.match-banner.for-artists{background:#fff;border:1px solid #212121;}
+.match-banner.for-artists .match-banner-label{background:#212121;color:#fff;}
+.match-banner.for-artists .match-banner-title{color:#212121;}
+.match-banner.for-artists .match-banner-sub{color:#212121;}
+.match-banner.for-artists .match-banner-body{color:rgba(33,33,33,.85);}
+.match-banner.for-artists .match-banner-right{display:flex;flex-direction:column;gap:14px;align-items:stretch;}
+/* 募集要項を見る：テキストリンク風（アンダーライン付き） */
+.match-banner-btn-secondary{font-family:'Shippori Mincho B1',serif;font-size:15px;font-weight:700;letter-spacing:2px;color:#212121;background:transparent;border:none;padding:10px 0;text-align:center;text-decoration:underline;text-underline-offset:5px;transition:opacity .25s;cursor:none;display:inline-block;}
+.match-banner-btn-secondary:hover{opacity:.6;}
+/* 応募するボタン：#01ae84塗り */
+.match-banner.for-artists .match-banner-btn{background:#01ae84;color:#fff;border:1px solid #01ae84;}
+.match-banner.for-artists .match-banner-btn:hover{background:#018c6a;border-color:#018c6a;}
+
+/* フィルター内マッチング診断ボタン */
+.filter-match-btn { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; padding: 12px 22px; border: 1px solid var(--brand); background: transparent; transition: background .25s, color .25s; }
+.filter-match-btn:hover { background: var(--brand); }
+.filter-match-btn:hover .filter-match-eyebrow,
+.filter-match-btn:hover .filter-match-label { color: #fff; }
+.filter-match-eyebrow { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3px; color: var(--brand); text-transform: uppercase; transition: color .25s; }
+.filter-match-label { font-family: 'Shippori Mincho B1', serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; color: var(--ink); transition: color .25s; }
+@media(max-width:700px){
+  .filter-match-btn { padding: 10px 16px; gap: 10px; }
+  .filter-match-eyebrow { font-size: 10px; }
+  .filter-match-label { font-size: 12px; }
+}
+
+</style>
+</head>
+<body>
+
+<div id="preloader">
+  <img class="preloader-logo" src="boa-11.png" alt="Loading">
+  <div class="preloader-text">LOADING</div>
+</div>
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<header id="hdr">
+  <button class="h-menu-btn" id="menuToggle" aria-label="Menu">
+    <span class="h-menu-icon"></span>
+    <span>MENU</span>
+  </button>
+  <a href="index.html" class="h-logo" aria-label="BANK OF ART">
+    <img class="logo-base" src="boa-07.png" alt="BANK OF ART">
+    <img class="logo-hover" src="boa-06.png" alt="">
+  </a>
+  <div class="h-actions">
+    <div class="contact-dropdown" id="contactDropdown">
+      <button class="btn-contact" id="contactToggle" aria-haspopup="true" aria-expanded="false">CONTACT</button>
+      <div class="contact-menu">
+        <a href="https://business.form-mailer.jp/fms/1c6a81d4280183" target="_blank" class="contact-menu-item">資料請求</a>
+        <a href="https://booking.receptionist.jp/5ade6c6d-ae6c-44d9-9921-000ad24af9f9/30min" target="_blank" class="contact-menu-item">オンライン説明会</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="h-drawer" id="drawer">
+  <div class="h-drawer-inner">
+    <a href="about.html"><span>ABOUT</span><span class="ja">バンクオブアートとは</span></a>
+    <a href="artist.html"><span>ARTIST</span><span class="ja">アーティスト一覧</span></a>
+    <a href="art.html"><span>ART</span><span class="ja">作品一覧</span></a>
+    <a href="collector.html"><span>COLLECTOR</span><span class="ja">画家応援企業</span></a>
+    <a href="https://bankof-art.com/?post_type=news" target="_blank"><span>NEWS</span><span class="ja">最新記事</span></a>
+    <a href="journal.html"><span>JOURNAL</span><span class="ja">読み物</span></a>
+  </div>
+</div>
+
+<section class="page-hero">
+  <h1 class="page-hero-title rv">ARTIST</h1>
+  <p class="page-hero-ja rv d1">所属画家</p>
+  <div class="page-statement rv d2">
+    <p>「画家は絶滅危惧種」とも言われる時代。<br class="br-pc">それでも、描くことをやめない人たちがいる。</p>
+    <p class="mid">なぜ彼らは絵を描くのか。<br class="br-pc">なぜ&ldquo;画家として生きる&rdquo;ことを選ぶのか。</p>
+    <p>それぞれが歩んできた人生と、描く理由がある。<br class="br-pc">作品の奥にある、彼らだけの物語。</p>
+  </div>
+</section>
+
+<section class="match-banner-sec">
+  <div class="match-banner rv">
+    <div class="match-banner-left">
+      <span class="match-banner-label">Artist Matching</span>
+      <h2 class="match-banner-title">企業理念 × アーティスト</h2>
+      <p class="match-banner-sub">価値観で繋がる、アートとの出会い。</p>
+      <p class="match-banner-body"><span class="boa-num">5</span>つの質問にお答えいただくだけで、御社のパーパスに最も共鳴するアーティストをご提案します。</p>
+    </div>
+    <div class="match-banner-right">
+      <a href="matching-purpose.html" class="match-banner-btn">診断スタート</a>
+      <span class="match-banner-meta"><span class="boa-num">5</span>QUESTIONS &nbsp;/&nbsp; <span class="boa-num">3</span>MIN</span>
+    </div>
+  </div>
+</section>
+
+<section class="filter-section">
+  <div class="filter-inner">
+    <div class="filter-row">
+      <span class="filter-label">Status</span>
+      <div class="filter-tags">
+        <button class="filter-tag is-active">すべて</button>
+        <button class="filter-tag">公認画家</button>
+        <button class="filter-tag">登録画家</button>
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Genre</span>
+      <div class="filter-tags">
+        <button class="filter-tag is-active">すべて</button>
+        <button class="filter-tag">具象</button>
+        <button class="filter-tag">抽象</button>
+        <button class="filter-tag">ストリートアート</button>
+        <button class="filter-tag">ポップアート</button>
+        <button class="filter-tag">日本画</button>
+        <button class="filter-tag">油彩</button>
+        <button class="filter-tag">アクリル</button>
+        <button class="filter-tag">ミクストメディア</button>
+      </div>
+    </div>
+    <div class="filter-row" style="justify-content:space-between;align-items:center;">
+      <a href="matching-purpose.html" class="filter-match-btn">
+        <span class="filter-match-eyebrow">Matching</span>
+        <span class="filter-match-label">企業理念から探す →</span>
+      </a>
+      <span class="filter-count"><span class="boa-num">20</span>ARTISTS</span>
+    </div>
+  </div>
+</section>
+
+<section class="artist-section">
+  <div class="artist-grid">
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">01</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#2a2a2a 0%,#01ae84 100%);color:#f5f0ea;">AZ</span>
+        <span class="artist-tag-badge">挑戦 / 突破</span>
+      </div>
+      <h3 class="artist-name">東 樹生</h3>
+      <p class="artist-name-en">Azuma Jusei</p>
+      <p class="artist-catch">ADRENALINE ARTIST</p>
+      <p class="artist-theme">身体に絵具を塗布し、拳・頭突き・蹴りで描く「ADRENALINE ART」。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">02</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#3a2a1a 0%,#d8b88a 100%);color:#f5f0ea;">TB</span>
+        <span class="artist-tag-badge">つながり</span>
+      </div>
+      <h3 class="artist-name">冨永 ボンド</h3>
+      <p class="artist-name-en">Tominaga Bond</p>
+      <p class="artist-catch">ツナガリを描くボンドアート</p>
+      <p class="artist-theme">ボンドで描く独自画法。福岡を拠点に20,000人以上にボンドアートを体験させた。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">03</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#0a0a0a 0%,#444 100%);color:#01ae84;">CO</span>
+        <span class="artist-tag-badge">ストリート</span>
+      </div>
+      <h3 class="artist-name">CHOB -ONE</h3>
+      <p class="artist-name-en">Chob One / S.S.CREW</p>
+      <p class="artist-catch">真実を語る少女</p>
+      <p class="artist-theme">グラフィティから出発し、エンタメ業界AD。社会批評的メッセージを少女に語らせる。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">04</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#1a0a2a 0%,#6a3a8a 100%);color:#f5f0ea;">DC</span>
+        <span class="artist-tag-badge">ROCK × ART</span>
+      </div>
+      <h3 class="artist-name">dotscollective</h3>
+      <p class="artist-name-en">AG / HIDE (NOISEMAKER)</p>
+      <p class="artist-catch">ROCK × ART</p>
+      <p class="artist-theme">札幌のロックバンドNOISEMAKERのメンバーによる、点と無限のアートプロジェクト。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">05</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#1a3a4a 0%,#88c8d8 100%);color:#f5f0ea;">ER</span>
+        <span class="artist-tag-badge">国際 / 多様性</span>
+      </div>
+      <h3 class="artist-name">erika</h3>
+      <p class="artist-name-en">Erika</p>
+      <p class="artist-catch">世界のランドマークを描く</p>
+      <p class="artist-theme">慶應義塾大学在学中の現役学生アーティスト。「Z」シリーズで世界各地のランドマークを描く。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">06</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#4a2a3a 0%,#d8a8b8 100%);color:#f5f0ea;">FR</span>
+        <span class="artist-tag-badge">癒し / 心の豊かさ</span>
+      </div>
+      <h3 class="artist-name">藤 理沙子</h3>
+      <p class="artist-name-en">Fuji Risako</p>
+      <p class="artist-catch">心の豊かさを届ける</p>
+      <p class="artist-theme">会社員から転身。シリーズ「かさなり」で心の状態と世界の輝きを描く。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">07</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#0a2a1a 0%,#5a8a4a 100%);color:#f5f0ea;">GE</span>
+        <span class="artist-tag-badge">社会貢献 / 希望</span>
+      </div>
+      <h3 class="artist-name">玄</h3>
+      <p class="artist-name-en">Gen (Umemoto Kota)</p>
+      <p class="artist-catch">誰かのために描く</p>
+      <p class="artist-theme">長坂真護門下。ネパール・セブ島のアート街プロジェクトを主催する活動家アーティスト。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">08</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#01ae84 0%,#e6f5f0 100%);color:#212121;">GB</span>
+        <span class="artist-tag-badge">POP / 社会メッセージ</span>
+      </div>
+      <h3 class="artist-name">GREEN IS BEAUTIFUL</h3>
+      <p class="artist-name-en">Green is Beautiful</p>
+      <p class="artist-catch">POPで社会を語る</p>
+      <p class="artist-theme">グラフィックデザイナーの父と油彩画家の母を持つ湘南拠点のPOPアーティスト。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">09</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#5a4a3a 0%,#c8b8a8 100%);color:#f5f0ea;">IS</span>
+        <span class="artist-tag-badge">伝統工芸 × 現代</span>
+      </div>
+      <h3 class="artist-name">伊藤 咲穂</h3>
+      <p class="artist-name-en">Ito Sakiho</p>
+      <p class="artist-catch">自然真理と「錆和紙」</p>
+      <p class="artist-theme">島根の砂鉄と楮で独自素材「錆和紙」を生む。出雲大社奉納も。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">10</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#4a1a3a 0%,#e878a8 100%);color:#f5f0ea;">KA</span>
+        <span class="artist-tag-badge">エンパワー / 女性像</span>
+      </div>
+      <h3 class="artist-name">KATHMI</h3>
+      <p class="artist-name-en">Kathmi</p>
+      <p class="artist-catch">力強く優しく自立した女性像</p>
+      <p class="artist-theme">福岡・東京・京都を経て、NY・シンガポールでも展示。L'Arc TETSUYAのギターアートも。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">11</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#1a1a3a 0%,#5a5a8a 100%);color:#f5f0ea;">KK</span>
+        <span class="artist-tag-badge">幻想 / 物語</span>
+      </div>
+      <h3 class="artist-name">北 和晃</h3>
+      <p class="artist-name-en">Kita Kazuaki</p>
+      <p class="artist-catch">幻想画家</p>
+      <p class="artist-theme">3DCG・映像出身。フランス・ドイツの画家と文化交流する幻想画家。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">12</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#2a2a2a 0%,#888 100%);color:#f5f0ea;">OS</span>
+        <span class="artist-tag-badge">都市 / 断片</span>
+      </div>
+      <h3 class="artist-name">大隈 伸也</h3>
+      <p class="artist-name-en">Okuma Shinya</p>
+      <p class="artist-catch">都市の断片を描く</p>
+      <p class="artist-theme">武蔵野美術大学卒。村上隆主宰GEISAI#21リキテックス賞、BSフジ『ブレイク前夜』出演。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">13</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#3a2a4a 0%,#a888c8 100%);color:#f5f0ea;">OL</span>
+        <span class="artist-tag-badge">WARP / 実験</span>
+      </div>
+      <h3 class="artist-name">OLI OLI のみ</h3>
+      <p class="artist-name-en">Oli Oli</p>
+      <p class="artist-catch">WARP / 歪みの黄金比</p>
+      <p class="artist-theme">COVID-19を契機にWARP表現に到達。新たな時代の新たな黄金比への挑戦。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">14</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#2a3a2a 0%,#88a888 100%);color:#f5f0ea;">SA</span>
+        <span class="artist-tag-badge">植物 / 心象</span>
+      </div>
+      <h3 class="artist-name">saki</h3>
+      <p class="artist-name-en">Saki</p>
+      <p class="artist-catch">植物の心象風景</p>
+      <p class="artist-theme">武蔵野美術大学卒。屋久島取材から3.6m×7mの大作を生んだ油彩植物画家。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">15</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#4a3a2a 0%,#c8a888 100%);color:#f5f0ea;">SJ</span>
+        <span class="artist-tag-badge">線 / 継承</span>
+      </div>
+      <h3 class="artist-name">杏樹 下家</h3>
+      <p class="artist-name-en">Shimo Anju</p>
+      <p class="artist-catch">線に生きる</p>
+      <p class="artist-theme">名古屋手書き友禅の祖父から継承した線。「線を引くことは生きること」。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">16</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#3a1a1a 0%,#c87878 100%);color:#f5f0ea;">SL</span>
+        <span class="artist-tag-badge">日本画 / 国際</span>
+      </div>
+      <h3 class="artist-name">シン リー</h3>
+      <p class="artist-name-en">Shin Lee</p>
+      <p class="artist-catch">中日の架け橋・日本画</p>
+      <p class="artist-theme">中国大連生まれ、京都芸術大学在学中。中国と日本、伝統と若い感性の架け橋。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">17</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#0a0a0a 0%,#01ae84 100%);color:#f5f0ea;">TT</span>
+        <span class="artist-tag-badge">挑戦 / 再生</span>
+      </div>
+      <h3 class="artist-name">田中 拓馬</h3>
+      <p class="artist-name-en">Tanaka Takuma</p>
+      <p class="artist-catch">路上からの叩き上げ</p>
+      <p class="artist-theme">早大法卒・司法試験挫折を経て、上海・英・米へ。Salmagundi Art Club個展。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">18</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#1a3a4a 0%,#88d8e8 100%);color:#212121;">TI</span>
+        <span class="artist-tag-badge">子供 / 希望</span>
+      </div>
+      <h3 class="artist-name">tiki</h3>
+      <p class="artist-name-en">Tiki</p>
+      <p class="artist-catch">空の宝箱と子供たち</p>
+      <p class="artist-theme">18年のサッカー人生からアートへ。長坂真護門下、タイのスラム支援。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">19</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#3a2a1a 0%,#d8c8a8 100%);color:#212121;">TS</span>
+        <span class="artist-tag-badge">国際 / 物語</span>
+      </div>
+      <h3 class="artist-name">富永 周平</h3>
+      <p class="artist-name-en">Tominaga Shuhei</p>
+      <p class="artist-catch">WHO IS THAT HAT ?</p>
+      <p class="artist-theme">1972年ローマ生まれ。グッドデザイン賞8回。三角帽子のキャラクターで5カ国展示。</p>
+    </a>
+
+    <a href="artist-single.html" class="artist-card">
+      <div class="artist-photo">
+        <span class="artist-number">No.<span class="boa-num">20</span></span>
+        <span class="artist-photo-inner" style="background:linear-gradient(135deg,#2a4a3a 0%,#a8c8b8 100%);color:#212121;">KY</span>
+        <span class="artist-tag-badge">実験 / 童心</span>
+      </div>
+      <h3 class="artist-name">加納 芳美</h3>
+      <p class="artist-name-en">Kano Yoshimi</p>
+      <p class="artist-catch">異素材ミクストメディア</p>
+      <p class="artist-theme">広島市立大学彫刻専攻卒。布やショッパーなど日常素材で動物を描く。</p>
+    </a>
+  </div>
+</section>
+
+<section class="match-banner-sec">
+  <div class="match-banner for-artists rv">
+    <div class="match-banner-left">
+      <span class="match-banner-label">For Artists</span>
+      <h2 class="match-banner-title">若手画家募集中</h2>
+      <p class="match-banner-sub">BANK OF ART は、ともに歩む画家を募集しています。</p>
+      <p class="match-banner-body">全作品買取制で、制作に専念できる環境を提供します。ご縁のある方には登録画家としてご活動いただき、公認画家としてご契約に至る場合もあります。</p>
+    </div>
+    <div class="match-banner-right">
+      <!-- WP化：募集要項PDFのURL -->
+      <a href="recruit-guidelines.pdf" target="_blank" rel="noopener" class="match-banner-btn-secondary">募集要項を見る</a>
+      <a href="recruit.html" class="match-banner-btn">応募する</a>
+    </div>
+  </div>
+</section>
+
+<div class="cta-strip" id="contact">
+  <div class="cta-inner">
+    <h2 class="cta-title rv">CONTACT</h2>
+    <div class="cta-btns rv d1">
+      <a href="https://business.form-mailer.jp/fms/1c6a81d4280183" class="btn-cta-w" target="_blank">資料請求</a>
+      <a href="https://booking.receptionist.jp/5ade6c6d-ae6c-44d9-9921-000ad24af9f9/30min" class="btn-cta-o" target="_blank">説明会を予約</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div class="foot-brand">
+      <div class="foot-logo"><img src="boa-07.png" alt="BANK OF ART"></div>
+      <p class="foot-tagline">絵描きの明日を創出する。<br>減価償却 × 画家応援</p>
+      <div class="foot-social">
+        <a href="https://www.facebook.com/bankofart2022/" class="soc-a" target="_blank" title="Facebook">F</a>
+        <a href="https://www.youtube.com/@bankofart2022" class="soc-a" target="_blank" title="YouTube">Y</a>
+        <a href="https://www.instagram.com/bankof_art2022/" class="soc-a" target="_blank" title="Instagram">I</a>
+        <a href="https://x.com/bankof_art" class="soc-a" target="_blank" title="X">X</a>
+      </div>
+    </div>
+    <div>
+      <div class="foot-col-t">NAVIGATION</div>
+      <ul class="foot-links">
+        <li><a href="about.html">バンクオブアートとは</a></li>
+        <li><a href="artist.html">アーティスト一覧</a></li>
+        <li><a href="art.html">作品</a></li>
+        <li><a href="collector.html">画家応援企業</a></li>
+        <li><a href="https://bankof-art.com/?post_type=news" target="_blank">最新記事</a></li>
+        <li><a href="journal.html">読み物</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-t">CONTACT</div>
+      <ul class="foot-links">
+        <li><a href="https://business.form-mailer.jp/fms/1c6a81d4280183" target="_blank">資料ダウンロード</a></li>
+        <li><a href="https://booking.receptionist.jp/5ade6c6d-ae6c-44d9-9921-000ad24af9f9/30min" target="_blank">オンライン説明会</a></li>
+        <li><a href="#contact">お問い合わせ</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-t">For Artists</div>
+      <ul class="foot-links">
+        <li><a href="recruit.html">画家募集</a></li>
+        <li><a href="https://tally.so/r/MeMEV0" target="_blank">応募フォーム</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <a href="#" class="foot-privacy">Privacy Policy</a>
+    <span class="foot-copy">© BANK OF ART, INC.</span>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('load',()=>{const pl=document.getElementById('preloader');if(!pl)return;setTimeout(()=>pl.classList.add('hidden'),800);});
+setTimeout(()=>{const pl=document.getElementById('preloader');if(pl)pl.classList.add('hidden');},5000);
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+const hdr=document.getElementById('hdr');
+window.addEventListener('scroll',()=>hdr.classList.toggle('scrolled',scrollY>30));
+(function(){const dd=document.getElementById('contactDropdown'),btn=document.getElementById('contactToggle');if(!dd||!btn)return;
+btn.addEventListener('click',e=>{e.stopPropagation();dd.classList.toggle('open');btn.setAttribute('aria-expanded',dd.classList.contains('open'));});
+document.addEventListener('click',e=>{if(!dd.contains(e.target)){dd.classList.remove('open');btn.setAttribute('aria-expanded','false');}});
+dd.querySelectorAll('.contact-menu-item').forEach(a=>a.addEventListener('click',()=>{dd.classList.remove('open');btn.setAttribute('aria-expanded','false');}));})();
+(function(){const btn=document.getElementById('menuToggle'),drawer=document.getElementById('drawer');if(!btn||!drawer)return;
+btn.addEventListener('click',e=>{e.stopPropagation();drawer.classList.toggle('open');});
+drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>drawer.classList.remove('open')));
+document.addEventListener('click',e=>{if(!drawer.contains(e.target)&&!btn.contains(e.target))drawer.classList.remove('open');});})();
+(function(){const tags=document.querySelectorAll('.filter-tag');tags.forEach(t=>t.addEventListener('click',()=>{tags.forEach(x=>x.classList.remove('is-active'));t.classList.add('is-active');}));})();
+const els=document.querySelectorAll('.rv');
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');else e.target.classList.remove('on');});},{threshold:.1,rootMargin:'0px 0px -50px 0px'});
+els.forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MATCHING — 企業課題×アート — BANK OF ART</title>
+<meta name="description" content="3つの質問でわかる、貴社の課題に効くアート診断。バンク・オブ・アート公式マッチング機能。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@400;500;700&family=Cinzel:wght@500;700&family=Shippori+Mincho+B1:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --brand: #01ae84;
+  --brand-deep: #018c6a;
+  --brand-soft: rgba(1,174,132,.08);
+  --ink: #212121;
+  --paper: #f5f0ea;
+  --dark: #212121;
+  --mid: #6e6862;
+  --border: rgba(33,33,33,.18);
+  --border-soft: rgba(33,33,33,.08);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { font-family: 'Shippori Mincho B1', serif; color: var(--ink); background: var(--paper); line-height: 1.7; }
+img { max-width: 100%; height: auto; display: block; }
+
+.h-bar { position: sticky; top: 0; z-index: 100; background: rgba(245,240,234,.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border-soft); height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; }
+.h-back { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 3px; color: var(--ink); text-decoration: none; }
+.h-back:hover { color: var(--brand); }
+.h-logo { font-family: 'Cormorant SC', serif; font-size: 18px; letter-spacing: 4px; color: var(--ink); text-decoration: none; }
+
+.match-hero { padding: 100px 40px 80px; text-align: center; }
+.match-hero-eyebrow { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 4px; color: var(--brand); text-transform: uppercase; margin-bottom: 18px; }
+.match-hero-title { font-family: 'Cormorant SC', serif; font-size: 72px; font-weight: 400; letter-spacing: 3px; line-height: 1; color: var(--ink); margin-bottom: 14px; }
+.match-hero-ja { font-family: 'Shippori Mincho B1', serif; font-size: 16px; font-weight: 700; letter-spacing: 3px; color: var(--ink); margin-bottom: 36px; }
+.match-hero-lead { max-width: 640px; margin: 0 auto 48px; font-size: 15px; line-height: 2; color: var(--mid); letter-spacing: 1px; }
+.match-start-btn { display: inline-block; font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; color: #fff; background: var(--brand); border: 1px solid var(--brand); padding: 20px 56px; cursor: pointer; transition: background .3s, border-color .3s; }
+.match-start-btn:hover { background: var(--brand-deep); border-color: var(--brand-deep); }
+
+.match-q-section { padding: 80px 24px 120px; max-width: 800px; margin: 0 auto; }
+.match-progress { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 3px; color: var(--brand); text-align: center; margin-bottom: 14px; }
+.match-progress-bar { width: 100%; max-width: 600px; margin: 0 auto 48px; height: 3px; background: var(--border-soft); position: relative; }
+.match-progress-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--brand); transition: width .4s ease; }
+.match-q-title { font-family: 'Shippori Mincho B1', serif; font-size: 24px; font-weight: 700; letter-spacing: 2px; color: var(--ink); text-align: center; margin-bottom: 48px; line-height: 1.6; }
+.match-options { display: flex; flex-direction: column; gap: 14px; }
+.match-option { background: #fff; border: 1px solid var(--border); padding: 22px 28px; text-align: left; cursor: pointer; transition: border-color .25s, background .25s, transform .15s; font-family: 'Shippori Mincho B1', serif; font-size: 15px; line-height: 1.7; color: var(--ink); letter-spacing: 1px; }
+.match-option:hover { border-color: var(--brand); background: var(--brand-soft); }
+.match-option:active { transform: scale(0.99); }
+
+.match-loading { padding: 160px 40px; text-align: center; }
+.match-loading-spinner { width: 36px; height: 36px; border: 2px solid var(--border); border-top-color: var(--brand); border-radius: 50%; margin: 0 auto 24px; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.match-loading-text { font-family: 'Shippori Mincho B1', serif; font-size: 15px; letter-spacing: 2px; color: var(--mid); }
+
+.match-result { padding: 80px 24px 120px; max-width: 1000px; margin: 0 auto; }
+.result-eyebrow { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 4px; color: var(--brand); text-transform: uppercase; text-align: center; margin-bottom: 14px; }
+.result-title { font-family: 'Shippori Mincho B1', serif; font-size: 28px; font-weight: 700; letter-spacing: 2px; color: var(--ink); text-align: center; margin-bottom: 60px; line-height: 1.6; }
+
+.result-type { background: #fff; padding: 60px 48px; border: 1px solid var(--border-soft); margin-bottom: 60px; }
+.result-type-name { font-family: 'Shippori Mincho B1', serif; font-size: 32px; font-weight: 700; letter-spacing: 3px; text-align: center; color: var(--brand); margin-bottom: 32px; line-height: 1.5; }
+.result-type-desc { font-family: 'Shippori Mincho B1', serif; font-size: 15px; line-height: 2.1; color: var(--ink); letter-spacing: 1px; max-width: 720px; margin: 0 auto; }
+.result-type-source { font-family: 'Shippori Mincho B1', serif; font-size: 11px; line-height: 1.8; color: var(--mid); letter-spacing: .5px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border-soft); max-width: 720px; margin-left: auto; margin-right: auto; }
+.result-type-source a { color: var(--brand); text-decoration: none; border-bottom: 1px solid var(--brand-soft); }
+.result-type-source a:hover { border-bottom-color: var(--brand); }
+
+.result-sub-h { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 4px; color: var(--brand); text-transform: uppercase; text-align: center; margin-bottom: 24px; }
+.result-sub-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 60px; }
+.result-sub-card { background: #fff; padding: 0; border: 1px solid var(--border-soft); text-align: center; transition: border-color .25s, transform .25s; overflow: hidden; display: block; text-decoration: none; }
+.result-sub-card:hover { border-color: var(--brand); transform: translateY(-4px); }
+.result-sub-photo { width: 100%; aspect-ratio: 1 / 1; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; }
+.result-sub-photo-initial { font-family: 'Cormorant SC', serif; font-size: 56px; font-weight: 400; letter-spacing: 4px; color: rgba(255,255,255,.95); }
+.result-sub-body { padding: 22px 18px 24px; }
+.result-sub-name-en { font-family: 'Cormorant SC', serif; font-size: 22px; font-weight: 400; letter-spacing: 1px; color: var(--ink); margin-bottom: 4px; }
+.result-sub-name-ja { font-family: 'Shippori Mincho B1', serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--brand); margin-bottom: 12px; }
+.result-sub-theme { font-family: 'Shippori Mincho B1', serif; font-size: 11px; line-height: 1.6; color: var(--mid); margin-bottom: 14px; min-height: 36px; }
+.result-sub-card a { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px; color: var(--brand); text-decoration: none; }
+
+.result-collector-h { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 4px; color: var(--brand); text-transform: uppercase; text-align: center; margin-bottom: 6px; }
+.result-collector-sub { font-family: 'Shippori Mincho B1', serif; font-size: 13px; text-align: center; color: var(--mid); margin-bottom: 24px; letter-spacing: 1px; }
+.result-collector-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 60px; }
+.result-collector-card { background: #fff; padding: 0; border: 1px solid var(--border-soft); transition: border-color .25s; overflow: hidden; display: block; text-decoration: none; }
+.result-collector-card:hover { border-color: var(--brand); }
+.result-collector-photo { width: 100%; aspect-ratio: 16 / 9; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; position: relative; }
+.result-collector-photo-initial { font-family: 'Cormorant SC', serif; font-size: 32px; font-weight: 400; letter-spacing: 4px; color: rgba(255,255,255,.95); }
+.result-collector-body { padding: 24px 28px 28px; }
+.result-collector-tag { display: inline-block; font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px; color: var(--brand); border: 1px solid var(--brand); padding: 4px 10px; margin-bottom: 14px; }
+.result-collector-name { font-family: 'Shippori Mincho B1', serif; font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.result-collector-summary { font-family: 'Shippori Mincho B1', serif; font-size: 12px; line-height: 1.7; color: var(--mid); }
+.result-collector-card a { display: inline-block; font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px; color: var(--brand); text-decoration: none; margin-top: 12px; }
+
+.result-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.result-actions a, .result-actions button { font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; padding: 16px 32px; text-decoration: none; cursor: pointer; transition: all .3s; background: transparent; }
+.result-actions .is-secondary { color: var(--ink); border: 1px solid var(--ink); }
+.result-actions .is-secondary:hover { background: var(--ink); color: #fff; }
+.result-actions .is-primary { color: #fff; background: var(--brand); border: 1px solid var(--brand); }
+.result-actions .is-primary:hover { background: var(--brand-deep); }
+
+.match-screen { display: none; }
+.match-screen.is-active { display: block; }
+
+@media (max-width: 700px) {
+  .match-hero { padding: 60px 20px 40px; }
+  .match-hero-title { font-size: 44px; }
+  .match-hero-ja { font-size: 13px; }
+  .match-hero-lead { font-size: 13px; margin-bottom: 36px; }
+  .match-start-btn { padding: 18px 36px; font-size: 13px; }
+  .match-q-section { padding: 40px 16px 80px; }
+  .match-q-title { font-size: 18px; margin-bottom: 32px; }
+  .match-option { padding: 18px 20px; font-size: 14px; }
+  .result-title { font-size: 20px; }
+  .result-type { padding: 40px 24px; }
+  .result-type-name { font-size: 22px; }
+  .result-type-desc { font-size: 13px; line-height: 1.95; }
+  .result-sub-list { grid-template-columns: 1fr; gap: 14px; }
+  .result-sub-card { padding: 24px 18px; }
+  .result-sub-theme { min-height: auto; }
+  .result-collector-list { grid-template-columns: 1fr; gap: 12px; }
+  .result-collector-body { padding: 20px 22px 24px; }
+  .result-collector-photo-initial { font-size: 22px; }
+  .result-sub-body { padding: 18px 14px 20px; }
+  .result-sub-photo-initial { font-size: 44px; }
+}
+</style>
+</head>
+<body>
+
+<header class="h-bar">
+  <a href="collector.html" class="h-back">← BACK TO COLLECTOR</a>
+  <a href="index.html" class="h-logo">BANK OF ART</a>
+</header>
+
+<!-- ━━━━━━ Screen 1: スタート ━━━━━━ -->
+<section class="match-screen is-active" id="screen-start">
+  <div class="match-hero">
+    <div class="match-hero-eyebrow">Matching</div>
+    <h1 class="match-hero-title">MATCHING</h1>
+    <p class="match-hero-ja">企業課題×アート</p>
+    <p class="match-hero-lead">
+      3つの質問に答えるだけで、<br>
+      貴社の課題に効くアートのタイプと、<br>
+      おすすめの画家・同じ課題で導入した企業の事例をご提案します。
+    </p>
+    <button class="match-start-btn" id="start-btn">診断スタート</button>
+  </div>
+</section>
+
+<!-- ━━━━━━ Screen 2: 質問 ━━━━━━ -->
+<section class="match-screen" id="screen-question">
+  <div class="match-q-section">
+    <div class="match-progress" id="q-progress">QUESTION 1 / 3</div>
+    <div class="match-progress-bar"><div class="match-progress-fill" id="q-progress-fill" style="width:33%;"></div></div>
+    <h2 class="match-q-title" id="q-title">質問テキスト</h2>
+    <div class="match-options" id="q-options"></div>
+  </div>
+</section>
+
+<!-- ━━━━━━ Screen 3: ローディング ━━━━━━ -->
+<section class="match-screen" id="screen-loading">
+  <div class="match-loading">
+    <div class="match-loading-spinner"></div>
+    <p class="match-loading-text">貴社の課題に効くアートを探しています...</p>
+  </div>
+</section>
+
+<!-- ━━━━━━ Screen 4: 結果 ━━━━━━ -->
+<section class="match-screen" id="screen-result">
+  <div class="match-result">
+    <div class="result-eyebrow">Your Match</div>
+    <h2 class="result-title">貴社の課題に効くのは</h2>
+
+    <div class="result-type" id="result-type"></div>
+
+    <div class="result-sub-h">おすすめの画家</div>
+    <div class="result-sub-list" id="recommended-artists"></div>
+
+    <div class="result-collector-h">Case Studies</div>
+    <div class="result-collector-sub">同じ課題で導入した企業の声</div>
+    <div class="result-collector-list" id="related-collectors"></div>
+
+    <div class="result-actions">
+      <button class="is-secondary" onclick="restart()">もう一度診断する</button>
+      <a href="https://booking.receptionist.jp/5ade6c6d-ae6c-44d9-9921-000ad24af9f9/30min" target="_blank" class="is-primary">お問い合わせ</a>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+'use strict';
+
+// ════════ 質問データ ════════
+var QUESTIONS = [
+  { id:'q1', text:'御社がいま、最も解決したい課題に近いのは？', weight:50, options:[
+    { label:'社員の離職・モチベーション低下', tags:['活気','安心','心の豊かさ'], issue:'離職・モチベーション' },
+    { label:'採用で他社と差をつけたい', tags:['個性','話題性','先進性'], issue:'採用・差別化' },
+    { label:'取引先・来訪者への印象を強めたい', tags:['風格','話題性','信頼感'], issue:'取引先への印象' },
+    { label:'経営理念が社員に浸透していない', tags:['物語性','求心力','共感'], issue:'理念浸透' },
+    { label:'オフィス・店舗の空間が画一的で寂しい', tags:['彩り','安らぎ','個性'], issue:'空間の活性化' }
+  ]},
+  { id:'q2', text:'その課題について、特にどう感じていますか？', weight:30, options:[
+    { label:'社内の空気を前向きに変えたい', tags:['活気','彩り','心の豊かさ'] },
+    { label:'「らしさ」や独自性を打ち出したい', tags:['個性','物語性','先進性'] },
+    { label:'落ち着き・信頼される雰囲気がほしい', tags:['風格','安心','信頼感'] },
+    { label:'人の心に残る・語りたくなるものがほしい', tags:['話題性','物語性','求心力'] }
+  ]},
+  { id:'q3', text:'アートを飾る場所として考えているのは？', weight:20, options:[
+    { label:'受付・エントランス', tags:['風格','話題性','信頼感'] },
+    { label:'執務スペース・社員の働く場所', tags:['活気','安らぎ','心の豊かさ'] },
+    { label:'会議室・応接室', tags:['風格','物語性','信頼感'] },
+    { label:'店舗・顧客が訪れる空間', tags:['彩り','話題性','個性'] }
+  ]}
+];
+
+// ════════ 効用タイプ ════════
+var TYPES = [
+  { id:'type1', name:'空間に活気を生むアート', tags:['活気','彩り','心の豊かさ'],
+    desc:'色彩豊かで生命力のある作品は、働く人の視界に毎日入ることで、空間そのものの空気を前向きに変えていきます。社員が日々アートからエネルギーを受け取る環境は、職場への愛着を静かに育てます。',
+    issues:['離職・モチベーション','空間の活性化'],
+    sourceText:'経済産業省の報告書では、オフィスへのアート導入により「気分転換につながった」「オフィスが行きたい場所になった」といった声が報告されています。',
+    sourceLink:'https://www.meti.go.jp/shingikai/mono_info_service/art_economic/20230704_report.html',
+    sourceName:'アートと経済社会について考える研究会 報告書（2023）'
+  },
+  { id:'type2', name:'個性で差をつけるアート', tags:['個性','話題性','先進性'],
+    desc:'唯一無二の表現を持つ作品は、「この会社は他と違う」という印象を訪れた人の記憶に残します。採用候補者や来訪者に、企業のセンスと先進性を言葉以上に伝えます。',
+    issues:['採用・差別化'],
+    sourceText:'経済産業省の報告書は、アートが企業のブランドイメージ形成や企業価値の向上につながり得ると指摘しています。',
+    sourceLink:'https://www.meti.go.jp/shingikai/mono_info_service/art_economic/20230704_report.html',
+    sourceName:'アートと経済社会について考える研究会 報告書（2023）'
+  },
+  { id:'type3', name:'風格と信頼を伝えるアート', tags:['風格','信頼感','安心'],
+    desc:'落ち着いた佇まいと確かな技術に裏打ちされた作品は、空間に品格をもたらします。受付や応接室に置かれたとき、その企業の信頼性と成熟を静かに物語ります。',
+    issues:['取引先への印象'],
+    sourceText:'経済産業省の報告書は、アートの「社会的価値」のひとつとして、空間や組織への信頼形成への寄与を挙げています。',
+    sourceLink:'https://www.meti.go.jp/shingikai/mono_info_service/art_economic/20230704_report.html',
+    sourceName:'アートと経済社会について考える研究会 報告書（2023）'
+  },
+  { id:'type4', name:'物語で理念を語るアート', tags:['物語性','求心力','共感'],
+    desc:'背景に明確な物語を持つ作品は、企業理念を語るきっかけになります。アーティストの生き方や作品の意味を社員と共有することで、言葉だけでは伝わらない理念が、日常の風景の中に根づいていきます。',
+    issues:['理念浸透'],
+    sourceText:'経済産業省の報告書では、社員がアートに接することが新たな発想や対話のきっかけになると報告されています。',
+    sourceLink:'https://www.meti.go.jp/shingikai/mono_info_service/art_economic/20230704_report.html',
+    sourceName:'アートと経済社会について考える研究会 報告書（2023）'
+  },
+  { id:'type5', name:'心に安らぎを与えるアート', tags:['安らぎ','安心','心の豊かさ'],
+    desc:'自然や静謐をモチーフにした作品は、働く空間に呼吸の余白を生みます。視界に安らぎがあることは、社員の心理的な負荷をやわらげ、落ち着いて働ける環境づくりを支えます。',
+    issues:['離職・モチベーション','空間の活性化'],
+    sourceText:'WHOの報告書では、3000以上の研究の統合により、芸術が心身の健康の促進に役割を果たし得ることが示されています。',
+    sourceLink:'https://www.ncbi.nlm.nih.gov/books/NBK553773/',
+    sourceName:'WHO/Europe HENレポート No.67（2019）'
+  }
+];
+
+// ════════ 効用タグ → アーティストタグ 対応表 ════════
+var TAG_MAP = {
+  '活気':['生命エネルギー','力強さ','POP'],
+  '彩り':['POP','ポジティブ','実験'],
+  '心の豊かさ':['癒し','救い','心の豊かさ'],
+  '個性':['唯一無二','実験','突破'],
+  '話題性':['ストリート','力強さ','唯一無二'],
+  '先進性':['現代性','都市','実験'],
+  '風格':['伝統','工芸','普遍性'],
+  '信頼感':['静謐','伝統','普遍性'],
+  '安心':['静謐','癒し','自然'],
+  '物語性':['物語','国際','社会貢献'],
+  '求心力':['希望','子供','つながり'],
+  '共感':['つながり','家族','再生'],
+  '安らぎ':['自然','植物','静謐']
+};
+
+// ════════ アーティスト（パーパス診断と共通の20名） ════════
+var ARTISTS = [
+  { id:'azuma',   nameEn:'AZUMA JUSEI', nameJa:'東樹生', theme:'ADRENALINE ART — 身体で叩き込む絵画', tags:['挑戦','突破','唯一無二','力強さ','格闘','生命エネルギー'] },
+  { id:'bond',    nameEn:'TOMINAGA BOND', nameJa:'冨永ボンド', theme:'ツナガリ — ボンドで描く独自画法', tags:['つながり','コミュニティ','地域','DIY','偶然','唯一無二'] },
+  { id:'chob',    nameEn:'CHOB-ONE', nameJa:'CHOB-ONE', theme:'グラフィティ × 社会批評', tags:['ストリート','社会批評','DIY','不条理','力強さ'] },
+  { id:'dots',    nameEn:'DOTSCOLLECTIVE', nameJa:'dotscollective', theme:'ROCK × ART', tags:['DIY','バンドカルチャー','つながり','ストリート','POP'] },
+  { id:'erika',   nameEn:'ERIKA', nameJa:'erika', theme:'世界のランドマーク', tags:['多様性','越境','若手'] },
+  { id:'fuji',    nameEn:'FUJI RISAKO', nameJa:'藤理沙子', theme:'心を豊かにするパワー', tags:['再生','第二のキャリア','癒し','心の豊かさ','救い'] },
+  { id:'gen',     nameEn:'GEN', nameJa:'玄', theme:'社会と希望のアート', tags:['社会貢献','貧困','SDGs','希望','子供'] },
+  { id:'green',   nameEn:'GREEN IS BEAUTIFUL', nameJa:'GREEN IS BEAUTIFUL', theme:'POPで社会を語る', tags:['POP','ポジティブ','社会批評','家族','多様性'] },
+  { id:'ito',     nameEn:'ITO SAKIHO', nameJa:'伊藤咲穂', theme:'錆和紙 — 自然と工芸', tags:['自然','サステナビリティ','伝統','工芸','探究'] },
+  { id:'kathmi',  nameEn:'KATHMI', nameJa:'KATHMI', theme:'力強く自立した女性像', tags:['自立','エンパワー','力強さ','ストリート'] },
+  { id:'kita',    nameEn:'KITA KAZUAKI', nameJa:'北和晃', theme:'幻想画 — 静謐と物語', tags:['物語','静謐','国際','探究'] },
+  { id:'ookuma',  nameEn:'OKUMA SHINYA', nameJa:'大隈伸也', theme:'都市の複雑な美しさ', tags:['都市','突破','唯一無二','若手','現代性'] },
+  { id:'olioli',  nameEn:'OLI OLI NOMI', nameJa:'OLI OLI のみ', theme:'WARP — 歪みの黄金比', tags:['偶然','転機','実験','ストリート','POP','現代性'] },
+  { id:'saki',    nameEn:'SAKI', nameJa:'saki', theme:'絵は救い、光のような存在', tags:['自然','植物','救い','静謐','再生','心の豊かさ'] },
+  { id:'shimoie', nameEn:'SHIMOIE ANJU', nameJa:'下家杏樹', theme:'日本画 — 線に刻む祖父の記憶', tags:['家族','継承','伝統','工芸','静謐'] },
+  { id:'shin',    nameEn:'SHIN LI', nameJa:'シン リー', theme:'日中の架け橋', tags:['伝統','継承','国際','越境','工芸'] },
+  { id:'tanaka',  nameEn:'TANAKA TAKUMA', nameJa:'田中拓馬', theme:'再起の物語', tags:['再生','第二のキャリア','挑戦','越境','国際','不条理'] },
+  { id:'tiki',    nameEn:'TIKI', nameJa:'tiki', theme:'空の宝箱を持った子供たち', tags:['子供','希望','未来','SDGs','貧困','再生'] },
+  { id:'shuhei',  nameEn:'TOMINAGA SHUHEI', nameJa:'富永周平', theme:'Who is that Hat?', tags:['国際','越境','物語','普遍性','唯一無二'] },
+  { id:'kanou',   nameEn:'KANOU YOSHIMI', nameJa:'加納芳美', theme:'ミクストメディア', tags:['実験','童心','自然','第二のキャリア'] }
+];
+
+// 各アーティストにgrad/initialを付与
+var ARTIST_VISUAL = {
+  'azuma':   { grad:'linear-gradient(135deg,#2a2a2a 0%,#01ae84 100%)', initial:'AZ' },
+  'bond':    { grad:'linear-gradient(135deg,#1a3a3a 0%,#88a8a8 100%)', initial:'BO' },
+  'chob':    { grad:'linear-gradient(135deg,#222 0%,#dc4444 100%)', initial:'CH' },
+  'dots':    { grad:'linear-gradient(135deg,#3a2a4a 0%,#01ae84 100%)', initial:'DO' },
+  'erika':   { grad:'linear-gradient(135deg,#4a3a3a 0%,#e8b888 100%)', initial:'ER' },
+  'fuji':    { grad:'linear-gradient(135deg,#3a3a4a 0%,#c8a8c8 100%)', initial:'FU' },
+  'gen':     { grad:'linear-gradient(135deg,#2a3a2a 0%,#88a888 100%)', initial:'GE' },
+  'green':   { grad:'linear-gradient(135deg,#1a4a3a 0%,#88c8a8 100%)', initial:'GI' },
+  'ito':     { grad:'linear-gradient(135deg,#3a3a2a 0%,#c8b888 100%)', initial:'IT' },
+  'kathmi':  { grad:'linear-gradient(135deg,#4a2a3a 0%,#c8a8b8 100%)', initial:'KA' },
+  'kita':    { grad:'linear-gradient(135deg,#2a2a3a 0%,#7878a8 100%)', initial:'KI' },
+  'ookuma':  { grad:'linear-gradient(135deg,#3a3a3a 0%,#a8a8a8 100%)', initial:'OK' },
+  'olioli':  { grad:'linear-gradient(135deg,#3a4a4a 0%,#a8c8c8 100%)', initial:'OL' },
+  'saki':    { grad:'linear-gradient(135deg,#2a3a3a 0%,#88a888 100%)', initial:'SA' },
+  'shimoie': { grad:'linear-gradient(135deg,#2a2a3a 0%,#a888a8 100%)', initial:'SH' },
+  'shin':    { grad:'linear-gradient(135deg,#3a2a2a 0%,#c88888 100%)', initial:'SL' },
+  'tanaka':  { grad:'linear-gradient(135deg,#3a3a3a 0%,#88a8a8 100%)', initial:'TA' },
+  'tiki':    { grad:'linear-gradient(135deg,#2a3a4a 0%,#88a8c8 100%)', initial:'TI' },
+  'shuhei':  { grad:'linear-gradient(135deg,#3a2a3a 0%,#a888c8 100%)', initial:'TS' },
+  'kanou':   { grad:'linear-gradient(135deg,#3a3a3a 0%,#888 100%)', initial:'KA' }
+};
+ARTISTS.forEach(function(a){
+  var v = ARTIST_VISUAL[a.id] || { grad:'linear-gradient(135deg,#333,#666)', initial:'?' };
+  a.grad = v.grad;
+  a.initial = v.initial;
+  a.photo = '';
+});
+
+// ════════ コレクター記事サンプル（実装時はCMSから取得） ════════
+var COLLECTORS = [
+  { id:'meiwa', name:'明和不動産', issueTag:'離職・モチベーション', summary:'執務スペースに彩り豊かな作品を導入。社員から「気分転換になる」「打合せの会話のきっかけになる」との声が増えた。', photo:'', grad:'linear-gradient(135deg,#2a3a3a 0%,#88a8a8 100%)', initial:'MEIWA' },
+  { id:'startup_a', name:'スタートアップ企業A', issueTag:'採用・差別化', summary:'エントランスに唯一無二の大型作品を設置。採用面接で「会社の雰囲気が伝わる」と候補者から高評価。', photo:'', grad:'linear-gradient(135deg,#3a2a4a 0%,#a888c8 100%)', initial:'STARTUP' },
+  { id:'law_firm', name:'某法律事務所', issueTag:'取引先への印象', summary:'応接室に伝統工芸を取り入れた作品を導入。クライアントから「落ち着いて話せる空間」と好評。', photo:'', grad:'linear-gradient(135deg,#3a3a2a 0%,#c8b888 100%)', initial:'LAW' },
+  { id:'manufacturer', name:'某メーカー', issueTag:'理念浸透', summary:'企業理念を体現する物語性のある作品を社内各所に。社員が来客に作品を紹介することで理念の対話が増えた。', photo:'', grad:'linear-gradient(135deg,#2a2a3a 0%,#7878a8 100%)', initial:'MAKER' },
+  { id:'office_b', name:'デザイン会社B', issueTag:'空間の活性化', summary:'画一的だったオフィスに自然をモチーフとした作品を点在配置。空間に呼吸の余白が生まれた。', photo:'', grad:'linear-gradient(135deg,#2a3a2a 0%,#88a888 100%)', initial:'DESIGN' },
+  { id:'retail_c', name:'小売店C', issueTag:'空間の活性化', summary:'店舗に彩りある作品を配置。SNSでの口コミが増え、来店動機が広がった。', photo:'', grad:'linear-gradient(135deg,#4a3a3a 0%,#e8b888 100%)', initial:'RETAIL' }
+];
+
+var currentQ = 0;
+var answers = [];
+
+function showScreen(id) {
+  document.querySelectorAll('.match-screen').forEach(function(s){
+    s.classList.toggle('is-active', s.id === id);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('start-btn').addEventListener('click', function(){
+  currentQ = 0; answers = [];
+  showQuestion(0);
+  showScreen('screen-question');
+});
+
+function showQuestion(idx) {
+  var q = QUESTIONS[idx];
+  document.getElementById('q-progress').textContent = 'QUESTION ' + (idx + 1) + ' / ' + QUESTIONS.length;
+  document.getElementById('q-progress-fill').style.width = ((idx + 1) / QUESTIONS.length * 100) + '%';
+  document.getElementById('q-title').textContent = q.text;
+  var optsEl = document.getElementById('q-options');
+  optsEl.innerHTML = '';
+  q.options.forEach(function(opt, oi){
+    var btn = document.createElement('button');
+    btn.className = 'match-option';
+    btn.textContent = opt.label;
+    btn.addEventListener('click', function(){ selectOption(idx, oi); });
+    optsEl.appendChild(btn);
+  });
+}
+
+function selectOption(qIdx, optIdx) {
+  var q = QUESTIONS[qIdx];
+  answers.push({ qIdx:qIdx, optIdx:optIdx, tags:q.options[optIdx].tags, weight:q.weight, issue:q.options[optIdx].issue || null });
+  if (qIdx + 1 < QUESTIONS.length) {
+    showQuestion(qIdx + 1);
+  } else {
+    showScreen('screen-loading');
+    setTimeout(function(){ showResult(); }, 1400);
+  }
+}
+
+function showResult() {
+  // 効用タイプのスコア計算
+  var typedScored = TYPES.map(function(type){
+    var score = 0;
+    answers.forEach(function(ans){
+      ans.tags.forEach(function(tag){
+        if (type.tags.indexOf(tag) !== -1) score += ans.weight;
+      });
+    });
+    var q1Match = false;
+    if (answers[0]) {
+      answers[0].tags.forEach(function(tag){
+        if (type.tags.indexOf(tag) !== -1) q1Match = true;
+      });
+    }
+    return { type:type, score:score, q1Match:q1Match };
+  });
+  typedScored.sort(function(a,b){
+    if (b.score !== a.score) return b.score - a.score;
+    if (b.q1Match && !a.q1Match) return 1;
+    if (a.q1Match && !b.q1Match) return -1;
+    return 0;
+  });
+  var mainType = typedScored[0].type;
+
+  // 効用タイプ→アーティストタグ→アーティストスコア
+  var artistTags = [];
+  mainType.tags.forEach(function(t){
+    if (TAG_MAP[t]) artistTags = artistTags.concat(TAG_MAP[t]);
+  });
+  var artistScored = ARTISTS.map(function(a){
+    var score = 0;
+    artistTags.forEach(function(tag){
+      if (a.tags.indexOf(tag) !== -1) score += 1;
+    });
+    return { artist:a, score:score };
+  });
+  artistScored.sort(function(a,b){ return b.score - a.score; });
+  var topArtists = artistScored.slice(0, 3).map(function(x){ return x.artist; });
+
+  // コレクター記事：効用タイプの対象課題に該当するもの
+  var relatedCollectors = COLLECTORS.filter(function(c){
+    return mainType.issues.indexOf(c.issueTag) !== -1;
+  }).slice(0, 3);
+
+  // 効用タイプ表示
+  document.getElementById('result-type').innerHTML =
+    '<div class="result-type-name">' + mainType.name + '</div>' +
+    '<div class="result-type-desc">' + mainType.desc + '</div>' +
+    '<div class="result-type-source">※ ' + mainType.sourceText + '<br>出典：<a href="' + mainType.sourceLink + '" target="_blank" rel="noopener">' + mainType.sourceName + '</a></div>';
+
+  // アーティスト3名
+  document.getElementById('recommended-artists').innerHTML = topArtists.map(function(a){
+    var photoStyle = a.photo
+      ? 'background-image:url(' + a.photo + ');'
+      : 'background:' + a.grad + ';';
+    var photoInner = a.photo ? '' : '<span class="result-sub-photo-initial">' + a.initial + '</span>';
+    return '<a href="artist-single.html" class="result-sub-card">' +
+      '<div class="result-sub-photo" style="' + photoStyle + '">' + photoInner + '</div>' +
+      '<div class="result-sub-body">' +
+        '<div class="result-sub-name-en">' + a.nameEn + '</div>' +
+        '<div class="result-sub-name-ja">' + a.nameJa + '</div>' +
+        '<div class="result-sub-theme">' + a.theme + '</div>' +
+      '</div>' +
+      '</a>';
+  }).join('');
+
+  // コレクター記事
+  if (relatedCollectors.length === 0) {
+    document.getElementById('related-collectors').innerHTML = '<p style="text-align:center;color:var(--mid);font-size:13px;grid-column:1/-1;padding:32px 0;">関連する導入事例は近日公開予定です。</p>';
+  } else {
+    document.getElementById('related-collectors').innerHTML = relatedCollectors.map(function(c){
+      var photoStyle = c.photo
+        ? 'background-image:url(' + c.photo + ');'
+        : 'background:' + c.grad + ';';
+      var photoInner = c.photo ? '' : '<span class="result-collector-photo-initial">' + c.initial + '</span>';
+      return '<a href="collector-single.html" class="result-collector-card">' +
+        '<div class="result-collector-photo" style="' + photoStyle + '">' + photoInner + '</div>' +
+        '<div class="result-collector-body">' +
+          '<div class="result-collector-tag">' + c.issueTag + '</div>' +
+          '<div class="result-collector-name">' + c.name + '</div>' +
+          '<div class="result-collector-summary">' + c.summary + '</div>' +
+        '</div>' +
+        '</a>';
+    }).join('');
+  }
+
+  showScreen('screen-result');
+}
+
+window.restart = function() {
+  currentQ = 0; answers = [];
+  showScreen('screen-start');
+};
+
+})();
+</script>
+
+</body>
+</html>

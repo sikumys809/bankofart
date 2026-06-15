@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JOIN US — 画家募集 — BANK OF ART</title>
+<meta name="description" content="BANK OF ARTは創作に情熱を注ぐ画家を募集しています。描いて、生きていける世界へ。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600;700&family=Shippori+Mincho+B1:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--fs-head:40px;--fs-body:18px;--brand:#01ae84;--brand-deep:#018c6a;--header-bg:#01ae84;--ink:#212121;--paper:#f5f0ea;--dark:#212121;--mid:#6e6862;--warm-gray:#e8e3da;--border:rgba(33,33,33,.18);--border-soft:rgba(33,33,33,.08);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+*{font-style:normal;}
+html{scroll-behavior:smooth;overflow-x:hidden;max-width:100%;}
+body{font-family:'Shippori Mincho B1',serif;font-weight:500;font-size:var(--fs-body);line-height:1.95;color:var(--ink);background:var(--paper);overflow-x:hidden;-webkit-font-feature-settings:"palt","kern";font-feature-settings:"palt","kern";word-break:normal;line-break:strict;overflow-wrap:anywhere;hanging-punctuation:allow-end;}
+body:not(.admin-bar){cursor:none;}
+img{max-width:100%;height:auto;display:block;}
+a{color:inherit;text-decoration:none;}
+button{background:none;border:none;font:inherit;color:inherit;cursor:inherit;}
+.boa-num{font-family:'Shippori Mincho B1',serif;font-weight:500;}
+.br-pc{display:inline;}
+@media(max-width:700px){.br-pc{display:none;}}
+#cur{width:8px;height:8px;background:var(--brand);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;}
+#cur-r{width:40px;height:40px;border:1px solid var(--brand);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s;opacity:.6;}
+body:has(a:hover) #cur,body:has(button:hover) #cur{width:18px;height:18px;}
+body:has(a:hover) #cur-r,body:has(button:hover) #cur-r{width:60px;height:60px;}
+@media(hover:none){#cur,#cur-r{display:none;}}
+/* ════════ HEADER（ABOUT準拠） ════════ */
+header {
+  position: fixed; top:0; left:0; right:0; z-index:1000;
+  height: 92px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 40px;
+  background: var(--header-bg);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  transition: box-shadow .3s ease;
+}
+header.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.25); }
+.h-menu-btn {
+  justify-self: start;
+  background: transparent; border: none;
+  color: rgba(255,255,255,.9);
+  cursor: none;
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'Cinzel', serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 8px 0; transition: color .25s;
+}
+.h-menu-btn:hover { color: var(--ink); }
+.h-menu-icon { width: 22px; height: 12px; position: relative; display: inline-block; }
+.h-menu-icon::before, .h-menu-icon::after {
+  content:''; position: absolute; left: 0;
+  width: 100%; height: 1px; background: currentColor;
+  transition: transform .3s ease;
+}
+.h-menu-icon::before { top: 2px; }
+.h-menu-icon::after  { bottom: 2px; }
+
+.h-logo {
+  justify-self: center;
+  display: flex; align-items: center;
+  height: 100%; padding: 18px 0;
+  text-decoration: none; position: relative;
+}
+.h-logo .logo-base, .h-logo .logo-hover {
+  height: 56px; width: auto; display: block;
+  transition: opacity .35s ease, transform .5s ease;
+}
+.h-logo .logo-hover {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(.92); opacity: 0;
+}
+.h-logo:hover .logo-base { opacity: 0; transform: scale(1.04); }
+.h-logo:hover .logo-hover { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+.h-actions { justify-self: end; display: flex; }
+.btn-contact {
+  font-family: 'Cinzel', serif;
+  font-size: 13px; font-weight: 500; letter-spacing: 3px;
+  color: #fff; background: transparent;
+  border: 1px solid rgba(255,255,255,.4);
+  padding: 11px 28px; text-decoration: none;
+  text-transform: uppercase; transition: all .25s;
+  cursor: none; display: inline-block;
+}
+.btn-contact:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+.contact-dropdown { position: relative; display: inline-block; }
+.contact-menu {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  min-width: 240px; background: var(--paper);
+  border: 1px solid rgba(33,33,33,.08);
+  box-shadow: 0 14px 36px rgba(0,0,0,.12);
+  opacity: 0; visibility: hidden; transform: translateY(-6px);
+  transition: opacity .25s ease, transform .25s ease, visibility .25s;
+  z-index: 1001;
+}
+.contact-dropdown.open .contact-menu {
+  opacity: 1; visibility: visible; transform: translateY(0);
+}
+.contact-menu-item {
+  display: block;
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body); font-weight: 700; letter-spacing: 2px;
+  color: var(--ink); text-decoration: none;
+  padding: 16px 22px;
+  border-bottom: 1px solid rgba(33,33,33,.06);
+  transition: background .2s, color .2s, padding-left .25s;
+}
+.contact-menu-item:last-child { border-bottom: none; }
+.contact-menu-item:hover {
+  background: rgba(1,174,132,.08); color: var(--brand); padding-left: 28px;
+}
+
+.h-drawer {
+  position: fixed; top: 92px; left: 0; right: 0;
+  background: var(--header-bg);
+  z-index: 999;
+  max-height: 0; overflow: hidden;
+  transition: max-height .5s cubic-bezier(.4,0,.2,1);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.h-drawer.open { max-height: 700px; }
+.h-drawer-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: 36px 40px 48px;
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 12px 60px;
+}
+.h-drawer a {
+  font-family: 'Cormorant SC', serif;
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 500; letter-spacing: 3px;
+  color: rgba(255,255,255,.85);
+  text-decoration: none; padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  transition: color .25s, padding .25s;
+  display: block; text-transform: uppercase;
+}
+.h-drawer a:hover { color: var(--ink); padding-left: 12px; }
+.h-drawer a .ja {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body); font-weight: 500; letter-spacing: 3px;
+  color: rgba(255,255,255,.4);
+  display: block; margin-top: 4px; text-transform: none;
+}
+
+/* ── PRELOADER ── */
+@keyframes logoSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+#preloader {
+  position: fixed; inset: 0;
+  background: var(--paper); z-index: 99999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 28px;
+  transition: opacity .8s ease, visibility .8s ease;
+}
+#preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.preloader-logo {
+  width: clamp(90px, 10vw, 130px); height: auto;
+  animation: logoSpin 6s linear infinite;
+}
+.preloader-text {
+  font-family: 'Cinzel', serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 3px; color: var(--mid);
+}
+
+/* ════════ CTA（ABOUT準拠） ════════ */
+.cta-strip {
+  padding: 80px 56px;
+  background: #4a4a4a;
+  color: #fff;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.cta-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  position: relative; z-index: 1;
+  max-width: 1100px;
+  width: 100%;
+}
+.cta-title {
+  font-family: 'Cormorant SC', serif;
+  font-size:var(--fs-head);
+  font-weight: 400;
+  letter-spacing: 3px;
+  color: #fff;
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: left;
+}
+.cta-btns { display: flex; gap: 14px; flex-shrink: 0; }
+.btn-cta-w {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #fff;
+  background: var(--brand);
+  padding: 18px 32px;
+  text-decoration: none;
+  transition: all .25s;
+  display: block;
+  border: 1px solid var(--brand);
+}
+.btn-cta-w:hover {
+  background: var(--brand-deep);
+  border-color: var(--brand-deep);
+  transform: translateY(-2px);
+}
+.btn-cta-o {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.5);
+  padding: 18px 32px;
+  text-decoration: none;
+  transition: all .25s;
+  display: block;
+}
+.btn-cta-o:hover {
+  background: #fff;
+  color: #4a4a4a;
+  border-color: #fff;
+}
+
+/* ════════ FOOTER（ABOUT準拠） ════════ */
+footer { background: #050505; padding:72px 0 0; }
+.footer-top {
+  max-width:1320px; margin:0 auto; padding:0 56px;
+  display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; gap:50px;
+  padding-bottom:60px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.foot-logo img { height: 32px; width: auto; }
+.foot-tagline {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: .22em;
+  color: rgba(255,255,255,.4);
+  margin-top: 18px;
+  line-height: 2.2;
+}
+.foot-social { display:flex; gap:10px; margin-top:24px; }
+.soc-a {
+  width:38px; height:38px;
+  border:1px solid rgba(255,255,255,.12);
+  display:flex; align-items:center; justify-content:center;
+  text-decoration:none; color:rgba(255,255,255,.45);
+  font-family: 'Cormorant SC', serif;
+  font-size:13px; font-weight:500; font-style: normal;
+  transition:all .25s;
+}
+.soc-a:hover { border-color:var(--brand); color:var(--brand); }
+.foot-col-t {
+  font-family: 'Cinzel', serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--brand);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.foot-links { list-style:none; display:flex; flex-direction:column; gap:12px; }
+.foot-links li a {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: .1em;
+  color: rgba(255,255,255,.5);
+  text-decoration: none;
+  transition: color .2s;
+  line-height: 1.6;
+}
+.foot-links li a:hover { color:#fff; }
+.footer-bottom {
+  max-width:1320px; margin:0 auto; padding:0 56px;
+  height:60px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.foot-copy {
+  font-family: 'Cormorant SC', serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: .15em;
+  color: rgba(255,255,255,.3);
+  font-style: normal;
+}
+.foot-privacy {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,.3);
+  text-decoration: none;
+  transition: color .2s;
+}
+.foot-privacy:hover { color:rgba(255,255,255,.6); }
+
+/* ════════ MATCHING バナー（横長・広告型） ════════ */
+.match-banner-sec {
+  padding: 90px 40px;
+  background: var(--paper);
+}
+.match-banner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 48px;
+  padding: 56px 64px;
+  position: relative;
+  overflow: hidden;
+}
+.match-banner-label {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 7px 16px;
+  margin-bottom: 20px;
+}
+.match-banner-title {
+  font-family: 'Cormorant SC', serif;
+  font-weight: 400;
+  letter-spacing: 3px;
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+.match-banner-sub {
+  font-family: 'Shippori Mincho B1', serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.match-banner-body {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 500;
+  letter-spacing: 1px;
+  line-height: 1.9;
+}
+.match-banner-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.match-banner-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 20px 44px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  white-space: nowrap;
+  transition: all .3s;
+}
+.match-banner-btn::after {
+  content: '';
+  width: 8px; height: 8px;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  transform: rotate(45deg);
+}
+.match-banner-meta {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+@media (max-width: 820px) {
+  .match-banner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 44px 32px;
+    text-align: center;
+  }
+  .match-banner-right { align-items: center; }
+}
+
+
+/* PAGE HERO */
+.page-hero{padding:184px 40px 84px;background:var(--paper);text-align:center;}
+.page-hero-title{font-family:'Cormorant SC',serif;font-size:96px;font-weight:400;letter-spacing:3px;line-height:1;color:var(--ink);margin-bottom:16px;}
+@media(max-width:700px){.page-hero-title{font-size:60px;}}
+.page-hero-ja{font-family:'Cinzel',serif;font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--brand);margin-bottom:40px;}
+.page-statement{max-width:720px;margin:0 auto;font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);line-height:2.2;color:var(--ink);letter-spacing:1px;}
+.page-statement p+p{margin-top:26px;}
+.page-statement .mid{color:var(--mid);}
+
+/* FILTER */
+.filter-section{background:var(--paper);padding:40px 40px 24px;border-top:1px solid var(--border-soft);}
+.filter-inner{max-width:1400px;margin:0 auto;display:flex;align-items:baseline;gap:32px;flex-wrap:wrap;justify-content:flex-start;}
+.filter-label{font-family:'Cinzel',serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--brand);flex-shrink:0;}
+.filter-tags{display:flex;gap:8px 28px;flex-wrap:wrap;justify-content:flex-start;}
+.filter-tag{font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);letter-spacing:1px;color:var(--mid);padding:8px 0;position:relative;transition:color .25s;}
+.filter-tag.en{font-family:'Cinzel',serif;letter-spacing:3px;font-size:14px;}
+.filter-tag::after{content:'';position:absolute;bottom:4px;left:0;width:0;height:1px;background:var(--brand);transition:width .3s ease;}
+.filter-tag:hover{color:var(--ink);}
+.filter-tag.is-active{color:var(--ink);}
+.filter-tag.is-active::after{width:100%;}
+.filter-count{font-family:'Cinzel',serif;font-size:14px;letter-spacing:3px;color:var(--brand);flex-shrink:0;}
+.filter-count .boa-num{color:var(--brand);margin-right:4px;}
+
+/* ARTIST GRID */
+.artist-section{padding:56px 40px 110px;background:var(--paper);}
+.artist-grid{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:76px 40px;}
+@media(max-width:1100px){.artist-grid{grid-template-columns:repeat(3,1fr);gap:60px 32px;}}
+@media(max-width:800px){.artist-grid{grid-template-columns:repeat(2,1fr);gap:52px 24px;}}
+@media(max-width:480px){.artist-grid{grid-template-columns:repeat(2,1fr);gap:36px 16px;}}
+.artist-card{display:block;text-align:left;transition:transform .4s ease;}
+.artist-card:hover{transform:translateY(-6px);}
+.artist-photo{position:relative;width:100%;aspect-ratio:1/1.15;background:var(--warm-gray);overflow:hidden;margin-bottom:20px;}
+.artist-photo-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant SC',serif;font-size:56px;letter-spacing:3px;color:rgba(33,33,33,.18);transition:transform .8s cubic-bezier(.2,.7,.2,1);background-size:cover;background-position:center;}
+.artist-card:hover .artist-photo-inner{transform:scale(1.04);}
+.artist-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(33,33,33,.4) 0%,transparent 50%);opacity:0;transition:opacity .4s;pointer-events:none;}
+.artist-card:hover .artist-photo::after{opacity:1;}
+.artist-number{position:absolute;top:16px;left:16px;font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);letter-spacing:1px;color:rgba(245,240,234,.95);background:rgba(33,33,33,.4);padding:4px 12px;backdrop-filter:blur(8px);z-index:2;}
+.artist-tag-badge{position:absolute;bottom:16px;left:16px;font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);letter-spacing:1px;color:#fff;background:var(--brand);padding:5px 12px;z-index:2;opacity:0;transform:translateY(6px);transition:opacity .4s,transform .4s;}
+.artist-card:hover .artist-tag-badge{opacity:1;transform:translateY(0);}
+.artist-name{font-family:'Shippori Mincho B1',serif;font-size:20px;font-weight:700;letter-spacing:1px;color:var(--ink);margin-bottom:6px;line-height:1.4;}
+.artist-name-en{font-family:'Cinzel',serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--mid);margin-bottom:14px;}
+.artist-catch{font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:var(--fs-body);color:var(--brand);line-height:1.5;margin-bottom:12px;letter-spacing:1px;}
+.artist-theme{font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);color:var(--mid);line-height:1.75;letter-spacing:1px;}
+
+/* MATCHING BANNER（アーティスト診断＝緑バナー・ライト基調） */
+.match-banner-sec{padding:80px 40px;background:var(--paper);text-align:center;}
+.match-banner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr auto;align-items:center;gap:48px;padding:54px 64px;position:relative;overflow:hidden;background:var(--brand);text-align:left;}
+
+.match-banner-left{position:relative;z-index:2;}
+.match-banner-label{font-family:'Cinzel',serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;display:inline-block;padding:7px 16px;margin-bottom:22px;background:#fff;color:var(--brand);}
+.match-banner-title{font-family:'Cormorant SC',serif;font-size:var(--fs-head);font-weight:400;letter-spacing:3px;line-height:1.15;color:#fff;margin-bottom:14px;}
+.match-banner-sub{font-family:'Shippori Mincho B1',serif;font-size:22px;font-weight:700;letter-spacing:2px;line-height:1.6;color:#fff;margin-bottom:14px;}
+.match-banner-body{font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);font-weight:500;letter-spacing:1px;line-height:1.9;color:rgba(255,255,255,.85);}
+.match-banner-right{position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;gap:16px;}
+.match-banner-btn{font-family:'Cinzel',serif;font-size:14px;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:20px 44px;display:inline-flex;align-items:center;gap:14px;white-space:nowrap;transition:all .3s;background:var(--ink);color:#fff;}
+.match-banner-btn:hover{background:#fff;color:var(--brand);}
+.match-banner-btn::after{content:'';width:8px;height:8px;border-top:1px solid currentColor;border-right:1px solid currentColor;transform:rotate(45deg);}
+.match-banner-meta{font-family:'Cinzel',serif;font-size:13px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.85);}
+.match-banner-meta .boa-num{color:#fff;margin-right:4px;}
+@media(max-width:820px){.match-banner{grid-template-columns:1fr;gap:28px;padding:44px 32px;text-align:center;}.match-banner-right{align-items:center;}}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(30px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1);}
+.rv.on{opacity:1;transform:translateY(0);}
+.rv.d1{transition-delay:.08s;}
+.rv.d2{transition-delay:.16s;}
+.rv.d3{transition-delay:.24s;}
+
+/* ════════ スマホ対応：ヘッダー・CTA・フッター（INDEX準拠で統一） ════════ */
+.btn-contact { white-space: nowrap; }
+@media (max-width: 1024px) {
+  header { padding: 0 24px; }
+  .cta-strip { padding: 48px 32px; }
+  .cta-inner { flex-direction: column; gap: 24px; }
+}
+@media (max-width: 700px) {
+  /* 本文サイズをスマホで15pxに */
+  :root { --fs-body: 15px; --fs-head: 24px; }
+  body { line-height: 1.75; }
+  /* スマホ：本文の行間を詰める */
+  .match-banner-body, .page-statement { line-height: 1.7; }
+  /* HEADER */
+  header { padding: 0 18px; }
+  .h-menu-btn span:not(.h-menu-icon) { display: none; }
+  .h-drawer-inner { grid-template-columns: 1fr; padding: 28px 24px 36px; gap: 6px; }
+  .h-logo .logo-base, .h-logo .logo-hover { height: 32px; }
+  .btn-contact { padding: 10px 18px; letter-spacing: 2px; white-space: nowrap; }
+  /* CTA */
+  .cta-strip { padding: 48px 32px; }
+  .cta-inner { flex-direction: column; gap: 24px; text-align: center; }
+  .cta-title { text-align: center; }
+  .cta-btns { flex-direction: column; width: 100%; }
+  .btn-cta-w, .btn-cta-o { text-align: center; width: 100%; }
+  /* FOOTER */
+  .footer-top { grid-template-columns: 1fr; gap: 32px; padding: 0 24px 60px; }
+  .footer-bottom { flex-direction: column; gap: 12px; height: auto; padding: 20px 24px; }
+  /* 375px基準 — はみ出し防止 */
+  .page-hero { padding: 132px 20px 64px; }
+  .page-hero-title { font-size: 46px; }
+  .filter-section { padding: 36px 20px 20px; }
+  .artist-section { padding: 48px 20px 90px; }
+  .match-banner-sec { padding: 64px 20px; }
+  .match-banner { padding: 36px 24px; }
+  section { max-width: 100%; overflow-x: hidden; }
+  .match-banner-title, .match-banner-sub, .match-banner-body { word-break: normal; overflow-wrap: anywhere; max-width: 100%; }
+  .match-banner-left, .match-banner-right { min-width: 0; max-width: 100%; }
+  .artist-grid { grid-template-columns: repeat(2,1fr); gap: 36px 16px; }
+}
+
+
+
+@media (max-width: 430px) {
+  .artist-grid { grid-template-columns: repeat(2,1fr) !important; gap: 28px 12px !important; }
+  .page-hero { padding: 120px 16px 56px !important; }
+  .page-hero-title { font-size: 40px !important; }
+  .filter-section { padding: 32px 16px 18px !important; }
+  .artist-section { padding: 40px 16px 80px !important; }
+  .match-banner-sec { padding: 56px 16px !important; }
+  .match-banner { padding: 32px 20px !important; }
+  .match-banner-title { font-size: 22px !important; }
+  .contact-menu { min-width: 200px !important; }
+  *, *::before, *::after { max-width: 100% !important; min-width: 0 !important; box-sizing: border-box !important; }
+  img { height: auto; }
+  html, body { overflow-x: hidden !important; width: 100% !important; max-width: 100% !important; }
+  header, section, footer, .cta-strip, main, div { max-width: 100vw; }
+}
+
+/* FOR ARTISTSバナー：白背景・#212121枠・#212121文字 で Artist Matchingと差別化 */
+.match-banner.for-artists{background:#fff;border:1px solid #212121;}
+.match-banner.for-artists .match-banner-label{background:#212121;color:#fff;}
+.match-banner.for-artists .match-banner-title{color:#212121;}
+.match-banner.for-artists .match-banner-sub{color:#212121;}
+.match-banner.for-artists .match-banner-body{color:rgba(33,33,33,.85);}
+.match-banner.for-artists .match-banner-right{display:flex;flex-direction:column;gap:14px;align-items:stretch;}
+/* 募集要項を見る：テキストリンク風（アンダーライン付き） */
+.match-banner-btn-secondary{font-family:'Shippori Mincho B1',serif;font-size:15px;font-weight:700;letter-spacing:2px;color:#212121;background:transparent;border:none;padding:10px 0;text-align:center;text-decoration:underline;text-underline-offset:5px;transition:opacity .25s;cursor:none;display:inline-block;}
+.match-banner-btn-secondary:hover{opacity:.6;}
+/* 応募するボタン：#01ae84塗り */
+.match-banner.for-artists .match-banner-btn{background:#01ae84;color:#fff;border:1px solid #01ae84;}
+.match-banner.for-artists .match-banner-btn:hover{background:#018c6a;border-color:#018c6a;}
+
+/* ══════════════════════════════════
+   RECRUIT (JOIN US) ページ固有スタイル
+══════════════════════════════════ */
+/* ヒーロー：通常page-heroをベースに、サブメッセージを大きく */
+.recruit-hero-msg {
+  max-width: 720px;
+  margin: 32px auto 0;
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 17px;
+  line-height: 2.1;
+  letter-spacing: 1.5px;
+  color: var(--ink);
+  text-align: center;
+}
+.recruit-hero-msg strong {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  color: #01ae84;
+  margin-bottom: 18px;
+  letter-spacing: 2px;
+}
+/* セクション共通 */
+.recruit-section { padding: 96px 40px; max-width: 1080px; margin: 0 auto; }
+.recruit-section-eyebrow { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 4px; color: var(--brand); text-transform: uppercase; text-align: center; margin-bottom: 14px; }
+.recruit-section-title { font-family: 'Shippori Mincho B1', serif; font-size: 32px; font-weight: 700; letter-spacing: 3px; color: var(--ink); text-align: center; margin-bottom: 60px; line-height: 1.5; }
+
+/* 「あなたの未来がどう変わる？」カードグリッド */
+.future-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.future-card { background: var(--paper); border: 1px solid var(--border); padding: 40px 32px; transition: transform .35s, box-shadow .35s, border-color .35s; text-align: center; }
+.future-card:hover { transform: translateY(-4px); border-color: var(--brand); box-shadow: 0 14px 28px rgba(33,33,33,.06); }
+.future-card-num { font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 4px; color: var(--brand); margin-bottom: 18px; }
+.future-card-h { font-family: 'Shippori Mincho B1', serif; font-size: 22px; font-weight: 700; line-height: 1.5; letter-spacing: 1px; color: var(--ink); margin-bottom: 20px; }
+.future-card-body { font-family: 'Shippori Mincho B1', serif; font-size: 15px; line-height: 1.95; letter-spacing: .5px; color: var(--mid); }
+
+/* 登録画家 → 公認画家 比較表 */
+.tier-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.tier-card { padding: 48px 36px; border: 1px solid var(--border); position: relative; }
+.tier-card.is-pro { background: #212121; color: #fff; border-color: #212121; }
+.tier-label { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 4px; color: var(--brand); margin-bottom: 10px; }
+.tier-card.is-pro .tier-label { color: #d4af37; }
+.tier-name { font-family: 'Shippori Mincho B1', serif; font-size: 26px; font-weight: 700; letter-spacing: 2px; margin-bottom: 24px; }
+.tier-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+.tier-list li { font-family: 'Shippori Mincho B1', serif; font-size: 15px; line-height: 1.7; letter-spacing: .5px; padding-left: 22px; position: relative; }
+.tier-list li::before { content: '◆'; position: absolute; left: 0; top: 2px; font-size: 9px; color: var(--brand); }
+.tier-card.is-pro .tier-list li::before { color: #d4af37; }
+.tier-arrow { text-align: center; margin: 36px 0 24px; font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 4px; color: var(--mid); }
+.tier-arrow::after { content: ''; display: block; width: 1px; height: 24px; background: var(--border); margin: 12px auto 0; }
+
+/* 応募資格・規定 — リスト */
+.req-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+.req-block { background: #fff; padding: 36px; border: 1px solid var(--border); }
+.req-block.is-good { border-left: 3px solid var(--brand); }
+.req-block.is-bad { border-left: 3px solid #c44; }
+.req-block-h { font-family: 'Shippori Mincho B1', serif; font-size: 18px; font-weight: 700; letter-spacing: 1.5px; color: var(--ink); margin-bottom: 20px; }
+.req-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.req-list li { font-family: 'Shippori Mincho B1', serif; font-size: 14px; line-height: 1.7; letter-spacing: .5px; color: var(--mid); padding-left: 20px; position: relative; }
+.req-list.is-good li::before { content: '✓'; position: absolute; left: 0; color: var(--brand); font-weight: 700; }
+.req-list.is-bad li::before { content: '✕'; position: absolute; left: 0; color: #c44; font-weight: 700; }
+
+/* 選考フロー */
+.flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; position: relative; }
+.flow-step { text-align: center; padding: 28px 18px; background: var(--paper); border: 1px solid var(--border); position: relative; }
+.flow-step::after { content: '→'; position: absolute; right: -15px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--brand); z-index: 2; background: var(--white); padding: 0 4px; }
+.flow-step:last-child::after { display: none; }
+.flow-step-num { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3px; color: var(--brand); margin-bottom: 12px; }
+.flow-step-h { font-family: 'Shippori Mincho B1', serif; font-size: 15px; font-weight: 700; letter-spacing: 1px; color: var(--ink); margin-bottom: 8px; }
+.flow-step-body { font-family: 'Shippori Mincho B1', serif; font-size: 12px; line-height: 1.6; color: var(--mid); }
+
+/* スペック表（応募資格・スケジュール用） */
+.spec-table { width: 100%; max-width: 720px; margin: 0 auto; border-collapse: collapse; }
+.spec-table th, .spec-table td { padding: 18px 20px; text-align: left; font-family: 'Shippori Mincho B1', serif; font-size: 14px; line-height: 1.7; letter-spacing: .5px; border-bottom: 1px solid var(--border); }
+.spec-table th { width: 32%; color: var(--brand); font-weight: 700; vertical-align: top; }
+.spec-table td { color: var(--mid); }
+
+/* 大型CTA */
+.recruit-cta-big { background: #01ae84; padding: 80px 40px; text-align: center; }
+.recruit-cta-big-h { font-family: 'Shippori Mincho B1', serif; font-size: 28px; font-weight: 700; letter-spacing: 3px; color: #fff; margin-bottom: 16px; line-height: 1.5; }
+.recruit-cta-big-sub { font-family: 'Shippori Mincho B1', serif; font-size: 15px; letter-spacing: 1px; color: rgba(255,255,255,.85); margin-bottom: 36px; }
+.recruit-cta-btns { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
+.recruit-cta-btn { display: inline-block; font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 3px; padding: 18px 40px; text-decoration: none; transition: background .3s, color .3s, border-color .3s; cursor: none; }
+.recruit-cta-btn.is-primary { background: #fff; color: #01ae84; border: 1px solid #fff; }
+.recruit-cta-btn.is-primary:hover { background: #212121; color: #fff; border-color: #212121; }
+.recruit-cta-btn.is-secondary { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.6); }
+.recruit-cta-btn.is-secondary:hover { background: #fff; color: #01ae84; border-color: #fff; }
+
+/* 注意事項 — 折りたたみ */
+.notes-block { max-width: 880px; margin: 0 auto; }
+.notes-item { border-bottom: 1px solid var(--border); }
+.notes-item summary { padding: 22px 0; font-family: 'Shippori Mincho B1', serif; font-size: 16px; font-weight: 700; letter-spacing: 1px; color: var(--ink); cursor: pointer; list-style: none; position: relative; padding-right: 36px; }
+.notes-item summary::-webkit-details-marker { display: none; }
+.notes-item summary::after { content: '＋'; position: absolute; right: 0; top: 22px; font-family: 'Cinzel', serif; font-size: 20px; color: var(--brand); transition: transform .3s; }
+.notes-item[open] summary::after { content: '−'; }
+.notes-item-body { padding: 0 0 22px; font-family: 'Shippori Mincho B1', serif; font-size: 14px; line-height: 1.9; letter-spacing: .5px; color: var(--mid); }
+.notes-item-body p { margin: 0 0 12px; }
+.notes-item-body p:last-child { margin-bottom: 0; }
+
+/* レスポンシブ */
+@media (max-width: 980px) {
+  .future-grid { grid-template-columns: 1fr; }
+  .tier-grid { grid-template-columns: 1fr; gap: 16px; }
+  .req-grid { grid-template-columns: 1fr; gap: 20px; }
+  .flow { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .flow-step:nth-child(2)::after, .flow-step:nth-child(4)::after { display: none; }
+}
+@media (max-width: 700px) {
+  .recruit-section { padding: 64px 20px; }
+  .recruit-section-title { font-size: 24px; margin-bottom: 40px; }
+  .recruit-hero-msg { font-size: 14px; line-height: 2; margin-top: 24px; }
+  .recruit-hero-msg strong { font-size: 18px; }
+  .future-card { padding: 32px 24px; }
+  .future-card-h { font-size: 18px; }
+  .tier-card { padding: 36px 24px; }
+  .tier-name { font-size: 22px; }
+  .req-block { padding: 28px 22px; }
+  .flow { grid-template-columns: 1fr; gap: 12px; }
+  .flow-step::after { display: none !important; }
+  .recruit-cta-big { padding: 56px 20px; }
+  .recruit-cta-big-h { font-size: 22px; }
+  .recruit-cta-btn { padding: 16px 28px; font-size: 13px; }
+  .spec-table th, .spec-table td { padding: 14px 12px; font-size: 13px; }
+  .spec-table th { width: 38%; }
+}
+
+
+/* 応募資格セクション：詳しい募集要項ボタン */
+.recruit-guidelines-btn { display: inline-block; font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--ink); background: transparent; border: 1px solid var(--ink); padding: 16px 36px; text-decoration: none; transition: background .3s, color .3s; cursor: none; }
+.recruit-guidelines-btn:hover { background: var(--ink); color: #fff; }
+
+
+.future-card-icon { display: block; width: 96px; height: 96px; object-fit: contain; margin: 0 auto 28px; }
+.future-apply-btn { display: inline-block; font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; color: #fff; background: #01ae84; border: 1px solid #01ae84; padding: 18px 48px; text-decoration: none; transition: background .3s, border-color .3s; cursor: none; }
+.future-apply-btn:hover { background: #018c6a; border-color: #018c6a; }
+@media(max-width:700px){
+  .future-card-icon { width: 80px; height: 80px; margin: 0 auto 22px; }
+  .future-apply-btn { padding: 16px 36px; font-size: 13px; }
+}
+
+</style>
+</head>
+<body>
+
+<div id="preloader">
+  <img class="preloader-logo" src="boa-11.png" alt="Loading">
+  <div class="preloader-text">LOADING</div>
+</div>
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<header id="hdr">
+  <button class="h-menu-btn" id="menuToggle" aria-label="Menu">
+    <span class="h-menu-icon"></span>
+    <span>MENU</span>
+  </button>
+  <a href="index.html" class="h-logo" aria-label="BANK OF ART">
+    <img class="logo-base" src="boa-07.png" alt="BANK OF ART">
+    <img class="logo-hover" src="boa-06.png" alt="">
+  </a>
+  <div class="h-actions">
+  </div>
+</header>
+
+<div class="h-drawer" id="drawer">
+  <div class="h-drawer-inner">
+    <a href="about.html"><span>ABOUT</span><span class="ja">バンクオブアートとは</span></a>
+    <a href="artist.html"><span>ARTIST</span><span class="ja">アーティスト一覧</span></a>
+    <a href="art.html"><span>ART</span><span class="ja">作品一覧</span></a>
+    <a href="collector.html"><span>COLLECTOR</span><span class="ja">画家応援企業</span></a>
+    <a href="https://bankof-art.com/?post_type=news" target="_blank"><span>NEWS</span><span class="ja">最新記事</span></a>
+    <a href="journal.html"><span>JOURNAL</span><span class="ja">読み物</span></a>
+  </div>
+</div>
+
+<!-- ════════ HERO ════════ -->
+<section class="page-hero">
+  <h1 class="page-hero-title rv">JOIN US</h1>
+  <p class="page-hero-ja rv d1">画家募集</p>
+  <div class="recruit-hero-msg rv d2">
+    <strong>描いて、生きていける世界へ。</strong>
+    その世界は、私たちだけではつくれません。<br>
+    描き続けるあなたの挑戦が必要です。<br>
+    Bank of Artは、創作に情熱を注ぐ画家を募集しています。
+  </div>
+</section>
+
+<!-- ════════ あなたの未来がどう変わる？ ════════ -->
+<section class="recruit-section">
+  <div class="recruit-section-eyebrow rv">Your Future</div>
+  <h2 class="recruit-section-title rv d1">この場所で、<br>あなたの「描く」はこう変わる。</h2>
+  <div class="future-grid">
+    <div class="future-card rv d2">
+      <img class="future-card-icon" src="BOAicon_join-06.png" alt="">
+      <div class="future-card-num">01</div>
+      <div class="future-card-h">描くことに、<br>もっと夢中になれる。</div>
+      <div class="future-card-body">委託販売モデルでは作品が売れるまで収入が入りません。BANK OF ARTは全作品買取制。次の制作にすぐ取りかかれる環境を、私たちが整えます。</div>
+    </div>
+    <div class="future-card rv d3">
+      <img class="future-card-icon" src="BOAicon-16.png" alt="">
+      <div class="future-card-num">02</div>
+      <div class="future-card-h">作品が、<br>社会を巡る。</div>
+      <div class="future-card-body">買い取った作品は応援企業のオフィスへ。リセールでまた別の企業へ。あなたの絵は、何年も何十年も、見られ続け、価値を蓄えていきます。</div>
+    </div>
+    <div class="future-card rv d4">
+      <img class="future-card-icon" src="BOAicon_join-04.png" alt="">
+      <div class="future-card-num">03</div>
+      <div class="future-card-h">登録画家から、<br>公認画家へ。</div>
+      <div class="future-card-body">まずは登録画家として活動を開始。継続的な制作と発信のなかで、BANK OF ARTの代表作家として迎え入れる「公認画家」契約への道も開かれています。</div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:60px;">
+    <a href="https://tally.so/r/MeMEV0" target="_blank" rel="noopener" class="future-apply-btn rv d5">応募フォームへ</a>
+  </div>
+</section>
+
+<!-- ════════ 登録画家 → 公認画家 ════════ -->
+<section class="recruit-section" style="background:var(--paper);max-width:none;">
+  <div style="max-width:1080px;margin:0 auto;">
+    <div class="recruit-section-eyebrow rv">Two Tiers</div>
+    <h2 class="recruit-section-title rv d1">2つの活動形態</h2>
+    <div class="tier-grid">
+      <div class="tier-card rv d2">
+        <div class="tier-label">Tier 01</div>
+        <div class="tier-name">BOA 登録画家</div>
+        <ul class="tier-list">
+          <li>契約形態：作品ごとの買取契約</li>
+          <li>並列のクリエイターとして関わる</li>
+          <li>公式サイト・作品流通網への掲載</li>
+          <li>本募集の応募窓口</li>
+        </ul>
+      </div>
+      <div class="tier-card is-pro rv d3">
+        <div class="tier-label">Tier 02</div>
+        <div class="tier-name">BOA 公認画家</div>
+        <ul class="tier-list">
+          <li>契約形態：BANK OF ARTとの専属契約</li>
+          <li>BANK OF ARTの代表作家として継続的に関わる</li>
+          <li>新作制作やキャリア形成を長期的に支援</li>
+          <li>BOAからのお声がけにより契約</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 選考フロー ════════ -->
+<section class="recruit-section">
+  <div class="recruit-section-eyebrow rv">Process</div>
+  <h2 class="recruit-section-title rv d1">選考フロー</h2>
+  <div class="flow">
+    <div class="flow-step rv d2">
+      <div class="flow-step-num">STEP 01</div>
+      <div class="flow-step-h">ご応募</div>
+      <div class="flow-step-body">オンライン応募フォームよりポートフォリオ（PDF/10MB以下）を提出。</div>
+    </div>
+    <div class="flow-step rv d3">
+      <div class="flow-step-num">STEP 02</div>
+      <div class="flow-step-h">書類審査</div>
+      <div class="flow-step-body">BANK OF ARTによる審査。応募から2〜4週間程度で結果をメールで通知。</div>
+    </div>
+    <div class="flow-step rv d4">
+      <div class="flow-step-num">STEP 03</div>
+      <div class="flow-step-h">面接</div>
+      <div class="flow-step-body">書類審査通過者のみ。オンラインまたは対面で30〜60分程度。</div>
+    </div>
+    <div class="flow-step rv d5">
+      <div class="flow-step-num">STEP 04</div>
+      <div class="flow-step-h">登録画家として開始</div>
+      <div class="flow-step-body">契約手続きを経てBOA登録画家として活動開始。専属契約の道も。</div>
+    </div>
+  </div>
+  <p style="text-align:center;margin-top:36px;font-family:'Shippori Mincho B1',serif;font-size:13px;letter-spacing:1px;color:var(--mid);">
+    通年で募集しています。書類審査の結果は合否を問わず必ずご連絡いたします。
+  </p>
+</section>
+
+<!-- ════════ 応募資格 ════════ -->
+<section class="recruit-section">
+  <div class="recruit-section-eyebrow rv">Requirements</div>
+  <h2 class="recruit-section-title rv d1">応募資格</h2>
+  <table class="spec-table rv d2">
+    <tr><th>年齢</th><td>応募時点で18歳以上39歳以下の方</td></tr>
+    <tr><th>所在</th><td>日本国内にて手続き、および作品の搬入搬出・発送受領が可能な方</td></tr>
+    <tr><th>制作意欲</th><td>継続して制作・発表を行う意志のある方</td></tr>
+    <tr><th>作品</th><td>1点ものの作品を主軸として制作される方</td></tr>
+    <tr><th>理念</th><td>BANK OF ARTの理念・運用方針にご賛同いただける方</td></tr>
+  </table>
+  <!-- WP化：募集要項PDFのURL -->
+  <div style="text-align:center;margin-top:40px;">
+    <a href="recruit-guidelines.pdf" target="_blank" rel="noopener" class="recruit-guidelines-btn rv d3">詳しい募集要項はこちら</a>
+  </div>
+</section>
+
+<!-- ════════ 大型CTA ════════ -->
+<section class="recruit-cta-big">
+  <h2 class="recruit-cta-big-h rv">あなたの作品を、<br>未来へつなぐ。</h2>
+  <p class="recruit-cta-big-sub rv d1">あなたの創作への情熱を見せてください。</p>
+  <div class="recruit-cta-btns rv d2">
+    <a href="https://tally.so/r/MeMEV0" target="_blank" rel="noopener" class="recruit-cta-btn is-primary">応募フォームへ</a>
+    <a href="artist.html" class="recruit-cta-btn is-secondary">先輩アーティストを見る</a>
+  </div>
+</section>
+
+<!-- ════════ 諸注意（折りたたみ） ════════ -->
+<section class="recruit-section">
+  <div class="recruit-section-eyebrow rv">Notes</div>
+  <h2 class="recruit-section-title rv d1">応募にあたっての注意事項</h2>
+  <div class="notes-block">
+    <details class="notes-item">
+      <summary>著作権・肖像権・作品の取り扱いについて</summary>
+      <div class="notes-item-body">
+        <p>応募作品および買取後の作品の著作権は、原則として作者（応募者）に帰属します。</p>
+        <p>買取後の作品について、BANK OF ARTは次の目的での使用権を有します：公式サイト・SNS・図録等での画像掲載、広報・宣伝活動における画像使用、法人・個人事業主への販売・貸出・リセール、展示会・各種イベントでの展示。</p>
+        <p>審査通過・登録・専属契約後の広報活動において、応募者の氏名・顔写真・経歴・インタビュー等を、サイト・SNS・印刷物・動画等で使用させていただく場合があります。詳細は契約時に書面で取り交わします。</p>
+      </div>
+    </details>
+    <details class="notes-item">
+      <summary>個人情報の取り扱いについて</summary>
+      <div class="notes-item-body">
+        <p>ご応募の過程で取得した個人情報は、審査・選考・面接調整・結果通知、登録画家・公認画家としての契約手続き・連絡、BANK OF ARTからの関連情報のお知らせにのみ使用します。</p>
+        <p>法令に基づく場合を除き、ご本人の同意なく第三者に提供することはありません。</p>
+      </div>
+    </details>
+    <details class="notes-item">
+      <summary>その他の諸注意</summary>
+      <div class="notes-item-body">
+        <p>提出いただいた応募書類・データは返却いたしません。</p>
+        <p>提出いただいた情報に虚偽が判明した場合、審査通過・登録・契約を取り消すことがあります。</p>
+        <p>不適切な内容・公序良俗に反する作品は審査の対象外とします。</p>
+        <p>応募に伴う通信費・データ作成費等は応募者のご負担となります。</p>
+        <p>本要項は予告なく内容を変更する場合があります。最新版はBANK OF ART公式サイトをご確認ください。</p>
+        <p>やむを得ない事情により、募集を中止または延期する場合があります。</p>
+      </div>
+    </details>
+    <details class="notes-item">
+      <summary>買取条件について</summary>
+      <div class="notes-item-body">
+        <p>買取条件（価格・点数等）については、面接時に直接ご説明いたします。本要項上には記載しておりません。</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+
+<footer>
+  <div class="footer-top">
+    <div class="foot-brand">
+      <div class="foot-logo"><img src="boa-07.png" alt="BANK OF ART"></div>
+      <p class="foot-tagline">絵描きの明日を創出する。<br>減価償却 × 画家応援</p>
+      <div class="foot-social">
+        <a href="https://www.facebook.com/bankofart2022/" class="soc-a" target="_blank" title="Facebook">F</a>
+        <a href="https://www.youtube.com/@bankofart2022" class="soc-a" target="_blank" title="YouTube">Y</a>
+        <a href="https://www.instagram.com/bankof_art2022/" class="soc-a" target="_blank" title="Instagram">I</a>
+        <a href="https://x.com/bankof_art" class="soc-a" target="_blank" title="X">X</a>
+      </div>
+    </div>
+    <div>
+      <div class="foot-col-t">NAVIGATION</div>
+      <ul class="foot-links">
+        <li><a href="about.html">バンクオブアートとは</a></li>
+        <li><a href="artist.html">アーティスト一覧</a></li>
+        <li><a href="art.html">作品</a></li>
+        <li><a href="collector.html">画家応援企業</a></li>
+        <li><a href="https://bankof-art.com/?post_type=news" target="_blank">最新記事</a></li>
+        <li><a href="journal.html">読み物</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-t">CONTACT</div>
+      <ul class="foot-links">
+        <li><a href="https://business.form-mailer.jp/fms/1c6a81d4280183" target="_blank">資料ダウンロード</a></li>
+        <li><a href="https://booking.receptionist.jp/5ade6c6d-ae6c-44d9-9921-000ad24af9f9/30min" target="_blank">オンライン説明会</a></li>
+        <li><a href="#contact">お問い合わせ</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-t">For Artists</div>
+      <ul class="foot-links">
+        <li><a href="recruit.html">画家募集</a></li>
+        <li><a href="https://tally.so/r/MeMEV0" target="_blank">応募フォーム</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <a href="#" class="foot-privacy">Privacy Policy</a>
+    <span class="foot-copy">© BANK OF ART, INC.</span>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('load',()=>{const pl=document.getElementById('preloader');if(!pl)return;setTimeout(()=>pl.classList.add('hidden'),800);});
+setTimeout(()=>{const pl=document.getElementById('preloader');if(pl)pl.classList.add('hidden');},5000);
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+const hdr=document.getElementById('hdr');
+window.addEventListener('scroll',()=>hdr.classList.toggle('scrolled',scrollY>30));
+(function(){const dd=document.getElementById('contactDropdown'),btn=document.getElementById('contactToggle');if(!dd||!btn)return;
+btn.addEventListener('click',e=>{e.stopPropagation();dd.classList.toggle('open');btn.setAttribute('aria-expanded',dd.classList.contains('open'));});
+document.addEventListener('click',e=>{if(!dd.contains(e.target)){dd.classList.remove('open');btn.setAttribute('aria-expanded','false');}});
+dd.querySelectorAll('.contact-menu-item').forEach(a=>a.addEventListener('click',()=>{dd.classList.remove('open');btn.setAttribute('aria-expanded','false');}));})();
+(function(){const btn=document.getElementById('menuToggle'),drawer=document.getElementById('drawer');if(!btn||!drawer)return;
+btn.addEventListener('click',e=>{e.stopPropagation();drawer.classList.toggle('open');});
+drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>drawer.classList.remove('open')));
+document.addEventListener('click',e=>{if(!drawer.contains(e.target)&&!btn.contains(e.target))drawer.classList.remove('open');});})();
+(function(){const tags=document.querySelectorAll('.filter-tag');tags.forEach(t=>t.addEventListener('click',()=>{tags.forEach(x=>x.classList.remove('is-active'));t.classList.add('is-active');}));})();
+const els=document.querySelectorAll('.rv');
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');else e.target.classList.remove('on');});},{threshold:.1,rootMargin:'0px 0px -50px 0px'});
+els.forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

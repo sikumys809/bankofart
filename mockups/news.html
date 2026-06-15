@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEWS — BANK OF ART</title>
+<meta name="description" content="バンク・オブ・アートの最新ニュース。プレスリリース・メディア掲載情報。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600;700&family=Shippori+Mincho+B1:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--fs-head:40px;--fs-body:18px;--brand:#01ae84;--brand-deep:#018c6a;--header-bg:#01ae84;--ink:#212121;--paper:#f5f0ea;--dark:#212121;--mid:#6e6862;--warm-gray:#e8e3da;--border:rgba(33,33,33,.18);--border-soft:rgba(33,33,33,.08);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+*{font-style:normal;}
+html{scroll-behavior:smooth;overflow-x:hidden;max-width:100%;}
+body{font-family:'Shippori Mincho B1',serif;font-weight:500;font-size:var(--fs-body);line-height:1.95;color:var(--ink);background:var(--paper);overflow-x:hidden;-webkit-font-feature-settings:"palt","kern";font-feature-settings:"palt","kern";word-break:normal;line-break:strict;overflow-wrap:anywhere;hanging-punctuation:allow-end;}
+body:not(.admin-bar){cursor:none;}
+img{max-width:100%;height:auto;display:block;}
+a{color:inherit;text-decoration:none;}
+button{background:none;border:none;font:inherit;color:inherit;cursor:inherit;}
+.boa-num{font-family:'Shippori Mincho B1',serif;font-weight:500;}
+.br-pc{display:inline;}
+@media(max-width:700px){.br-pc{display:none;}}
+#cur{width:8px;height:8px;background:var(--brand);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;}
+#cur-r{width:40px;height:40px;border:1px solid var(--brand);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s;opacity:.6;}
+body:has(a:hover) #cur,body:has(button:hover) #cur{width:18px;height:18px;}
+body:has(a:hover) #cur-r,body:has(button:hover) #cur-r{width:60px;height:60px;}
+@media(hover:none){#cur,#cur-r{display:none;}}
+/* ════════ HEADER（ABOUT準拠） ════════ */
+header {
+  position: fixed; top:0; left:0; right:0; z-index:1000;
+  height: 92px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 40px;
+  background: var(--header-bg);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  transition: box-shadow .3s ease;
+}
+header.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.25); }
+.h-menu-btn {
+  justify-self: start;
+  background: transparent; border: none;
+  color: rgba(255,255,255,.9);
+  cursor: none;
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'Cinzel', serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 8px 0; transition: color .25s;
+}
+.h-menu-btn:hover { color: var(--ink); }
+.h-menu-icon { width: 22px; height: 12px; position: relative; display: inline-block; }
+.h-menu-icon::before, .h-menu-icon::after {
+  content:''; position: absolute; left: 0;
+  width: 100%; height: 1px; background: currentColor;
+  transition: transform .3s ease;
+}
+.h-menu-icon::before { top: 2px; }
+.h-menu-icon::after  { bottom: 2px; }
+
+.h-logo {
+  justify-self: center;
+  display: flex; align-items: center;
+  height: 100%; padding: 18px 0;
+  text-decoration: none; position: relative;
+}
+.h-logo .logo-base, .h-logo .logo-hover {
+  height: 56px; width: auto; display: block;
+  transition: opacity .35s ease, transform .5s ease;
+}
+.h-logo .logo-hover {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(.92); opacity: 0;
+}
+.h-logo:hover .logo-base { opacity: 0; transform: scale(1.04); }
+.h-logo:hover .logo-hover { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+.h-actions { justify-self: end; display: flex; }
+.btn-contact {
+  font-family: 'Cinzel', serif;
+  font-size: 13px; font-weight: 500; letter-spacing: 3px;
+  color: #fff; background: transparent;
+  border: 1px solid rgba(255,255,255,.4);
+  padding: 11px 28px; text-decoration: none;
+  text-transform: uppercase; transition: all .25s;
+  cursor: none; display: inline-block;
+}
+.btn-contact:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+.contact-dropdown { position: relative; display: inline-block; }
+.contact-menu {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  min-width: 240px; background: var(--paper);
+  border: 1px solid rgba(33,33,33,.08);
+  box-shadow: 0 14px 36px rgba(0,0,0,.12);
+  opacity: 0; visibility: hidden; transform: translateY(-6px);
+  transition: opacity .25s ease, transform .25s ease, visibility .25s;
+  z-index: 1001;
+}
+.contact-dropdown.open .contact-menu {
+  opacity: 1; visibility: visible; transform: translateY(0);
+}
+.contact-menu-item {
+  display: block;
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body); font-weight: 700; letter-spacing: 2px;
+  color: var(--ink); text-decoration: none;
+  padding: 16px 22px;
+  border-bottom: 1px solid rgba(33,33,33,.06);
+  transition: background .2s, color .2s, padding-left .25s;
+}
+.contact-menu-item:last-child { border-bottom: none; }
+.contact-menu-item:hover {
+  background: rgba(1,174,132,.08); color: var(--brand); padding-left: 28px;
+}
+
+.h-drawer {
+  position: fixed; top: 92px; left: 0; right: 0;
+  background: var(--header-bg);
+  z-index: 999;
+  max-height: 0; overflow: hidden;
+  transition: max-height .5s cubic-bezier(.4,0,.2,1);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.h-drawer.open { max-height: 700px; }
+.h-drawer-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: 36px 40px 48px;
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 12px 60px;
+}
+.h-drawer a {
+  font-family: 'Cormorant SC', serif;
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 500; letter-spacing: 3px;
+  color: rgba(255,255,255,.85);
+  text-decoration: none; padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  transition: color .25s, padding .25s;
+  display: block; text-transform: uppercase;
+}
+.h-drawer a:hover { color: var(--ink); padding-left: 12px; }
+.h-drawer a .ja {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body); font-weight: 500; letter-spacing: 3px;
+  color: rgba(255,255,255,.4);
+  display: block; margin-top: 4px; text-transform: none;
+}
+
+/* ── PRELOADER ── */
+@keyframes logoSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+#preloader {
+  position: fixed; inset: 0;
+  background: var(--paper); z-index: 99999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 28px;
+  transition: opacity .8s ease, visibility .8s ease;
+}
+#preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.preloader-logo {
+  width: clamp(90px, 10vw, 130px); height: auto;
+  animation: logoSpin 6s linear infinite;
+}
+.preloader-text {
+  font-family: 'Cinzel', serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 3px; color: var(--mid);
+}
+
+/* ════════ CTA（ABOUT準拠） ════════ */
+.cta-strip {
+  padding: 80px 56px;
+  background: #4a4a4a;
+  color: #fff;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.cta-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  position: relative; z-index: 1;
+  max-width: 1100px;
+  width: 100%;
+}
+.cta-title {
+  font-family: 'Cormorant SC', serif;
+  font-size:var(--fs-head);
+  font-weight: 400;
+  letter-spacing: 3px;
+  color: #fff;
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: left;
+}
+.cta-btns { display: flex; gap: 14px; flex-shrink: 0; }
+.btn-cta-w {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #fff;
+  background: var(--brand);
+  padding: 18px 32px;
+  text-decoration: none;
+  transition: all .25s;
+  display: block;
+  border: 1px solid var(--brand);
+}
+.btn-cta-w:hover {
+  background: var(--brand-deep);
+  border-color: var(--brand-deep);
+  transform: translateY(-2px);
+}
+.btn-cta-o {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.5);
+  padding: 18px 32px;
+  text-decoration: none;
+  transition: all .25s;
+  display: block;
+}
+.btn-cta-o:hover {
+  background: #fff;
+  color: #4a4a4a;
+  border-color: #fff;
+}
+
+/* ════════ FOOTER（ABOUT準拠） ════════ */
+footer {
+  background: var(--dark);
+  padding: 72px 0 0;
+  border-top: 1px solid rgba(245,240,234,.08);
+}
+.footer-top {
+  max-width:1320px; margin:0 auto; padding:0 56px;
+  display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; gap:50px;
+  padding-bottom:60px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.foot-logo img { height: 32px; width: auto; }
+.foot-tagline {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: .22em;
+  color: rgba(255,255,255,.4);
+  margin-top: 18px;
+  line-height: 2.2;
+}
+.foot-social { display:flex; gap:10px; margin-top:24px; }
+.soc-a {
+  width:38px; height:38px;
+  border:1px solid rgba(255,255,255,.12);
+  display:flex; align-items:center; justify-content:center;
+  text-decoration:none; color:rgba(255,255,255,.45);
+  font-family: 'Cormorant SC', serif;
+  font-size:13px; font-weight:500; font-style: normal;
+  transition:all .25s;
+}
+.soc-a:hover { border-color:var(--brand); color:var(--brand); }
+.foot-col-t {
+  font-family: 'Cinzel', serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--brand);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.foot-links { list-style:none; display:flex; flex-direction:column; gap:12px; }
+.foot-links li a {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: .1em;
+  color: rgba(255,255,255,.5);
+  text-decoration: none;
+  transition: color .2s;
+  line-height: 1.6;
+}
+.foot-links li a:hover { color:#fff; }
+.footer-bottom {
+  max-width:1320px; margin:0 auto; padding:0 56px;
+  height:60px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.foot-copy {
+  font-family: 'Cormorant SC', serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: .15em;
+  color: rgba(255,255,255,.3);
+  font-style: normal;
+}
+.foot-privacy {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,.3);
+  text-decoration: none;
+  transition: color .2s;
+}
+.foot-privacy:hover { color:rgba(255,255,255,.6); }
+
+/* ════════ MATCHING バナー（横長・広告型） ════════ */
+.match-banner-sec {
+  padding: 90px 40px;
+  background: var(--paper);
+}
+.match-banner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 48px;
+  padding: 56px 64px;
+  position: relative;
+  overflow: hidden;
+}
+.match-banner-label {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 7px 16px;
+  margin-bottom: 20px;
+}
+.match-banner-title {
+  font-family: 'Cormorant SC', serif;
+  font-weight: 400;
+  letter-spacing: 3px;
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+.match-banner-sub {
+  font-family: 'Shippori Mincho B1', serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.match-banner-body {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 500;
+  letter-spacing: 1px;
+  line-height: 1.9;
+}
+.match-banner-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.match-banner-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 20px 44px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  white-space: nowrap;
+  transition: all .3s;
+}
+.match-banner-btn::after {
+  content: '';
+  width: 8px; height: 8px;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  transform: rotate(45deg);
+}
+.match-banner-meta {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+@media (max-width: 820px) {
+  .match-banner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 44px 32px;
+    text-align: center;
+  }
+  .match-banner-right { align-items: center; }
+}
+
+/* PAGE HERO */
+.page-hero{padding:184px 40px 84px;background:var(--paper);text-align:center;}
+.page-hero-title{font-family:'Cormorant SC',serif;font-size:96px;font-weight:400;letter-spacing:3px;line-height:1;color:var(--ink);margin-bottom:16px;}
+@media(max-width:700px){.page-hero-title{font-size:60px;}}
+.page-hero-ja{font-family:'Cinzel',serif;font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--brand);margin-bottom:40px;}
+.page-statement{max-width:680px;margin:0 auto;font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);line-height:2.1;color:var(--mid);letter-spacing:1px;}
+
+/* FILTER */
+.filter-section{background:var(--paper);padding:40px 40px 24px;border-top:1px solid var(--border-soft);}
+.filter-inner{max-width:1100px;margin:0 auto;display:flex;align-items:baseline;gap:32px;flex-wrap:wrap;justify-content:flex-start;}
+.filter-label{font-family:'Cinzel',serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--brand);flex-shrink:0;}
+.filter-tags{display:flex;gap:8px 28px;flex-wrap:wrap;justify-content:flex-start;}
+.filter-tag{font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);letter-spacing:1px;color:var(--mid);padding:8px 0;position:relative;transition:color .25s;}
+.filter-tag.en{font-family:'Cinzel',serif;letter-spacing:3px;font-size:14px;}
+.filter-tag::after{content:'';position:absolute;bottom:4px;left:0;width:0;height:1px;background:var(--brand);transition:width .3s ease;}
+.filter-tag:hover{color:var(--ink);}
+.filter-tag.is-active{color:var(--ink);}
+.filter-tag.is-active::after{width:100%;}
+.filter-count{font-family:'Cinzel',serif;font-size:14px;letter-spacing:3px;color:var(--brand);flex-shrink:0;}
+.filter-count .boa-num{color:var(--brand);margin-right:4px;}
+
+/* NEWS LIST */
+.news-section{padding:56px 40px 110px;background:var(--paper);}
+.news-list{max-width:1000px;margin:0 auto;}
+.news-item{display:grid;grid-template-columns:200px 1fr auto;gap:40px;align-items:center;padding:36px 8px;border-bottom:1px solid var(--border-soft);transition:background .25s,padding .25s;}
+.news-item:first-child{border-top:1px solid var(--border-soft);}
+.news-item:hover{background:rgba(1,174,132,.04);padding-left:20px;padding-right:20px;}
+@media(max-width:760px){.news-item{grid-template-columns:1fr;gap:14px;padding:28px 8px;}.news-item:hover{padding-left:8px;padding-right:8px;}}
+.news-thumb{width:200px;height:130px;background:var(--warm-gray);overflow:hidden;position:relative;}
+@media(max-width:760px){.news-thumb{width:100%;height:180px;}}
+.news-thumb-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cormorant SC',serif;font-size:28px;letter-spacing:2px;color:rgba(33,33,33,.2);background-size:cover;background-position:center;transition:transform .8s cubic-bezier(.2,.7,.2,1);}
+.news-item:hover .news-thumb-inner{transform:scale(1.05);}
+.news-body{}
+.news-meta{display:flex;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap;}
+.news-date{font-family:'Cinzel',serif;font-size:14px;letter-spacing:2px;color:var(--mid);}
+.news-cat{font-family:'Shippori Mincho B1',serif;font-size:14px;font-weight:700;letter-spacing:1px;color:#fff;background:var(--brand);padding:4px 12px;}
+.news-cat.media{background:var(--ink);}
+.news-title{font-family:'Shippori Mincho B1',serif;font-size:22px;font-weight:700;letter-spacing:1px;line-height:1.6;color:var(--ink);transition:color .25s;}
+.news-item:hover .news-title{color:var(--brand);}
+.news-source{font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);letter-spacing:1px;color:var(--mid);margin-top:8px;}
+.news-arrow{width:44px;height:44px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .25s;}
+@media(max-width:760px){.news-arrow{display:none;}}
+.news-item:hover .news-arrow{background:var(--brand);border-color:var(--brand);}
+.news-arrow::after{content:'';width:9px;height:9px;border-top:1px solid var(--ink);border-right:1px solid var(--ink);transform:rotate(45deg);margin-left:-3px;transition:border-color .25s;}
+.news-item:hover .news-arrow::after{border-color:#fff;}
+
+/* PAGINATION */
+.pagination{max-width:1000px;margin:64px auto 0;padding-top:48px;border-top:1px solid var(--border-soft);display:flex;justify-content:center;align-items:center;gap:8px;font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);}
+.pagination button{padding:10px 18px;color:var(--mid);transition:color .2s;letter-spacing:1px;}
+.pagination button:hover{color:var(--ink);}
+.pagination button.is-active{color:var(--brand);border-bottom:1px solid var(--brand);}
+.pagination .nav-btn{font-family:'Cinzel',serif;letter-spacing:3px;font-size:14px;}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(30px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1);}
+.rv.on{opacity:1;transform:translateY(0);}
+.rv.d1{transition-delay:.06s;}
+.rv.d2{transition-delay:.12s;}
+.rv.d3{transition-delay:.18s;}
+.rv.d4{transition-delay:.24s;}
+
+/* ════════ スマホ対応：ヘッダー・CTA・フッター（INDEX準拠で統一） ════════ */
+.btn-contact { white-space: nowrap; }
+@media (max-width: 1024px) {
+  header { padding: 0 24px; }
+  .cta-strip { padding: 48px 32px; }
+  .cta-inner { flex-direction: column; gap: 24px; }
+}
+@media (max-width: 700px) {
+  /* 本文サイズをスマホで15pxに */
+  :root { --fs-body: 15px; --fs-head: 24px; }
+  body { line-height: 1.75; }
+  /* スマホ：本文の行間を詰める */
+  .match-banner-body, .page-statement { line-height: 1.7; }
+  /* HEADER */
+  header { padding: 0 18px; }
+  .h-menu-btn span:not(.h-menu-icon) { display: none; }
+  .h-drawer-inner { grid-template-columns: 1fr; padding: 28px 24px 36px; gap: 6px; }
+  .h-logo .logo-base, .h-logo .logo-hover { height: 32px; }
+  .btn-contact { padding: 10px 18px; letter-spacing: 2px; white-space: nowrap; }
+  /* CTA */
+  .cta-strip { padding: 48px 32px; }
+  .cta-inner { flex-direction: column; gap: 24px; text-align: center; }
+  .cta-title { text-align: center; }
+  .cta-btns { flex-direction: column; width: 100%; }
+  .btn-cta-w, .btn-cta-o { text-align: center; width: 100%; }
+  /* FOOTER */
+  .footer-top { grid-template-columns: 1fr; gap: 32px; padding: 0 24px 60px; }
+  .footer-bottom { flex-direction: column; gap: 12px; height: auto; padding: 20px 24px; }
+  /* 375px基準 — はみ出し防止 */
+  .page-hero { padding: 132px 20px 64px; }
+  .page-hero-title { font-size: 46px; }
+  .filter-section { padding: 36px 20px 20px; }
+  .news-section { padding: 48px 20px 90px; }
+  .match-banner-sec { padding: 64px 20px; }
+  section { max-width: 100%; overflow-x: hidden; }
+}
+
+
+
+@media (max-width: 430px) {
+  .page-hero { padding: 120px 16px 56px !important; }
+  .page-hero-title { font-size: 40px !important; }
+  .filter-section { padding: 32px 16px 18px !important; }
+  .news-section { padding: 40px 16px 80px !important; }
+  .match-banner-sec { padding: 56px 16px !important; }
+  .contact-menu { min-width: 200px !important; }
+  *, *::before, *::after { max-width: 100% !important; min-width: 0 !important; box-sizing: border-box !important; }
+  img { height: auto; }
+  html, body { overflow-x: hidden !important; width: 100% !important; max-width: 100% !important; }
+  header, section, footer, .cta-strip, main, div { max-width: 100vw; }
+}
+</style>
+</head>
+<body>
+
+<div id="preloader">
+  <img class="preloader-logo" src="boa-11.png" alt="Loading">
+  <div class="preloader-text">LOADING</div>
+</div>
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<header id="hdr">
+  <button class="h-menu-btn" id="menuToggle" aria-label="Menu">
+    <span class="h-menu-icon"></span>
+    <span>MENU</span>
+  </button>
+  <a href="index.html" class="h-logo" aria-label="BANK OF ART">
+    <img class="logo-base" src="boa-07.png" alt="BANK OF ART">
+    <img class="logo-hover" src="boa-06.png" alt="">
+  </a>
+  <div class="h-actions">
+    <div class="contact-dropdown" id="contactDropdown">
+      <button class="btn-contact" id="contactToggle" aria-haspopup="true" aria-expanded="false">CONTACT</button>
+      <div class="contact-menu">
+        <a href="https://business.form-mailer.jp/fms/1c6a81d4280183" target="_blank" class="contact-menu-item">資料請求</a>
+        <a href="https://booking.receptionist.jp/5ade6c6d-ae6c-44d9-9921-000ad24af9f9/30min" target="_blank" class="contact-menu-item">オンライン説明会</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="h-drawer" id="drawer">
+  <div class="h-drawer-inner">
+    <a href="about.html"><span>ABOUT</span><span class="ja">バンクオブアートとは</span></a>
+    <a href="artist.html"><span>ARTIST</span><span class="ja">アーティスト一覧</span></a>
+    <a href="art.html"><span>ART</span><span class="ja">作品一覧</span></a>
+    <a href="collector.html"><span>COLLECTOR</span><span class="ja">画家応援企業</span></a>
+    <a href="news.html"><span>NEWS</span><span class="ja">最新記事</span></a>
+    <a href="journal.html"><span>JOURNAL</span><span class="ja">読み物</span></a>
+  </div>
+</div>
+
+<section class="page-hero">
+  <h1 class="page-hero-title rv">NEWS</h1>
+  <p class="page-hero-ja rv d1">最新記事</p>
+  <div class="page-statement rv d2">
+    <p>バンク・オブ・アートの最新情報をお届けします。</p>
+  </div>
+</section>
+
+<section class="filter-section">
+  <div class="filter-inner">
+    <span class="filter-label">Filter</span>
+    <div class="filter-tags">
+      <button class="filter-tag en is-active">ALL</button>
+      <button class="filter-tag">受賞</button>
+      <button class="filter-tag">展示</button>
+      <button class="filter-tag">メディア掲載</button>
+      <button class="filter-tag">お知らせ</button>
+    </div>
+    <span class="filter-count"><span class="boa-num">3</span>ARTICLES</span>
+  </div>
+</section>
+
+<!--
+  ════════ WP化サンプル ════════
+  archive-news.php の原型。news 投稿タイプの ACF：
+  - news_category（press / media）, publish_date, source_name（媒体名）
+  - external_url（外部記事URL）, アイキャッチ画像
+  ループ:
+  <?php
+  $news = new WP_Query(['post_type'=>'news','posts_per_page'=>10,'orderby'=>'meta_value','meta_key'=>'publish_date','order'=>'DESC']);
+  while ($news->have_posts()) : $news->the_post();
+    $cat = get_field('news_category'); $url = get_field('external_url');
+  ?>
+    <a href="<?php echo $url ?: get_permalink(); ?>" class="news-item"> ... </a>
+  <?php endwhile; wp_reset_postdata(); ?>
+-->
+<section class="news-section">
+  <div class="news-list">
+
+    <a href="https://food-stadium.com/special/38188/" target="_blank" class="news-item rv">
+      <div class="news-thumb">
+        <span class="news-thumb-inner" style="background:linear-gradient(135deg,#2a2a2a 0%,#01ae84 100%);color:#f5f0ea;">MEDIA</span>
+      </div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-date">2025.10.22</span>
+          <span class="news-cat media">メディア掲載</span>
+        </div>
+        <h2 class="news-title">店内装飾のアートを会社の資産に！アーティスト応援型節税「バンクオブアート」の取り組みとは？</h2>
+        <p class="news-source">フードスタジアム「繁盛店ネタ箱」に、CEO岡田美波・共同創業者水野永吉のインタビューが掲載されました。</p>
+      </div>
+      <span class="news-arrow"></span>
+    </a>
+
+    <a href="https://prtimes.jp/main/html/rd/p/000000023.000020567.html" target="_blank" class="news-item rv d1">
+      <div class="news-thumb">
+        <span class="news-thumb-inner" style="background:linear-gradient(135deg,#0a0a0a 0%,#444 100%);color:#01ae84;">PRESS</span>
+      </div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-date">2025.04.23</span>
+          <span class="news-cat">プレスリリース</span>
+        </div>
+        <h2 class="news-title">CHOB-ONEが次世代のBanksyへ｜バンクオブアート公認画家が快挙達成</h2>
+        <p class="news-source">公認アーティストCHOB-ONEの活躍を伝えるプレスリリースをPR TIMESにて配信しました。</p>
+      </div>
+      <span class="news-arrow"></span>
+    </a>
+
+    <a href="https://r25.jp/companies/sikumys/interview/885109146221805569" target="_blank" class="news-item rv d2">
+      <div class="news-thumb">
+        <span class="news-thumb-inner" style="background:linear-gradient(135deg,#3a2a1a 0%,#d8b88a 100%);color:#f5f0ea;">MEDIA</span>
+      </div>
+      <div class="news-body">
+        <div class="news-meta">
+          <span class="news-date">2024.02.16</span>
+          <span class="news-cat media">メディア掲載</span>
+        </div>
+        <h2 class="news-title">職場や店舗に絵を飾って"節税対策"!? 法人向けアート事業「BANK of ART」が日本の美術工芸を救う</h2>
+        <p class="news-source">新R25にて、代表・水野永吉のインタビュー記事が掲載されました。</p>
+      </div>
+      <span class="news-arrow"></span>
+    </a>
+
+  </div>
+
+  <div class="pagination">
+    <button class="nav-btn">PREV</button>
+    <button class="is-active boa-num">1</button>
+    <button class="nav-btn">NEXT</button>
+  </div>
+</section>
+
+<div class="cta-strip" id="contact">
+  <div class="cta-inner">
+    <h2 class="cta-title rv">CONTACT</h2>
+    <div class="cta-btns rv d1">
+      <a href="https://business.form-mailer.jp/fms/1c6a81d4280183" class="btn-cta-w" target="_blank">資料請求</a>
+      <a href="https://booking.receptionist.jp/5ade6c6d-ae6c-44d9-9921-000ad24af9f9/30min" class="btn-cta-o" target="_blank">説明会を予約</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div class="foot-brand">
+      <div class="foot-logo"><img src="boa-07.png" alt="BANK OF ART"></div>
+      <p class="foot-tagline">絵描きの明日を創出する。<br>減価償却 × 画家応援</p>
+      <div class="foot-social">
+        <a href="https://www.facebook.com/bankofart2022/" class="soc-a" target="_blank" title="Facebook">F</a>
+        <a href="https://www.youtube.com/@bankofart2022" class="soc-a" target="_blank" title="YouTube">Y</a>
+        <a href="https://www.instagram.com/bankof_art2022/" class="soc-a" target="_blank" title="Instagram">I</a>
+        <a href="https://x.com/bankof_art" class="soc-a" target="_blank" title="X">X</a>
+      </div>
+    </div>
+    <div>
+      <div class="foot-col-t">NAVIGATION</div>
+      <ul class="foot-links">
+        <li><a href="about.html">バンクオブアートとは</a></li>
+        <li><a href="artist.html">アーティスト一覧</a></li>
+        <li><a href="art.html">作品</a></li>
+        <li><a href="collector.html">画家応援企業</a></li>
+        <li><a href="news.html">最新記事</a></li>
+        <li><a href="journal.html">読み物</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-t">CONTACT</div>
+      <ul class="foot-links">
+        <li><a href="https://business.form-mailer.jp/fms/1c6a81d4280183" target="_blank">資料ダウンロード</a></li>
+        <li><a href="https://booking.receptionist.jp/5ade6c6d-ae6c-44d9-9921-000ad24af9f9/30min" target="_blank">オンライン説明会</a></li>
+        <li><a href="#contact">お問い合わせ</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-t">For Artists</div>
+      <ul class="foot-links">
+        <li><a href="recruit.html">画家募集</a></li>
+        <li><a href="https://tally.so/r/MeMEV0" target="_blank">応募フォーム</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <a href="#" class="foot-privacy">Privacy Policy</a>
+    <span class="foot-copy">© BANK OF ART, INC.</span>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('load',()=>{const pl=document.getElementById('preloader');if(!pl)return;setTimeout(()=>pl.classList.add('hidden'),800);});
+setTimeout(()=>{const pl=document.getElementById('preloader');if(pl)pl.classList.add('hidden');},5000);
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+const hdr=document.getElementById('hdr');
+window.addEventListener('scroll',()=>hdr.classList.toggle('scrolled',scrollY>30));
+(function(){const dd=document.getElementById('contactDropdown'),btn=document.getElementById('contactToggle');if(!dd||!btn)return;
+btn.addEventListener('click',e=>{e.stopPropagation();dd.classList.toggle('open');btn.setAttribute('aria-expanded',dd.classList.contains('open'));});
+document.addEventListener('click',e=>{if(!dd.contains(e.target)){dd.classList.remove('open');btn.setAttribute('aria-expanded','false');}});
+dd.querySelectorAll('.contact-menu-item').forEach(a=>a.addEventListener('click',()=>{dd.classList.remove('open');btn.setAttribute('aria-expanded','false');}));})();
+(function(){const btn=document.getElementById('menuToggle'),drawer=document.getElementById('drawer');if(!btn||!drawer)return;
+btn.addEventListener('click',e=>{e.stopPropagation();drawer.classList.toggle('open');});
+drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>drawer.classList.remove('open')));
+document.addEventListener('click',e=>{if(!drawer.contains(e.target)&&!btn.contains(e.target))drawer.classList.remove('open');});})();
+(function(){const tags=document.querySelectorAll('.filter-tag');tags.forEach(t=>t.addEventListener('click',()=>{tags.forEach(x=>x.classList.remove('is-active'));t.classList.add('is-active');}));})();
+const els=document.querySelectorAll('.rv');
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');else e.target.classList.remove('on');});},{threshold:.1,rootMargin:'0px 0px -50px 0px'});
+els.forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

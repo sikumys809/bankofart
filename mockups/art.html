@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ART — BANK OF ART</title>
+<meta name="description" content="バンク・オブ・アート公認作品一覧。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600;700&family=Shippori+Mincho+B1:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--fs-head:40px;--fs-body:18px;--brand:#01ae84;--brand-deep:#018c6a;--header-bg:#01ae84;--ink:#212121;--paper:#f5f0ea;--dark:#212121;--mid:#6e6862;--warm-gray:#e8e3da;--border:rgba(33,33,33,.18);--border-soft:rgba(33,33,33,.08);--gold:#b8956a;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+*{font-style:normal;}
+html{scroll-behavior:smooth;overflow-x:hidden;max-width:100%;}
+body{font-family:'Shippori Mincho B1',serif;font-weight:500;font-size:var(--fs-body);line-height:1.95;color:var(--ink);background:var(--paper);overflow-x:hidden;-webkit-font-feature-settings:"palt","kern";font-feature-settings:"palt","kern";word-break:normal;line-break:strict;overflow-wrap:anywhere;hanging-punctuation:allow-end;}
+body:not(.admin-bar){cursor:none;}
+img{max-width:100%;height:auto;display:block;}
+a{color:inherit;text-decoration:none;}
+button{background:none;border:none;font:inherit;color:inherit;cursor:inherit;}
+.boa-num{font-family:'Shippori Mincho B1',serif;font-weight:500;}
+.br-pc{display:inline;}
+@media(max-width:700px){.br-pc{display:none;}}
+#cur{width:8px;height:8px;background:var(--brand);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;}
+#cur-r{width:40px;height:40px;border:1px solid var(--brand);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s;opacity:.6;}
+body:has(a:hover) #cur,body:has(button:hover) #cur{width:18px;height:18px;}
+body:has(a:hover) #cur-r,body:has(button:hover) #cur-r{width:60px;height:60px;}
+@media(hover:none){#cur,#cur-r{display:none;}}
+/* ════════ HEADER（ABOUT準拠） ════════ */
+header {
+  position: fixed; top:0; left:0; right:0; z-index:1000;
+  height: 92px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 40px;
+  background: var(--header-bg);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  transition: box-shadow .3s ease;
+}
+header.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.25); }
+.h-menu-btn {
+  justify-self: start;
+  background: transparent; border: none;
+  color: rgba(255,255,255,.9);
+  cursor: none;
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'Cinzel', serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 8px 0; transition: color .25s;
+}
+.h-menu-btn:hover { color: var(--ink); }
+.h-menu-icon { width: 22px; height: 12px; position: relative; display: inline-block; }
+.h-menu-icon::before, .h-menu-icon::after {
+  content:''; position: absolute; left: 0;
+  width: 100%; height: 1px; background: currentColor;
+  transition: transform .3s ease;
+}
+.h-menu-icon::before { top: 2px; }
+.h-menu-icon::after  { bottom: 2px; }
+
+.h-logo {
+  justify-self: center;
+  display: flex; align-items: center;
+  height: 100%; padding: 18px 0;
+  text-decoration: none; position: relative;
+}
+.h-logo .logo-base, .h-logo .logo-hover {
+  height: 56px; width: auto; display: block;
+  transition: opacity .35s ease, transform .5s ease;
+}
+.h-logo .logo-hover {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(.92); opacity: 0;
+}
+.h-logo:hover .logo-base { opacity: 0; transform: scale(1.04); }
+.h-logo:hover .logo-hover { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+.h-actions { justify-self: end; display: flex; }
+.btn-contact {
+  font-family: 'Cinzel', serif;
+  font-size: 13px; font-weight: 500; letter-spacing: 3px;
+  color: #fff; background: transparent;
+  border: 1px solid rgba(255,255,255,.4);
+  padding: 11px 28px; text-decoration: none;
+  text-transform: uppercase; transition: all .25s;
+  cursor: none; display: inline-block;
+}
+.btn-contact:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+.contact-dropdown { position: relative; display: inline-block; }
+.contact-menu {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  min-width: 240px; background: var(--paper);
+  border: 1px solid rgba(33,33,33,.08);
+  box-shadow: 0 14px 36px rgba(0,0,0,.12);
+  opacity: 0; visibility: hidden; transform: translateY(-6px);
+  transition: opacity .25s ease, transform .25s ease, visibility .25s;
+  z-index: 1001;
+}
+.contact-dropdown.open .contact-menu {
+  opacity: 1; visibility: visible; transform: translateY(0);
+}
+.contact-menu-item {
+  display: block;
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body); font-weight: 700; letter-spacing: 2px;
+  color: var(--ink); text-decoration: none;
+  padding: 16px 22px;
+  border-bottom: 1px solid rgba(33,33,33,.06);
+  transition: background .2s, color .2s, padding-left .25s;
+}
+.contact-menu-item:last-child { border-bottom: none; }
+.contact-menu-item:hover {
+  background: rgba(1,174,132,.08); color: var(--brand); padding-left: 28px;
+}
+
+.h-drawer {
+  position: fixed; top: 92px; left: 0; right: 0;
+  background: var(--header-bg);
+  z-index: 999;
+  max-height: 0; overflow: hidden;
+  transition: max-height .5s cubic-bezier(.4,0,.2,1);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.h-drawer.open { max-height: 700px; }
+.h-drawer-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: 36px 40px 48px;
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 12px 60px;
+}
+.h-drawer a {
+  font-family: 'Cormorant SC', serif;
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 500; letter-spacing: 3px;
+  color: rgba(255,255,255,.85);
+  text-decoration: none; padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  transition: color .25s, padding .25s;
+  display: block; text-transform: uppercase;
+}
+.h-drawer a:hover { color: var(--ink); padding-left: 12px; }
+.h-drawer a .ja {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body); font-weight: 500; letter-spacing: 3px;
+  color: rgba(255,255,255,.4);
+  display: block; margin-top: 4px; text-transform: none;
+}
+
+/* ── PRELOADER ── */
+@keyframes logoSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+#preloader {
+  position: fixed; inset: 0;
+  background: var(--paper); z-index: 99999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 28px;
+  transition: opacity .8s ease, visibility .8s ease;
+}
+#preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.preloader-logo {
+  width: clamp(90px, 10vw, 130px); height: auto;
+  animation: logoSpin 6s linear infinite;
+}
+.preloader-text {
+  font-family: 'Cinzel', serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 3px; color: var(--mid);
+}
+
+/* ════════ CTA（ABOUT準拠） ════════ */
+.cta-strip {
+  padding: 80px 56px;
+  background: #4a4a4a;
+  color: #fff;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.cta-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  position: relative; z-index: 1;
+  max-width: 1100px;
+  width: 100%;
+}
+.cta-title {
+  font-family: 'Cormorant SC', serif;
+  font-size:var(--fs-head);
+  font-weight: 400;
+  letter-spacing: 3px;
+  color: #fff;
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: left;
+}
+.cta-btns { display: flex; gap: 14px; flex-shrink: 0; }
+.btn-cta-w {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #fff;
+  background: var(--brand);
+  padding: 18px 32px;
+  text-decoration: none;
+  transition: all .25s;
+  display: block;
+  border: 1px solid var(--brand);
+}
+.btn-cta-w:hover {
+  background: var(--brand-deep);
+  border-color: var(--brand-deep);
+  transform: translateY(-2px);
+}
+.btn-cta-o {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.5);
+  padding: 18px 32px;
+  text-decoration: none;
+  transition: all .25s;
+  display: block;
+}
+.btn-cta-o:hover {
+  background: #fff;
+  color: #4a4a4a;
+  border-color: #fff;
+}
+
+/* ════════ FOOTER（ABOUT準拠） ════════ */
+footer {
+  background: var(--dark);
+  padding: 72px 0 0;
+  border-top: 1px solid rgba(245,240,234,.08);
+}
+.footer-top {
+  max-width:1320px; margin:0 auto; padding:0 56px;
+  display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; gap:50px;
+  padding-bottom:60px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.foot-logo img { height: 32px; width: auto; }
+.foot-tagline {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: .22em;
+  color: rgba(255,255,255,.4);
+  margin-top: 18px;
+  line-height: 2.2;
+}
+.foot-social { display:flex; gap:10px; margin-top:24px; }
+.soc-a {
+  width:38px; height:38px;
+  border:1px solid rgba(255,255,255,.12);
+  display:flex; align-items:center; justify-content:center;
+  text-decoration:none; color:rgba(255,255,255,.45);
+  font-family: 'Cormorant SC', serif;
+  font-size:13px; font-weight:500; font-style: normal;
+  transition:all .25s;
+}
+.soc-a:hover { border-color:var(--brand); color:var(--brand); }
+.foot-col-t {
+  font-family: 'Cinzel', serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--brand);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.foot-links { list-style:none; display:flex; flex-direction:column; gap:12px; }
+.foot-links li a {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: .1em;
+  color: rgba(255,255,255,.5);
+  text-decoration: none;
+  transition: color .2s;
+  line-height: 1.6;
+}
+.foot-links li a:hover { color:#fff; }
+.footer-bottom {
+  max-width:1320px; margin:0 auto; padding:0 56px;
+  height:60px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.foot-copy {
+  font-family: 'Cormorant SC', serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: .15em;
+  color: rgba(255,255,255,.3);
+  font-style: normal;
+}
+.foot-privacy {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,.3);
+  text-decoration: none;
+  transition: color .2s;
+}
+.foot-privacy:hover { color:rgba(255,255,255,.6); }
+
+/* ════════ MATCHING バナー（横長・広告型） ════════ */
+.match-banner-sec {
+  padding: 90px 40px;
+  background: var(--paper);
+}
+.match-banner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 48px;
+  padding: 56px 64px;
+  position: relative;
+  overflow: hidden;
+}
+.match-banner-label {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 7px 16px;
+  margin-bottom: 20px;
+}
+.match-banner-title {
+  font-family: 'Cormorant SC', serif;
+  font-weight: 400;
+  letter-spacing: 3px;
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+.match-banner-sub {
+  font-family: 'Shippori Mincho B1', serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.match-banner-body {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 500;
+  letter-spacing: 1px;
+  line-height: 1.9;
+}
+.match-banner-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.match-banner-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 20px 44px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  white-space: nowrap;
+  transition: all .3s;
+}
+.match-banner-btn::after {
+  content: '';
+  width: 8px; height: 8px;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  transform: rotate(45deg);
+}
+.match-banner-meta {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+@media (max-width: 820px) {
+  .match-banner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 44px 32px;
+    text-align: center;
+  }
+  .match-banner-right { align-items: center; }
+}
+
+/* PAGE HERO（ARTは線を残す） */
+.page-hero{padding:184px 40px 84px;background:var(--paper);text-align:center;}
+.page-hero-title{font-family:'Cormorant SC',serif;font-size:96px;font-weight:400;letter-spacing:3px;line-height:1;color:var(--ink);margin-bottom:16px;}
+@media(max-width:700px){.page-hero-title{font-size:60px;}}
+.page-hero-ja{font-family:'Cinzel',serif;font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--brand);margin-bottom:32px;}
+.page-hero-rule{width:1px;height:64px;background:var(--border);margin:0 auto 36px;}
+.page-statement{max-width:720px;margin:0 auto;font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);line-height:2.2;color:var(--ink);letter-spacing:1px;}
+
+/* FILTER（多段） */
+.filter-section{background:var(--paper);padding:56px 40px 24px;border-top:1px solid var(--border-soft);}
+/* スマホ用フィルタートグル */
+.filter-toggle{display:none;width:100%;align-items:center;justify-content:space-between;background:var(--paper);border:1px solid var(--border);padding:16px 20px;font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);font-weight:700;letter-spacing:1px;color:var(--ink);cursor:none;}
+.filter-toggle-icon{width:11px;height:11px;border-right:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);transform:rotate(45deg);transition:transform .3s ease;margin-top:-4px;}
+.filter-toggle.is-open .filter-toggle-icon{transform:rotate(-135deg);margin-top:2px;}
+@media(max-width:700px){
+  .filter-toggle{display:flex;}
+  .filter-inner{display:none;}
+  .filter-inner.is-open{display:block;}
+}
+.filter-inner{max-width:1400px;margin:0 auto;}
+.filter-row{display:flex;align-items:baseline;gap:32px;flex-wrap:wrap;justify-content:flex-start;padding:16px 0;}
+.filter-row+.filter-row{border-top:1px solid var(--border-soft);}
+.filter-label{font-family:'Cinzel',serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--brand);flex-shrink:0;min-width:90px;text-align:left;}
+.filter-tags{display:flex;gap:8px 28px;flex-wrap:wrap;justify-content:flex-start;flex:1;}
+.filter-tag{font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);letter-spacing:1px;color:var(--mid);padding:6px 0;position:relative;transition:color .25s;}
+.filter-tag.en{font-family:'Cinzel',serif;letter-spacing:3px;font-size:14px;}
+.filter-tag::after{content:'';position:absolute;bottom:2px;left:0;width:0;height:1px;background:var(--brand);transition:width .3s ease;}
+.filter-tag:hover{color:var(--ink);}
+.filter-tag.is-active{color:var(--ink);}
+.filter-tag.is-active::after{width:100%;}
+/* COLOR フィルター */
+.color-swatches{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;flex:1;}
+.color-swatch{display:flex;flex-direction:column;align-items:center;gap:8px;padding:4px;background:none;border:none;cursor:none;transition:transform .25s;}
+.color-swatch:hover{transform:translateY(-3px);}
+.color-dot{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);position:relative;transition:box-shadow .25s,transform .25s;}
+.color-swatch:hover .color-dot{box-shadow:0 4px 14px rgba(33,33,33,.18);}
+.color-swatch.is-active .color-dot{box-shadow:0 0 0 2px var(--paper),0 0 0 4px var(--brand);}
+.color-dot.is-allcolor{background:conic-gradient(#d64533,#e0892e,#e8c33a,#3e9e6d,#3a6ea5,#7a5a9e,#8a5a3a,#212121,#d64533);}
+.color-name{font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);letter-spacing:1px;color:var(--mid);transition:color .25s;}
+.color-swatch.is-active .color-name{color:var(--ink);}
+
+/* COLOR 解説パネル */
+.color-panel{max-width:1400px;margin:20px auto 0;display:none;}
+.color-panel.is-open{display:block;}
+.color-panel-inner{display:grid;grid-template-columns:auto 1fr 1fr;gap:36px;align-items:center;padding:32px 36px;background:var(--paper);border:1px solid var(--border);}
+@media(max-width:760px){.color-panel-inner{grid-template-columns:1fr;gap:22px;padding:28px;text-align:center;}}
+.color-panel-chip{width:84px;height:84px;border-radius:50%;border:1px solid var(--border);flex-shrink:0;}
+@media(max-width:760px){.color-panel-chip{margin:0 auto;}}
+.color-panel-block{}
+.color-panel-label{font-family:'Cinzel',serif;font-size:12px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--brand);margin-bottom:10px;}
+.color-panel-title{font-family:'Shippori Mincho B1',serif;font-size:20px;font-weight:800;letter-spacing:1px;color:var(--ink);margin-bottom:8px;}
+.color-panel-text{font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);letter-spacing:1px;line-height:1.85;color:var(--mid);}
+.color-panel-place{font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);font-weight:700;letter-spacing:1px;line-height:1.7;color:var(--ink);}
+
+.filter-result{max-width:1400px;margin:24px auto 0;padding-top:24px;border-top:1px solid var(--border-soft);display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:12px;}
+.filter-count-text{font-family:'Shippori Mincho B1',serif;font-size:15px;color:var(--mid);letter-spacing:1px;}
+.filter-count-text .boa-num{color:var(--brand);margin-right:4px;}
+.sort-tabs{display:flex;gap:24px;font-family:'Cinzel',serif;font-size:14px;letter-spacing:3px;color:var(--mid);}
+.sort-tabs button{transition:color .2s;}
+.sort-tabs button:hover{color:var(--ink);}
+.sort-tabs button.is-active{color:var(--ink);}
+
+/* ART GRID */
+.art-section{padding:40px 40px 110px;background:var(--paper);}
+.art-grid{max-width:1500px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:60px 32px;}
+@media(max-width:1200px){.art-grid{grid-template-columns:repeat(3,1fr);gap:52px 28px;}}
+@media(max-width:800px){.art-grid{grid-template-columns:repeat(2,1fr);gap:44px 20px;}}
+@media(max-width:480px){.art-grid{grid-template-columns:repeat(2,1fr);gap:32px 16px;}}
+.art-card{display:block;text-align:left;transition:transform .4s ease;}
+.art-card:hover{transform:translateY(-4px);}
+.art-image{position:relative;width:100%;aspect-ratio:1/1;background:var(--ink);overflow:hidden;margin-bottom:18px;}
+.art-image-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:14px;letter-spacing:3px;color:rgba(245,240,234,.4);background-size:cover;background-position:center;transition:transform .8s cubic-bezier(.2,.7,.2,1);}
+.art-card:hover .art-image-inner{transform:scale(1.06);}
+.art-image::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(33,33,33,0) 60%,rgba(33,33,33,.65) 100%);opacity:0;transition:opacity .4s;pointer-events:none;}
+.art-card:hover .art-image::after{opacity:1;}
+.art-status{position:absolute;top:14px;left:14px;font-family:'Cinzel',serif;font-size:14px;letter-spacing:3px;padding:6px 12px;z-index:2;backdrop-filter:blur(6px);}
+.art-status.is-available{background:var(--brand);color:#fff;}
+.art-status.is-owned{background:rgba(33,33,33,.7);color:var(--gold);border:1px solid rgba(184,149,106,.5);}
+.art-number{position:absolute;top:14px;right:14px;font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);letter-spacing:1px;color:rgba(245,240,234,.8);z-index:2;}
+.art-card:hover .art-info{padding-top:4px;}
+.art-artist{font-family:'Cinzel',serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--mid);margin-bottom:10px;}
+.art-title{font-family:'Shippori Mincho B1',serif;font-size:20px;font-weight:700;color:var(--ink);line-height:1.4;margin-bottom:12px;letter-spacing:1px;}
+.art-meta{display:flex;flex-wrap:nowrap;align-items:baseline;gap:0;font-family:'Shippori Mincho B1',serif;font-size:15px;color:var(--mid);letter-spacing:0;white-space:nowrap;}
+.art-meta span+span::before{content:'/';margin:0 6px;color:var(--border);}
+.art-meta span+span::before{content:'/';margin-right:12px;color:var(--border);}
+.pagination{max-width:1500px;margin:64px auto 0;padding-top:48px;border-top:1px solid var(--border-soft);display:flex;justify-content:center;align-items:center;gap:8px;font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);}
+.pagination button{padding:10px 18px;color:var(--mid);transition:color .2s;letter-spacing:1px;}
+.pagination button:hover{color:var(--ink);}
+.pagination button.is-active{color:var(--brand);border-bottom:1px solid var(--brand);}
+.pagination .nav-btn{font-family:'Cinzel',serif;letter-spacing:3px;font-size:14px;}
+
+/* RESALE SERVICE */
+.resale-section{padding:120px 40px;background:var(--ink);color:#fff;text-align:center;}
+.resale-inner{max-width:720px;margin:0 auto;}
+.resale-eyebrow{font-family:'Cinzel',serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--brand);margin-bottom:28px;}
+.resale-title{font-family:'Cormorant SC',serif;font-size:var(--fs-head);font-weight:400;letter-spacing:3px;line-height:1.2;margin-bottom:36px;color:#fff;}
+.resale-body{font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);line-height:2.1;color:rgba(255,255,255,.8);letter-spacing:1px;margin-bottom:48px;}
+.resale-waitlist-btn{display:inline-block;font-family:'Cinzel',serif;font-size:14px;letter-spacing:2px;color:#fff;background:#01ae84;border:1px solid #01ae84;padding:18px 48px;text-decoration:none;transition:background .3s,color .3s,border-color .3s;cursor:none;}
+.resale-waitlist-btn:hover{background:#018c6a;border-color:#018c6a;color:#fff;}
+.resale-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:32px;padding-top:48px;border-top:1px solid rgba(255,255,255,.15);}
+.resale-stat-num{font-family:'Shippori Mincho B1',serif;font-size:64px;font-weight:600;color:var(--brand);line-height:1;margin-bottom:16px;letter-spacing:1px;}
+.resale-stat-num .unit{font-size:22px;margin-left:4px;}
+.resale-stat-label{font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);color:rgba(255,255,255,.6);letter-spacing:1px;}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(30px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1);}
+.rv.on{opacity:1;transform:translateY(0);}
+.rv.d1{transition-delay:.08s;}
+.rv.d2{transition-delay:.16s;}
+.rv.d3{transition-delay:.24s;}
+
+/* ════════ スマホ対応：ヘッダー・CTA・フッター（INDEX準拠で統一） ════════ */
+.btn-contact { white-space: nowrap; }
+@media (max-width: 1024px) {
+  header { padding: 0 24px; }
+  .cta-strip { padding: 48px 32px; }
+  .cta-inner { flex-direction: column; gap: 24px; }
+}
+@media (max-width: 700px) {
+  /* 本文サイズをスマホで15pxに */
+  :root { --fs-body: 15px; --fs-head: 24px; }
+  body { line-height: 1.75; }
+  /* スマホ：本文の行間を詰める */
+  .match-banner-body, .page-statement, .color-panel-text, .resale-body { line-height: 1.7; }
+  /* HEADER */
+  header { padding: 0 18px; }
+  .h-menu-btn span:not(.h-menu-icon) { display: none; }
+  .h-drawer-inner { grid-template-columns: 1fr; padding: 28px 24px 36px; gap: 6px; }
+  .h-logo .logo-base, .h-logo .logo-hover { height: 32px; }
+  .btn-contact { padding: 10px 18px; letter-spacing: 2px; white-space: nowrap; }
+  /* CTA */
+  .cta-strip { padding: 48px 32px; }
+  .cta-inner { flex-direction: column; gap: 24px; text-align: center; }
+  .cta-title { text-align: center; }
+  .cta-btns { flex-direction: column; width: 100%; }
+  .btn-cta-w, .btn-cta-o { text-align: center; width: 100%; }
+  /* FOOTER */
+  .footer-top { grid-template-columns: 1fr; gap: 32px; padding: 0 24px 60px; }
+  .footer-bottom { flex-direction: column; gap: 12px; height: auto; padding: 20px 24px; }
+  /* 375px基準 — はみ出し防止 */
+  .page-hero { padding: 132px 20px 64px; }
+  .page-hero-title { font-size: 46px; }
+  .filter-section { padding: 36px 20px 20px; }
+  .art-section { padding: 32px 20px 90px; }
+  .resale-section { padding: 80px 20px; }
+  .match-banner-sec { padding: 64px 20px; }
+  .match-banner { padding: 36px 24px; }
+  section { max-width: 100%; overflow-x: hidden; }
+  .art-grid { grid-template-columns: repeat(2,1fr); gap: 32px 16px; }
+  .art-meta { font-size: 10px; }
+  .art-meta span+span::before { margin: 0 4px; }
+  .filter-count-text { font-size: 12px; }
+  .art-status { font-size: 12px; letter-spacing: 2px; padding: 5px 10px; }
+}
+
+
+
+@media (max-width: 430px) {
+  .art-grid { grid-template-columns: repeat(2,1fr) !important; gap: 24px 12px !important; }
+  .color-panel-inner { grid-template-columns: 1fr !important; }
+  .resale-stats { grid-template-columns: 1fr !important; }
+  .page-hero { padding: 120px 16px 56px !important; }
+  .page-hero-title { font-size: 40px !important; }
+  .filter-section { padding: 32px 16px 18px !important; }
+  .art-section { padding: 28px 16px 80px !important; }
+  .resale-section { padding: 64px 16px !important; }
+  .match-banner-sec { padding: 56px 16px !important; }
+  .match-banner { padding: 32px 20px !important; }
+  .match-banner-title { font-size: 22px !important; }
+  .contact-menu { min-width: 200px !important; }
+  *, *::before, *::after { max-width: 100% !important; min-width: 0 !important; box-sizing: border-box !important; }
+  img { height: auto; }
+  html, body { overflow-x: hidden !important; width: 100% !important; max-width: 100% !important; }
+  header, section, footer, .cta-strip, main, div { max-width: 100vw; }
+}
+</style>
+</head>
+<body>
+
+<div id="preloader">
+  <img class="preloader-logo" src="boa-11.png" alt="Loading">
+  <div class="preloader-text">LOADING</div>
+</div>
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<header id="hdr">
+  <button class="h-menu-btn" id="menuToggle" aria-label="Menu">
+    <span class="h-menu-icon"></span>
+    <span>MENU</span>
+  </button>
+  <a href="index.html" class="h-logo" aria-label="BANK OF ART">
+    <img class="logo-base" src="boa-07.png" alt="BANK OF ART">
+    <img class="logo-hover" src="boa-06.png" alt="">
+  </a>
+  <div class="h-actions">
+    <div class="contact-dropdown" id="contactDropdown">
+      <button class="btn-contact" id="contactToggle" aria-haspopup="true" aria-expanded="false">CONTACT</button>
+      <div class="contact-menu">
+        <a href="https://business.form-mailer.jp/fms/1c6a81d4280183" target="_blank" class="contact-menu-item">資料請求</a>
+        <a href="https://booking.receptionist.jp/5ade6c6d-ae6c-44d9-9921-000ad24af9f9/30min" target="_blank" class="contact-menu-item">オンライン説明会</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="h-drawer" id="drawer">
+  <div class="h-drawer-inner">
+    <a href="about.html"><span>ABOUT</span><span class="ja">バンクオブアートとは</span></a>
+    <a href="artist.html"><span>ARTIST</span><span class="ja">アーティスト一覧</span></a>
+    <a href="art.html"><span>ART</span><span class="ja">作品一覧</span></a>
+    <a href="collector.html"><span>COLLECTOR</span><span class="ja">画家応援企業</span></a>
+    <a href="news.html"><span>NEWS</span><span class="ja">最新記事</span></a>
+    <a href="journal.html"><span>JOURNAL</span><span class="ja">読み物</span></a>
+  </div>
+</div>
+
+<section class="page-hero">
+  <h1 class="page-hero-title rv">ART</h1>
+  <p class="page-hero-ja rv d1">作品一覧</p>
+  <div class="page-hero-rule rv d2"></div>
+  <div class="page-statement rv d3">
+    <p>バンク・オブ・アート公認作品の一覧。</p>
+  </div>
+</section>
+
+<section class="filter-section">
+  <button class="filter-toggle" id="filterToggle">
+    <span>詳細から探す</span>
+    <span class="filter-toggle-icon"></span>
+  </button>
+  <div class="filter-inner">
+    <div class="filter-row">
+      <span class="filter-label">Status</span>
+      <div class="filter-tags">
+        <button class="filter-tag en is-active">ALL</button>
+        <button class="filter-tag en">AVAILABLE</button>
+        <button class="filter-tag en">OWNED</button>
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Artist</span>
+      <div class="filter-tags">
+        <button class="filter-tag is-active">すべて</button>
+        <button class="filter-tag">東樹生</button>
+        <button class="filter-tag">冨永ボンド</button>
+        <button class="filter-tag">CHOB-ONE</button>
+        <button class="filter-tag">dotscollective</button>
+        <button class="filter-tag">erika</button>
+        <button class="filter-tag">藤理沙子</button>
+        <button class="filter-tag">玄</button>
+        <button class="filter-tag">GREEN IS BEAUTIFUL</button>
+        <button class="filter-tag">伊藤咲穂</button>
+        <button class="filter-tag">KATHMI</button>
+        <button class="filter-tag">北和晃</button>
+        <button class="filter-tag">大隈伸也</button>
+        <button class="filter-tag">OLI OLIのみ</button>
+        <button class="filter-tag">saki</button>
+        <button class="filter-tag">下家杏樹</button>
+        <button class="filter-tag">シンリー</button>
+        <button class="filter-tag">田中拓馬</button>
+        <button class="filter-tag">tiki</button>
+        <button class="filter-tag">富永周平</button>
+        <button class="filter-tag">加納芳美</button>
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Form</span>
+      <div class="filter-tags">
+        <button class="filter-tag is-active">すべて</button>
+        <button class="filter-tag">平面</button>
+        <button class="filter-tag">立体</button>
+        <button class="filter-tag">半立体</button>
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Genre</span>
+      <div class="filter-tags">
+        <button class="filter-tag is-active">すべて</button>
+        <button class="filter-tag">抽象</button>
+        <button class="filter-tag">具象</button>
+        <button class="filter-tag">ポップアート</button>
+        <button class="filter-tag">ストリートアート</button>
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Technique</span>
+      <div class="filter-tags">
+        <button class="filter-tag is-active">すべて</button>
+        <button class="filter-tag">油彩</button>
+        <button class="filter-tag">アクリル</button>
+        <button class="filter-tag">水彩</button>
+        <button class="filter-tag">墨</button>
+        <button class="filter-tag">日本画材</button>
+        <button class="filter-tag">ミクストメディア</button>
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Size</span>
+      <div class="filter-tags">
+        <button class="filter-tag is-active">すべて</button>
+        <button class="filter-tag">10号</button>
+        <button class="filter-tag">20号</button>
+        <button class="filter-tag">30号</button>
+        <button class="filter-tag">その他</button>
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Main Color</span>
+      <div class="color-swatches" id="colorSwatches">
+        <button class="color-swatch is-active" data-color="all">
+          <span class="color-dot is-allcolor"></span>
+          <span class="color-name">すべて</span>
+        </button>
+        <button class="color-swatch" data-color="red">
+          <span class="color-dot" style="background:#d64533;"></span>
+          <span class="color-name">赤</span>
+        </button>
+        <button class="color-swatch" data-color="orange">
+          <span class="color-dot" style="background:#e0892e;"></span>
+          <span class="color-name">橙</span>
+        </button>
+        <button class="color-swatch" data-color="yellow">
+          <span class="color-dot" style="background:#e8c33a;"></span>
+          <span class="color-name">黄</span>
+        </button>
+        <button class="color-swatch" data-color="green">
+          <span class="color-dot" style="background:#3e9e6d;"></span>
+          <span class="color-name">緑</span>
+        </button>
+        <button class="color-swatch" data-color="blue">
+          <span class="color-dot" style="background:#3a6ea5;"></span>
+          <span class="color-name">青</span>
+        </button>
+        <button class="color-swatch" data-color="purple">
+          <span class="color-dot" style="background:#7a5a9e;"></span>
+          <span class="color-name">紫</span>
+        </button>
+        <button class="color-swatch" data-color="brown">
+          <span class="color-dot" style="background:#8a5a3a;"></span>
+          <span class="color-name">茶</span>
+        </button>
+        <button class="color-swatch" data-color="white">
+          <span class="color-dot" style="background:#f5f5f0;border:1px solid var(--border);"></span>
+          <span class="color-name">白</span>
+        </button>
+        <button class="color-swatch" data-color="black">
+          <span class="color-dot" style="background:#1a1a1a;"></span>
+          <span class="color-name">黒</span>
+        </button>
+        <button class="color-swatch" data-color="silver">
+          <span class="color-dot" style="background:linear-gradient(135deg,#c0c8d0 0%,#8a929a 50%,#c0c8d0 100%);"></span>
+          <span class="color-name">銀</span>
+        </button>
+        <button class="color-swatch" data-color="gold">
+          <span class="color-dot" style="background:linear-gradient(135deg,#d4af37 0%,#f0d985 50%,#a88820 100%);"></span>
+          <span class="color-name">金</span>
+        </button>
+        <button class="color-swatch" data-color="colorful">
+          <span class="color-dot" style="background:conic-gradient(#d64533,#e0892e,#e8c33a,#3e9e6d,#3a6ea5,#7a5a9e,#d64533);"></span>
+          <span class="color-name">その他</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="color-panel" id="colorPanel">
+      <div class="color-panel-inner">
+        <span class="color-panel-chip" id="cpChip"></span>
+        <div class="color-panel-block">
+          <div class="color-panel-label">Color Effect</div>
+          <div class="color-panel-title" id="cpEffectTitle"></div>
+          <p class="color-panel-text" id="cpEffectText"></p>
+        </div>
+        <div class="color-panel-block">
+          <div class="color-panel-label">Recommended Place</div>
+          <p class="color-panel-place" id="cpPlace"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-result">
+      <div class="filter-count-text">全 <span class="boa-num">858</span> 点の作品 / 表示 <span class="boa-num">20</span> 点</div>
+      <div class="sort-tabs">
+        <button class="is-active">NEWEST</button>
+        <button>ARTIST</button>
+        <button>SIZE</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="art-section">
+  <!--
+    ════════ WP化サンプル ════════
+    artwork 投稿タイプの ACF に色フィールドを追加：
+    - art_color … 作品の主要色。select型。値は red/orange/yellow/green/blue/purple/mono/white
+    カードに data-color="<?php echo esc_attr(get_field('art_color')); ?>" を出力する。
+    COLORフィルターのJS（COLOR_DATA）とフロントのカード data-color が一致すれば絞り込みが動く。
+    色の効果・おすすめ設置場所のテキストはJS内 COLOR_DATA で一元管理（作品ごとには持たせない）。
+  -->
+  <div class="art-grid">
+
+    <a href="art-single.html" class="art-card" data-color="green">
+      <div class="art-image">
+        <span class="art-status is-available">AVAILABLE</span>
+        <span class="art-number">#458</span>
+        <span class="art-image-inner" style="background:linear-gradient(45deg,#2a2a2a 0%,#01ae84 50%,#0a0a0a 100%);">AZUMA JUSEI</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Azuma Jusei</div>
+        <h3 class="art-title">ADRENALINE ART 昇華 VOL.5</h3>
+        <div class="art-meta">
+          <span>F10</span>
+          <span>アクリル/キャンバス</span>
+          <span class="boa-num">2025</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="orange">
+      <div class="art-image">
+        <span class="art-status is-owned">OWNED</span>
+        <span class="art-number">#421</span>
+        <span class="art-image-inner" style="background:linear-gradient(135deg,#3a2a1a 0%,#d8b88a 50%,#5a4a3a 100%);">TOMINAGA BOND</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Tominaga Bond</div>
+        <h3 class="art-title">ボンドポートレート 03</h3>
+        <div class="art-meta">
+          <span>SM</span>
+          <span>ボンド/板</span>
+          <span class="boa-num">2024</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="black">
+      <div class="art-image">
+        <span class="art-status is-available">AVAILABLE</span>
+        <span class="art-number">#512</span>
+        <span class="art-image-inner" style="background:linear-gradient(180deg,#0a0a0a 0%,#444 60%,#888 100%);">CHOB ONE</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Chob One</div>
+        <h3 class="art-title">THE WORLD IS FULL OF FAKES</h3>
+        <div class="art-meta">
+          <span>F50</span>
+          <span>スプレー/キャンバス</span>
+          <span class="boa-num">2025</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="purple">
+      <div class="art-image">
+        <span class="art-status is-owned">OWNED</span>
+        <span class="art-number">#398</span>
+        <span class="art-image-inner" style="background:linear-gradient(135deg,#1a0a2a 0%,#6a3a8a 60%,#1a0a2a 100%);">DOTSCOLLECTIVE</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">dotscollective</div>
+        <h3 class="art-title">RARA COVER ARTWORK</h3>
+        <div class="art-meta">
+          <span>F30</span>
+          <span>アクリル/キャンバス</span>
+          <span class="boa-num">2023</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="blue">
+      <div class="art-image">
+        <span class="art-status is-available">AVAILABLE</span>
+        <span class="art-number">#520</span>
+        <span class="art-image-inner" style="background:linear-gradient(180deg,#1a3a4a 0%,#88c8d8 50%,#3a5a6a 100%);">ERIKA</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Erika</div>
+        <h3 class="art-title">Z SERIES EIFFEL TOWER</h3>
+        <div class="art-meta">
+          <span>F8</span>
+          <span>油彩/キャンバス</span>
+          <span class="boa-num">2025</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="purple">
+      <div class="art-image">
+        <span class="art-status is-available">AVAILABLE</span>
+        <span class="art-number">#487</span>
+        <span class="art-image-inner" style="background:linear-gradient(135deg,#4a2a3a 0%,#d8a8b8 50%,#8a5a7a 100%);">FUJI RISAKO</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Fuji Risako</div>
+        <h3 class="art-title">かさなり 12</h3>
+        <div class="art-meta">
+          <span>F20</span>
+          <span>油彩/キャンバス</span>
+          <span class="boa-num">2025</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="green">
+      <div class="art-image">
+        <span class="art-status is-owned">OWNED</span>
+        <span class="art-number">#376</span>
+        <span class="art-image-inner" style="background:linear-gradient(180deg,#0a2a1a 0%,#5a8a4a 50%,#0a2a1a 100%);">GEN</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Gen</div>
+        <h3 class="art-title">世界平和は実現できる</h3>
+        <div class="art-meta">
+          <span>F30</span>
+          <span>アクリル/キャンバス</span>
+          <span class="boa-num">2023</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="green">
+      <div class="art-image">
+        <span class="art-status is-available">AVAILABLE</span>
+        <span class="art-number">#501</span>
+        <span class="art-image-inner" style="background:linear-gradient(135deg,#01ae84 0%,#e6f5f0 50%,#01ae84 100%);">GREEN IS BEAUTIFUL</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Green is Beautiful</div>
+        <h3 class="art-title">COFFEE AND FLOWERS 07</h3>
+        <div class="art-meta">
+          <span>F10</span>
+          <span>アクリル/キャンバス</span>
+          <span class="boa-num">2024</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="brown">
+      <div class="art-image">
+        <span class="art-status is-owned">OWNED</span>
+        <span class="art-number">#445</span>
+        <span class="art-image-inner" style="background:linear-gradient(135deg,#5a4a3a 0%,#c8b8a8 50%,#3a2a1a 100%);">ITO SAKIHO</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Ito Sakiho</div>
+        <h3 class="art-title">転送 錆和紙シリーズ</h3>
+        <div class="art-meta">
+          <span>変形</span>
+          <span>砂鉄/楮和紙</span>
+          <span class="boa-num">2024</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="red">
+      <div class="art-image">
+        <span class="art-status is-available">AVAILABLE</span>
+        <span class="art-number">#534</span>
+        <span class="art-image-inner" style="background:linear-gradient(135deg,#4a1a3a 0%,#e878a8 50%,#2a0a1a 100%);">KATHMI</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Kathmi</div>
+        <h3 class="art-title">VICTORY</h3>
+        <div class="art-meta">
+          <span>F100</span>
+          <span>アクリル/キャンバス</span>
+          <span class="boa-num">2025</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="blue">
+      <div class="art-image">
+        <span class="art-status is-available">AVAILABLE</span>
+        <span class="art-number">#412</span>
+        <span class="art-image-inner" style="background:linear-gradient(180deg,#1a1a3a 0%,#5a5a8a 50%,#0a0a2a 100%);">KITA KAZUAKI</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Kita Kazuaki</div>
+        <h3 class="art-title">幻視譚</h3>
+        <div class="art-meta">
+          <span>F15</span>
+          <span>アクリル/キャンバス</span>
+          <span class="boa-num">2025</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="silver">
+      <div class="art-image">
+        <span class="art-status is-available">AVAILABLE</span>
+        <span class="art-number">#525</span>
+        <span class="art-image-inner" style="background:linear-gradient(135deg,#2a2a2a 0%,#888 50%,#2a2a2a 100%);">OKUMA SHINYA</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Okuma Shinya</div>
+        <h3 class="art-title">FRAGMENT 21</h3>
+        <div class="art-meta">
+          <span>F30</span>
+          <span>油彩/キャンバス</span>
+          <span class="boa-num">2025</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="purple">
+      <div class="art-image">
+        <span class="art-status is-available">AVAILABLE</span>
+        <span class="art-number">#489</span>
+        <span class="art-image-inner" style="background:linear-gradient(45deg,#3a2a4a 0%,#a888c8 50%,#1a0a2a 100%);">OLI OLI</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Oli Oli</div>
+        <h3 class="art-title">WARP 045</h3>
+        <div class="art-meta">
+          <span>F20</span>
+          <span>アクリル/キャンバス</span>
+          <span class="boa-num">2024</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="green">
+      <div class="art-image">
+        <span class="art-status is-owned">OWNED</span>
+        <span class="art-number">#356</span>
+        <span class="art-image-inner" style="background:linear-gradient(180deg,#2a3a2a 0%,#88a888 50%,#0a1a0a 100%);">SAKI</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Saki</div>
+        <h3 class="art-title">漲る</h3>
+        <div class="art-meta">
+          <span>F100</span>
+          <span>油彩/キャンバス</span>
+          <span class="boa-num">2023</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="orange">
+      <div class="art-image">
+        <span class="art-status is-available">AVAILABLE</span>
+        <span class="art-number">#472</span>
+        <span class="art-image-inner" style="background:linear-gradient(135deg,#4a3a2a 0%,#c8a888 50%,#2a1a0a 100%);">SHIMO ANJU</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Shimo Anju</div>
+        <h3 class="art-title">線 08</h3>
+        <div class="art-meta">
+          <span>F50</span>
+          <span>油彩/キャンバス</span>
+          <span class="boa-num">2024</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="red">
+      <div class="art-image">
+        <span class="art-status is-available">AVAILABLE</span>
+        <span class="art-number">#541</span>
+        <span class="art-image-inner" style="background:linear-gradient(135deg,#3a1a1a 0%,#c87878 50%,#1a0a0a 100%);">SHIN LEE</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Shin Lee</div>
+        <h3 class="art-title">春の章</h3>
+        <div class="art-meta">
+          <span>F30</span>
+          <span>岩絵具/麻紙</span>
+          <span class="boa-num">2025</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="green">
+      <div class="art-image">
+        <span class="art-status is-available">AVAILABLE</span>
+        <span class="art-number">#388</span>
+        <span class="art-image-inner" style="background:linear-gradient(45deg,#0a0a0a 0%,#01ae84 50%,#0a0a0a 100%);">TANAKA TAKUMA</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Tanaka Takuma</div>
+        <h3 class="art-title">SERIES XII</h3>
+        <div class="art-meta">
+          <span>F20</span>
+          <span>ミクストメディア</span>
+          <span class="boa-num">2024</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="blue">
+      <div class="art-image">
+        <span class="art-status is-available">AVAILABLE</span>
+        <span class="art-number">#507</span>
+        <span class="art-image-inner" style="background:linear-gradient(135deg,#1a3a4a 0%,#88d8e8 50%,#0a1a2a 100%);">TIKI</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Tiki</div>
+        <h3 class="art-title">宝箱の子供たち 11</h3>
+        <div class="art-meta">
+          <span>F10</span>
+          <span>アクリル/キャンバス</span>
+          <span class="boa-num">2025</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="brown">
+      <div class="art-image">
+        <span class="art-status is-owned">OWNED</span>
+        <span class="art-number">#364</span>
+        <span class="art-image-inner" style="background:linear-gradient(135deg,#3a2a1a 0%,#d8c8a8 50%,#1a0a0a 100%);">TOMINAGA SHUHEI</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Tominaga Shuhei</div>
+        <h3 class="art-title">WHO IS THAT HAT 07</h3>
+        <div class="art-meta">
+          <span>F8</span>
+          <span>レーザーカット/手彩色</span>
+          <span class="boa-num">2023</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="art-single.html" class="art-card" data-color="green">
+      <div class="art-image">
+        <span class="art-status is-available">AVAILABLE</span>
+        <span class="art-number">#498</span>
+        <span class="art-image-inner" style="background:linear-gradient(180deg,#2a4a3a 0%,#a8c8b8 50%,#0a2a1a 100%);">KANO YOSHIMI</span>
+      </div>
+      <div class="art-info">
+        <div class="art-artist">Kano Yoshimi</div>
+        <h3 class="art-title">犬</h3>
+        <div class="art-meta">
+          <span>F8</span>
+          <span>布/ミクストメディア</span>
+          <span class="boa-num">2024</span>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="pagination">
+    <button class="nav-btn">PREV</button>
+    <button class="is-active boa-num">1</button>
+    <button class="boa-num">2</button>
+    <button class="boa-num">3</button>
+    <button>···</button>
+    <button class="boa-num">43</button>
+    <button class="nav-btn">NEXT</button>
+  </div>
+</section>
+
+<section class="resale-section">
+  <div class="resale-inner">
+    <div class="resale-eyebrow rv">RESALE SERVICE</div>
+    <h2 class="resale-title rv d1">リセールサービス</h2>
+    <p class="resale-body rv d2">
+      「OWNED」と表示されている作品は、現在いずれかの応援企業様が所有されている作品です。<br class="br-pc">
+      バンク・オブ・アートでは、所有企業様が手放される際の<br class="br-pc">
+      最大 <span class="boa-num">70</span>% リセール買取制度を設けており、<br class="br-pc">
+      戻ってきた作品は再び新たなオーナー様にお迎えいただけます。
+    </p>
+    <p class="resale-body rv d3" style="margin-bottom:32px;">
+      気になる作品がございましたら、リセール待機リストへご登録をお願いいたします。
+    </p>
+    <!-- WP化：リセール待機リスト機能のフォームページへリンク -->
+    <a href="#" class="resale-waitlist-btn rv d3">リセール待機リストへ登録する</a>
+  </div>
+</section>
+
+<div class="cta-strip" id="contact">
+  <div class="cta-inner">
+    <h2 class="cta-title rv">CONTACT</h2>
+    <div class="cta-btns rv d1">
+      <a href="https://business.form-mailer.jp/fms/1c6a81d4280183" class="btn-cta-w" target="_blank">資料請求</a>
+      <a href="https://booking.receptionist.jp/5ade6c6d-ae6c-44d9-9921-000ad24af9f9/30min" class="btn-cta-o" target="_blank">説明会を予約</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div class="foot-brand">
+      <div class="foot-logo"><img src="boa-07.png" alt="BANK OF ART"></div>
+      <p class="foot-tagline">絵描きの明日を創出する。<br>減価償却 × 画家応援</p>
+      <div class="foot-social">
+        <a href="https://www.facebook.com/bankofart2022/" class="soc-a" target="_blank" title="Facebook">F</a>
+        <a href="https://www.youtube.com/@bankofart2022" class="soc-a" target="_blank" title="YouTube">Y</a>
+        <a href="https://www.instagram.com/bankof_art2022/" class="soc-a" target="_blank" title="Instagram">I</a>
+        <a href="https://x.com/bankof_art" class="soc-a" target="_blank" title="X">X</a>
+      </div>
+    </div>
+    <div>
+      <div class="foot-col-t">NAVIGATION</div>
+      <ul class="foot-links">
+        <li><a href="about.html">バンクオブアートとは</a></li>
+        <li><a href="artist.html">アーティスト一覧</a></li>
+        <li><a href="art.html">作品</a></li>
+        <li><a href="collector.html">画家応援企業</a></li>
+        <li><a href="news.html">最新記事</a></li>
+        <li><a href="journal.html">読み物</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-t">CONTACT</div>
+      <ul class="foot-links">
+        <li><a href="https://business.form-mailer.jp/fms/1c6a81d4280183" target="_blank">資料ダウンロード</a></li>
+        <li><a href="https://booking.receptionist.jp/5ade6c6d-ae6c-44d9-9921-000ad24af9f9/30min" target="_blank">オンライン説明会</a></li>
+        <li><a href="#contact">お問い合わせ</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-t">For Artists</div>
+      <ul class="foot-links">
+        <li><a href="recruit.html">画家募集</a></li>
+        <li><a href="https://tally.so/r/MeMEV0" target="_blank">応募フォーム</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <a href="#" class="foot-privacy">Privacy Policy</a>
+    <span class="foot-copy">© BANK OF ART, INC.</span>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('load',()=>{const pl=document.getElementById('preloader');if(!pl)return;setTimeout(()=>pl.classList.add('hidden'),800);});
+setTimeout(()=>{const pl=document.getElementById('preloader');if(pl)pl.classList.add('hidden');},5000);
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+const hdr=document.getElementById('hdr');
+window.addEventListener('scroll',()=>hdr.classList.toggle('scrolled',scrollY>30));
+(function(){const dd=document.getElementById('contactDropdown'),btn=document.getElementById('contactToggle');if(!dd||!btn)return;
+btn.addEventListener('click',e=>{e.stopPropagation();dd.classList.toggle('open');btn.setAttribute('aria-expanded',dd.classList.contains('open'));});
+document.addEventListener('click',e=>{if(!dd.contains(e.target)){dd.classList.remove('open');btn.setAttribute('aria-expanded','false');}});
+dd.querySelectorAll('.contact-menu-item').forEach(a=>a.addEventListener('click',()=>{dd.classList.remove('open');btn.setAttribute('aria-expanded','false');}));})();
+(function(){const btn=document.getElementById('menuToggle'),drawer=document.getElementById('drawer');if(!btn||!drawer)return;
+btn.addEventListener('click',e=>{e.stopPropagation();drawer.classList.toggle('open');});
+drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>drawer.classList.remove('open')));
+document.addEventListener('click',e=>{if(!drawer.contains(e.target)&&!btn.contains(e.target))drawer.classList.remove('open');});})();
+(function(){document.querySelectorAll('.filter-row').forEach(row=>{const tags=row.querySelectorAll('.filter-tag');tags.forEach(t=>t.addEventListener('click',()=>{tags.forEach(x=>x.classList.remove('is-active'));t.classList.add('is-active');}));});
+const st=document.querySelectorAll('.sort-tabs button');st.forEach(b=>b.addEventListener('click',()=>{st.forEach(x=>x.classList.remove('is-active'));b.classList.add('is-active');}));})();
+/* ===== カラー選択：効果＋おすすめ設置場所パネル ===== */
+(function(){
+  var COLOR_DATA = {
+    red:    {hex:'#d64533', effect:'情熱・行動力・活気',
+             text:'注意力と感情的な高揚をもたらす色。交感神経を刺激し、空間に活気とエネルギーを生み出します。',
+             place:'会議室・ブレインストーミングスペース。議論を活性化させ、前向きな発言を促したい場所に。'},
+    orange: {hex:'#e0892e', effect:'陽気・コミュニケーション促進',
+             text:'楽天的で親しみやすい印象を与える色。気持ちを開放的にし、人と人との会話を後押しします。',
+             place:'休憩室・カフェスペース・ラウンジ。社員同士の自然な交流を生みたい場所に。'},
+    yellow: {hex:'#e8c33a', effect:'明るさ・希望・集中力',
+             text:'明るさと希望を与え、頭の回転を活発にする色。集中力を高める働きがあるとされています。',
+             place:'執務スペース・デスクエリア。日々の業務に集中力と前向きさを添えたい場所に。'},
+    green:  {hex:'#3e9e6d', effect:'安心・リラックス・癒し',
+             text:'情緒を安定させ、緊張をほぐす色。心身を癒し、空間に落ち着きと安らぎをもたらします。',
+             place:'受付・廊下・休憩室。来訪者や社員の緊張を和らげ、疲労を回復させたい場所に。'},
+    blue:   {hex:'#3a6ea5', effect:'冷静・信頼・誠実',
+             text:'精神を落ち着かせる鎮静作用を持つ色。冷静さと信頼感、誠実な印象を空間に与えます。',
+             place:'役員室・応接室・集中作業エリア。落ち着いた判断や信頼感が求められる場所に。'},
+    purple: {hex:'#7a5a9e', effect:'高貴・優雅・想像力',
+             text:'高貴さと優雅さを表す色。集中力を高め、鎮静効果と創造的な感性の両方を刺激します。',
+             place:'役員室・応接室・クリエイティブ部門。品格と発想力を演出したい場所に。'},
+    brown:  {hex:'#8a5a3a', effect:'安定・ぬくもり・自然',
+             text:'木や大地を思わせるナチュラルな色。安定感とぬくもりを与え、空間を落ち着いた雰囲気にまとめます。',
+             place:'応接室・役員室・打ち合わせスペース。重厚感と安心感を両立させたい場所に。'},
+    white:  {hex:'#f5f5f0', effect:'清潔感・誠実・開放感',
+             text:'空間に清潔感と軽やかさを与える色。圧迫感を減らし、開放的で整理された印象を演出します。',
+             place:'受付・エントランス・会議室。来訪者に清潔感と信頼感を与えたい場所や、空間を広く見せたい場所に。'},
+    black:  {hex:'#1a1a1a', effect:'高級感・威厳・洗練',
+             text:'重厚感と力強さを持つ色。空間を引き締め、洗練された印象や高級感を演出します。',
+             place:'役員室・応接室・エントランス。ブランドイメージや品格を強調したい場所に。'},
+    silver: {hex:'#8a929a', effect:'先進性・知性・スタイリッシュ',
+             text:'金属的な輝きを持ち、都会的で洗練された印象を与える色。冷静さや知性を感じさせ、テクノロジーや未来性とも相性が良い色です。',
+             place:'応接室・ミーティングルーム・受付。モダンで先進的な雰囲気を演出したい場所に。'},
+    gold:   {hex:'#d4af37', effect:'豊かさ・成功・華やかさ',
+             text:'高級感や成功、豊かさを象徴する色。空間に華やかさと特別感を与え、ブランド価値や存在感を引き立てます。',
+             place:'エントランス・応接室・ラウンジ。企業のブランド性や格式を印象づけたい場所に。'},
+    colorful:{hex:'#d64533', effect:'活気・多様性・個性',
+             text:'複数の色が響き合う多色の作品や、独自の色彩を持つ作品。エネルギーと多様性を空間に与え、個性的でポジティブな印象を生みます。',
+             place:'エントランス・オープンスペース・社員食堂。活気や創造性、多様な社風を表現したい場所に。'}
+  };
+  var swatches = document.querySelectorAll('.color-swatch');
+  var panel = document.getElementById('colorPanel');
+  var chip = document.getElementById('cpChip');
+  var effTitle = document.getElementById('cpEffectTitle');
+  var effText = document.getElementById('cpEffectText');
+  var place = document.getElementById('cpPlace');
+  swatches.forEach(function(sw){
+    sw.addEventListener('click', function(){
+      swatches.forEach(function(x){x.classList.remove('is-active');});
+      sw.classList.add('is-active');
+      var key = sw.dataset.color;
+      // 「すべて」：絞り込みリセット＋パネルを閉じる
+      if(key === 'all' || !COLOR_DATA[key]){
+        filterCards('all');
+        panel.classList.remove('is-open');
+        return;
+      }
+      // 色選択：絞り込み＋パネル更新
+      var d = COLOR_DATA[key];
+      if(key === 'colorful'){
+        chip.style.background = 'conic-gradient(#d64533,#e0892e,#e8c33a,#3e9e6d,#3a6ea5,#7a5a9e,#d64533)';
+      } else {
+        chip.style.background = d.hex;
+      }
+      effTitle.textContent = d.effect;
+      effText.textContent = d.text;
+      place.textContent = d.place;
+      panel.classList.add('is-open');
+      filterCards(key);
+    });
+  });
+  // カードの絞り込み
+  function filterCards(key){
+    var cards = document.querySelectorAll('.art-card');
+    cards.forEach(function(card){
+      if(key === 'all' || card.dataset.color === key){
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+})();
+/* ===== ページネーション：押したら作品一覧の先頭へ戻る ===== */
+(function(){
+  var pag = document.querySelector('.pagination');
+  var grid = document.querySelector('.art-grid');
+  if(!pag || !grid) return;
+  pag.querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click', function(){
+      // 数字ボタンはアクティブ表示を切り替え
+      if(!b.classList.contains('nav-btn') && b.textContent.trim() !== '···'){
+        pag.querySelectorAll('button').forEach(function(x){x.classList.remove('is-active');});
+        b.classList.add('is-active');
+      }
+      // 作品一覧の先頭へスクロールして戻す
+      grid.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+})();
+const els=document.querySelectorAll('.rv');
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');else e.target.classList.remove('on');});},{threshold:.1,rootMargin:'0px 0px -50px 0px'});
+els.forEach(el=>obs.observe(el));
+
+/* フィルター開閉トグル（スマホ） */
+(function(){
+  var btn = document.getElementById('filterToggle');
+  var inner = document.querySelector('.filter-inner');
+  if(!btn || !inner) return;
+  btn.addEventListener('click', function(){
+    var open = inner.classList.toggle('is-open');
+    btn.classList.toggle('is-open', open);
+  });
+})();
+</script>
+</body>
+</html>

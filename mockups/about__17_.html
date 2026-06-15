@@ -1,0 +1,2553 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABOUT — BANK OF ART | 節税対策 × 画家支援</title>
+<meta name="description" content="バンク・オブ・アートとは。アート作品を資産として活用する、法人・事業者向けサービス。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600;700;800;900&family=Shippori+Mincho+B1:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {--fs-head:40px;--fs-body:18px;
+  --brand: #01ae84;
+  --brand-deep: #018c6a;
+  --brand-soft: rgba(1,174,132,.08);
+  --header-bg: #01ae84;
+  --ink: #212121;
+  --paper: #f5f0ea;
+  --dark: #212121;
+  --mid: #6e6862;
+  --border: rgba(33,33,33,.18);
+  --border-soft: rgba(33,33,33,.08);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+* { font-style: normal !important; }
+html { scroll-behavior: smooth; overflow-x: hidden; max-width: 100%; }
+
+body {
+  font-family: 'Shippori Mincho B1', serif;
+  font-weight: 500;
+  font-size:var(--fs-body);
+  line-height: 1.95;
+  color: var(--ink);
+  background: var(--paper);
+  overflow-x: hidden;
+  cursor: none;
+  -webkit-font-feature-settings: "palt", "kern";
+  font-feature-settings: "palt", "kern";
+  word-break: normal;
+  line-break: strict;
+  overflow-wrap: anywhere;
+  hanging-punctuation: allow-end;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+.br-pc { display: inline; }
+.br-sp { display: none; }
+@media (max-width: 700px) {
+  .br-pc { display: none; }
+  .br-sp { display: inline; }
+}
+
+/* ── CURSOR ── */
+#cur { width:8px; height:8px; background:var(--brand); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .2s,height .2s,background .2s; }
+#cur-r { width:40px; height:40px; border:1px solid var(--brand); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width .25s,height .25s; opacity:.6; }
+body:has(a:hover) #cur, body:has(button:hover) #cur { width:18px; height:18px; }
+body:has(a:hover) #cur-r, body:has(button:hover) #cur-r { width:60px; height:60px; }
+
+/* ── HEADER ── */
+header {
+  position: fixed; top:0; left:0; right:0; z-index:1000;
+  height: 92px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 40px;
+  background: var(--header-bg);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  transition: box-shadow .3s ease;
+}
+header.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.25); }
+.h-menu-btn {
+  justify-self: start;
+  background: transparent; border: none;
+  color: rgba(255,255,255,.9);
+  cursor: none;
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'Cinzel', serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 8px 0; transition: color .25s;
+}
+.h-menu-btn:hover { color: var(--ink); }
+.h-menu-icon { width: 22px; height: 12px; position: relative; display: inline-block; }
+.h-menu-icon::before, .h-menu-icon::after {
+  content:''; position: absolute; left: 0;
+  width: 100%; height: 1px; background: currentColor;
+  transition: transform .3s ease;
+}
+.h-menu-icon::before { top: 2px; }
+.h-menu-icon::after  { bottom: 2px; }
+
+.h-logo {
+  justify-self: center;
+  display: flex; align-items: center;
+  height: 100%; padding: 18px 0;
+  text-decoration: none; position: relative;
+}
+.h-logo .logo-base, .h-logo .logo-hover {
+  height: 56px; width: auto; display: block;
+  transition: opacity .35s ease, transform .5s ease;
+}
+.h-logo .logo-hover {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(.92); opacity: 0;
+}
+.h-logo:hover .logo-base { opacity: 0; transform: scale(1.04); }
+.h-logo:hover .logo-hover { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+.h-actions { justify-self: end; display: flex; }
+.btn-contact {
+  white-space: nowrap;
+  font-family: 'Cinzel', serif;
+  font-size: 13px; font-weight: 500; letter-spacing: 3px;
+  color: #fff; background: transparent;
+  border: 1px solid rgba(255,255,255,.4);
+  padding: 11px 28px; text-decoration: none;
+  text-transform: uppercase; transition: all .25s;
+  cursor: none; display: inline-block;
+}
+.btn-contact:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+.contact-dropdown { position: relative; display: inline-block; }
+.contact-menu {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  min-width: 240px; background: var(--paper);
+  border: 1px solid rgba(33,33,33,.08);
+  box-shadow: 0 14px 36px rgba(0,0,0,.12);
+  opacity: 0; visibility: hidden; transform: translateY(-6px);
+  transition: opacity .25s ease, transform .25s ease, visibility .25s;
+  z-index: 1001;
+}
+.contact-dropdown.open .contact-menu {
+  opacity: 1; visibility: visible; transform: translateY(0);
+}
+.contact-menu-item {
+  display: block;
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body); font-weight: 700; letter-spacing: 2px;
+  color: var(--ink); text-decoration: none;
+  padding: 16px 22px;
+  border-bottom: 1px solid rgba(33,33,33,.06);
+  transition: background .2s, color .2s, padding-left .25s;
+}
+.contact-menu-item:last-child { border-bottom: none; }
+.contact-menu-item:hover {
+  background: rgba(1,174,132,.08); color: var(--brand); padding-left: 28px;
+}
+
+.h-drawer {
+  position: fixed; top: 92px; left: 0; right: 0;
+  background: var(--header-bg);
+  z-index: 999;
+  max-height: 0; overflow: hidden;
+  transition: max-height .5s cubic-bezier(.4,0,.2,1);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.h-drawer.open { max-height: 700px; }
+.h-drawer-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: 36px 40px 48px;
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 12px 60px;
+}
+.h-drawer a {
+  font-family: 'Cormorant SC', serif;
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 500; letter-spacing: 3px;
+  color: rgba(255,255,255,.85);
+  text-decoration: none; padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  transition: color .25s, padding .25s;
+  display: block; text-transform: uppercase;
+}
+.h-drawer a:hover { color: var(--ink); padding-left: 12px; }
+.h-drawer a .ja {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body); font-weight: 500; letter-spacing: 3px;
+  color: rgba(255,255,255,.4);
+  display: block; margin-top: 4px; text-transform: none;
+}
+
+/* ── PRELOADER ── */
+@keyframes logoSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+#preloader {
+  position: fixed; inset: 0;
+  background: var(--paper); z-index: 99999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 28px;
+  transition: opacity .8s ease, visibility .8s ease;
+}
+#preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.preloader-logo {
+  width: clamp(90px, 10vw, 130px); height: auto;
+  animation: logoSpin 6s linear infinite;
+}
+.preloader-text {
+  font-family: 'Cinzel', serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 3px; color: var(--ink);
+  text-transform: uppercase; opacity: .6;
+}
+
+/* ══════════════════════════════════
+   COMMON SECTION
+══════════════════════════════════ */
+.section {
+  padding: 120px 0;
+  background: var(--paper);
+}
+.section-dark {
+  background: var(--dark);
+  color: var(--paper);
+}
+.section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 56px;
+  text-align: center;
+}
+.section-inner-narrow {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 56px;
+  text-align: center;
+}
+
+/* セクション境界の細罫線 */
+.section-rule {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 56px;
+}
+.section-rule hr {
+  border: 0;
+  height: 1px;
+  background: var(--border);
+  margin: 0;
+}
+
+/* 見出し共通 — 40px */
+.h-en {
+  font-family: 'Cormorant SC', serif;
+  font-weight: 400;
+  font-size: var(--fs-head);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: var(--ink);
+}
+.section-dark .h-en { color: var(--paper); }
+
+.h-ja {
+  font-family: 'Shippori Mincho B1', serif;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: 3px;
+  line-height: 1.7;
+  color: var(--ink);
+  margin-top: 18px;
+}
+.section-dark .h-ja { color: var(--paper); }
+
+.h-rule {
+  width: 56px;
+  height: 1px;
+  background: var(--ink);
+  margin: 26px auto 0;
+}
+.section-dark .h-rule { background: rgba(245,240,234,.5); }
+
+.head-block {
+  margin-bottom: 70px;
+}
+
+.lead {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 500;
+  line-height: 2.0;
+  letter-spacing: 1px;
+  color: var(--ink);
+  max-width: 720px;
+  margin: 0 auto;
+}
+.section-dark .lead { color: rgba(245,240,234,.85); }
+.lead p + p { margin-top: 18px; }
+.hl { color: var(--brand); font-weight: 700; }
+
+
+/* ══════════════════════════════════
+   1. ABOUT HERO（旧Conceptをマージ・拡大）
+══════════════════════════════════ */
+.about-hero {
+  min-height: 100vh;
+  padding: 120px 0 60px;
+  background: var(--paper);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.about-second {
+  padding: 80px 0 100px;
+  background: var(--paper);
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.about-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 56px;
+}
+.about-hero-title {
+  font-family: 'Cormorant SC', serif;
+  font-weight: 400;
+  font-size: 96px;
+  letter-spacing: 3px;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+.about-hero-ja {
+  font-family: 'Shippori Mincho B1', serif;
+  font-weight: 700;
+  font-size:var(--fs-body);
+  letter-spacing: 3px;
+  color: var(--brand);
+  margin-top: 8px;
+}
+.about-hero-rule {
+  width: 56px; height: 1px; background: var(--ink);
+  margin: 24px auto 0;
+}
+.about-hero-sub {
+  font-family: 'Shippori Mincho B1', serif;
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 48px);
+  letter-spacing: 3px;
+  color: var(--ink);
+  margin-top: 40px;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.about-hero-sub .x {
+  color: var(--brand);
+  font-family: 'Cormorant SC', serif;
+  font-weight: 400;
+  font-size: 1.2em;
+  letter-spacing: 0;
+}
+.about-hero-lead {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.95;
+  letter-spacing: 1px;
+  color: var(--ink);
+  margin-top: 36px;
+  max-width: 820px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.about-hero-character {
+  width: clamp(160px, 20vw, 220px);
+  height: auto;
+  margin: 50px auto 0;
+  display: block;
+}
+
+/* ── 統計（アイコン付き） ── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 56px 0;
+  margin-top: 0;
+}
+.stat-cell {
+  text-align: center;
+  padding: 0 24px;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  align-items: center;
+}
+.stat-cell:last-child { border-right: none; }
+.stat-icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 18px;
+  display: flex; align-items: center; justify-content: center;
+}
+.stat-icon img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+}
+.stat-num {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink);
+  letter-spacing: 1px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.stat-num .unit {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--brand);
+  letter-spacing: 2px;
+}
+.stat-label {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--ink);
+  margin-top: 16px;
+}
+.stat-eng {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: var(--mid);
+  margin-top: 6px;
+  text-transform: uppercase;
+}
+
+/* ── 導入会社ロゴマーキー ── */
+.logo-marquee {
+  margin-top: 80px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+.logo-marquee-label {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--mid);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 30px;
+}
+.logo-marquee-track {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+@keyframes logoScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.logo-marquee-row {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: logoScroll 40s linear infinite;
+}
+.logo-item {
+  flex-shrink: 0;
+  height: 110px;
+  width: 230px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+  padding: 14px 22px;
+  margin-right: 32px;
+}
+.logo-item img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+/* ロゴごとに、アスペクト比に応じてサイズを最適化 */
+.logo-item img[src="AMASSY.png"]     { width: 92%; }
+.logo-item img[src="B_C.png"]        { width: 88%; }
+.logo-item img[src="DES.png"]        { width: 86%; }
+.logo-item img[src="KOUEI.png"]      { height: 100%; width: auto; }
+.logo-item img[src="MEDIAAID.png"]   { width: 92%; }
+.logo-item img[src="MOOOVE.png"]     { width: 80%; }
+.logo-item img[src="SBS.png"]        { height: 100%; width: auto; }
+.logo-item img[src="STBELIEF.png"]   { width: 86%; }
+
+/* ══════════════════════════════════
+   3 STEPS（横一列ベン図型）
+══════════════════════════════════ */
+.cycle {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+.cycle-stage {
+  position: relative;
+  width: 100%;
+  max-width: 1320px;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* stacking context を作って、mix-blend-mode をこの内側だけで効かせる
+     → paper 背景には影響せず、円どうしの重なりだけブレンド */
+  isolation: isolate;
+}
+.cycle-arrows { display: none; }
+.cycle-node {
+  position: relative;
+  flex-shrink: 0;
+  width: 480px;
+  height: 480px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  /* 円内側はみ出し対策：左右はもっと内側に */
+  padding: 50px 90px;
+  color: #fff;
+  box-sizing: border-box;
+}
+.cycle-node::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  z-index: 0;
+  mix-blend-mode: multiply;
+}
+.cycle-node > * {
+  position: relative;
+  z-index: 1;
+}
+.cycle-node.node-left::before { background: #01ae84; }
+.cycle-node.node-top::before { background: #212121; }
+.cycle-node.node-right::before { background: #01ae84; }
+
+.cycle-node.node-left {
+  z-index: 2;
+  margin-right: -100px;
+}
+.cycle-node.node-top {
+  z-index: 1;
+  margin-right: -100px;
+}
+.cycle-node.node-right {
+  z-index: 2;
+}
+.cycle-node-char {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cycle-node-char img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,.25));
+}
+.cycle-node-num {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 6px;
+  opacity: 0.85;
+}
+.cycle-node-title {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #fff;
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+.cycle-node-en {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,.7);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.cycle-node-text {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.85;
+  letter-spacing: 1px;
+  color: #fff;
+  text-align: center;
+}
+.cycle-node-text .hl {
+  color: #fff;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255,255,255,.5);
+  padding-bottom: 1px;
+}
+.cycle-arrow-sp { display: none; }
+
+/* 旧 step-card は残すが現状未使用 */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 20px;
+}
+.step-card {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  padding: 40px 28px 36px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ══════════════════════════════════
+   MOVIE
+══════════════════════════════════ */
+.movie-frame {
+  position: relative;
+  width: 100%;
+  max-width: 920px;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border: 1px solid var(--border);
+  margin: 0 auto;
+  overflow: hidden;
+}
+.movie-frame iframe {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; border: 0;
+}
+.movie-caption {
+  margin-top: 24px;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  color: var(--mid);
+  text-transform: uppercase;
+}
+.section-dark .movie-caption { color: rgba(245,240,234,.5); }
+.movie-cta {
+  margin-top: 50px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+.movie-cta .btn-w, .movie-cta .btn-o {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 700;
+  letter-spacing: 3px;
+  padding: 18px 36px;
+  text-decoration: none;
+  transition: all .25s;
+  display: inline-block;
+  min-width: 220px;
+  text-align: center;
+}
+.movie-cta .btn-w {
+  background: var(--brand);
+  color: var(--paper);
+  border: 1px solid var(--brand);
+}
+.movie-cta .btn-w:hover {
+  background: var(--brand-deep);
+  border-color: var(--brand-deep);
+  transform: translateY(-2px);
+}
+.movie-cta .btn-o {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+}
+.section-dark .movie-cta .btn-o {
+  color: var(--paper);
+  border-color: rgba(245,240,234,.5);
+}
+.movie-cta .btn-o:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+.section-dark .movie-cta .btn-o:hover {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--paper);
+}
+
+/* ══════════════════════════════════
+   絵画償却制度のルール（棒グラフ風）
+══════════════════════════════════ */
+.dep-intro {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.95;
+  letter-spacing: 1px;
+  color: var(--ink);
+  text-align: center;
+  max-width: 820px;
+  margin: 30px auto 0;
+}
+.dep-bar {
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 60px;
+  align-items: stretch;
+  text-align: left;
+}
+.dep-bar-graph {
+  position: relative;
+  height: 480px;
+  background: var(--paper);
+  border-left: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+/* Y軸ラベル */
+.dep-axis-label {
+  position: absolute;
+  left: -64px;
+  font-family: 'Shippori Mincho B1', serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--ink);
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.dep-axis-label .yen {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 14px;
+  font-weight: 700;
+  margin-left: 4px;
+}
+.dep-axis-label.top { top: -14px; }
+.dep-axis-label.mid { top: 60%; transform: translateY(-50%); }
+.dep-axis-label.bot { bottom: -14px; }
+
+/* 100万線 */
+.dep-line-100 {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  border-top: 2px solid var(--ink);
+}
+.dep-line-100::after {
+  content: '100万円ライン';
+  position: absolute;
+  top: -28px; right: 0;
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--ink);
+  background: var(--paper);
+  padding: 0 8px;
+}
+/* 40万線 */
+.dep-line-30 {
+  position: absolute;
+  top: 60%; left: 0; right: 0;
+  border-top: 1px dashed var(--brand);
+}
+.dep-line-30::after {
+  content: '40万円ライン';
+  position: absolute;
+  top: -22px; right: 0;
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--brand);
+  background: var(--paper);
+  padding: 0 8px;
+}
+
+/* 減価償却ゾーン（40万〜100万） */
+.dep-zone-shoukyaku {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 60%;
+  background: rgba(33,33,33,.04);
+  border-bottom: 1px dashed var(--brand);
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+/* 即時償却ゾーン（〜40万） */
+.dep-zone-sokuji {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 40%;
+  background: var(--brand-soft);
+  padding: 18px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+.dep-zone-tag {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--mid);
+  text-transform: uppercase;
+}
+.dep-zone-sokuji .dep-zone-tag { color: var(--brand); }
+.dep-zone-title {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.dep-zone-sokuji .dep-zone-title { color: var(--brand); }
+.dep-zone-cond {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--ink);
+  line-height: 1.7;
+}
+/* 100万円超ゾーン（無効） */
+.dep-zone-over {
+  position: absolute;
+  top: -50px; left: 0; right: 0;
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--mid);
+  text-align: right;
+  padding-right: 12px;
+}
+
+/* 右サイドカード（説明） — グラフと縦幅統一・70:30比率 */
+.dep-side {
+  display: grid;
+  grid-template-rows: 7fr 3fr;
+  gap: 0;
+  text-align: center;
+  height: 480px;
+}
+.dep-side-card {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.dep-side-card.primary {
+  border-color: var(--brand);
+  border-top: none;
+  background: var(--brand-soft);
+}
+.dep-side-tag {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--mid);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.dep-side-card.primary .dep-side-tag { color: var(--brand); }
+.dep-side-headline {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--ink);
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+.dep-side-card.primary .dep-side-headline { color: var(--brand); }
+.dep-side-text {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--ink);
+  line-height: 1.85;
+}
+.dep-source {
+  margin-top: 36px;
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--mid);
+  line-height: 1.85;
+  text-align: center;
+}
+.dep-source a {
+  color: var(--brand);
+  text-decoration: none;
+  border-bottom: 1px solid var(--brand);
+  padding-bottom: 1px;
+  transition: opacity .2s;
+}
+.dep-source a:hover { opacity: .7; }
+
+/* ══════════════════════════════════
+   RESALE — サイズで強弱
+══════════════════════════════════ */
+/* ══════════════════════════════════
+   RESALE — 高さで比較（バーチャート型）
+══════════════════════════════════ */
+.resale-bars {
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: end;
+  position: relative;
+  padding: 0 60px;
+}
+/* 横軸線は棒グラフ下辺と揃わないため排除 */
+/* 目盛りも排除 */
+/* 0%ラベルも排除 */
+/* 高比率の右上 ⇄ 標準比率の左上 を結ぶ斜め破線（SVG オーバーレイ） */
+.resale-bars-diff {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+.resale-bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+  z-index: 2;
+}
+.resale-bar-label {
+  text-align: center;
+  margin-bottom: 8px;
+}
+.resale-bar-tag {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--mid);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.resale-bar-col.with .resale-bar-tag {
+  color: var(--brand);
+}
+.resale-bar-title {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--ink);
+  line-height: 1.6;
+}
+.resale-bar-col.without .resale-bar-title {
+  color: var(--mid);
+}
+.resale-bar-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 460px;
+  position: relative;
+}
+.resale-bar {
+  width: 80%;
+  max-width: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px 20px;
+  position: relative;
+}
+.resale-bar.bar-high {
+  height: 100%;
+  background: var(--brand);
+  color: var(--paper);
+  border: 2px solid var(--brand);
+}
+.resale-bar.bar-low {
+  height: 80%;
+  background: var(--paper);
+  color: var(--mid);
+  border: 2px solid var(--mid);
+}
+.resale-bar-rate {
+  font-family: 'Shippori Mincho B1', serif;
+  font-weight: 700;
+  letter-spacing: 3px;
+  line-height: 1.2;
+}
+.resale-bar.bar-high .resale-bar-rate { font-size: 38px; color: var(--paper); }
+.resale-bar.bar-low .resale-bar-rate { font-size: 28px; color: var(--mid); }
+.resale-bar-rate-sub {
+  font-family: 'Shippori Mincho B1', serif;
+  font-weight: 700;
+  letter-spacing: 3px;
+  margin-top: 12px;
+}
+.resale-bar.bar-high .resale-bar-rate-sub { font-size: 16px; color: rgba(245,240,234,.85); }
+.resale-bar.bar-low .resale-bar-rate-sub { font-size: 14px; color: var(--mid); }
+
+/* 旧 resale-comp/card は念のため残す */
+.resale-comp {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 32px;
+  margin-top: 40px;
+}
+.resale-card {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  padding: 50px 40px;
+  text-align: center;
+}
+
+.resale-warning {
+  margin-top: 40px;
+  background: var(--paper);
+  border: 1px solid var(--brand);
+  padding: 24px 32px;
+  text-align: center;
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 500;
+  line-height: 1.85;
+  letter-spacing: 1px;
+  color: var(--ink);
+}
+.resale-warning strong {
+  color: var(--brand);
+  font-weight: 700;
+}
+
+/* ══════════════════════════════════
+   5 REASONS — zig-zag タイムライン
+══════════════════════════════════ */
+.reasons-tagline {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--paper);
+  text-align: center;
+  margin-top: -30px;
+  margin-bottom: 60px;
+  line-height: 1.7;
+}
+.reasons-tagline .x {
+  color: var(--brand);
+  font-weight: 700;
+  margin: 0 6px;
+}
+
+/* 5 REASONS — 角丸カード5枚横並び */
+.reasons-cards {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin-top: 40px;
+  align-items: stretch;
+}
+.reason-card {
+  position: relative;
+  background: var(--paper);
+  border-radius: 16px;
+  padding: 36px 12px 32px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+.reason-icon {
+  width: 72px;
+  height: 72px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.reason-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.reason-title {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--brand);
+  line-height: 1.6;
+  margin-bottom: 22px;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+.reason-text {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.85;
+  letter-spacing: 1px;
+  color: var(--ink);
+}
+
+/* ══════════════════════════════════
+   CTA — トップ準拠（横並び型）
+══════════════════════════════════ */
+.cta-strip {
+  padding: 80px 56px;
+  background: #4a4a4a;
+  color: #fff;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.cta-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  position: relative; z-index: 1;
+  max-width: 1100px;
+  width: 100%;
+}
+.cta-title {
+  font-family: 'Cormorant SC', serif;
+  font-size:var(--fs-head);
+  font-weight: 400;
+  letter-spacing: 3px;
+  color: #fff;
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: left;
+}
+.cta-btns { display: flex; gap: 14px; flex-shrink: 0; }
+.btn-cta-w {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #fff;
+  background: var(--brand);
+  padding: 18px 32px;
+  text-decoration: none;
+  transition: all .25s;
+  display: block;
+  border: 1px solid var(--brand);
+}
+.btn-cta-w:hover {
+  background: var(--brand-deep);
+  border-color: var(--brand-deep);
+  transform: translateY(-2px);
+}
+.btn-cta-o {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size:var(--fs-body);
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.5);
+  padding: 18px 32px;
+  text-decoration: none;
+  transition: all .25s;
+  display: block;
+}
+.btn-cta-o:hover {
+  background: #fff;
+  color: #4a4a4a;
+  border-color: #fff;
+}
+
+/* ══════════════════════════════════
+   FOOTER
+══════════════════════════════════ */
+footer { background: #050505; padding:72px 0 0; }
+.footer-top {
+  max-width:1320px; margin:0 auto; padding:0 56px;
+  display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; gap:50px;
+  padding-bottom:60px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.foot-logo img { height: 32px; width: auto; }
+.foot-tagline {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: .22em;
+  color: rgba(255,255,255,.4);
+  margin-top: 18px;
+  line-height: 2.2;
+}
+.foot-social { display:flex; gap:10px; margin-top:24px; }
+.soc-a {
+  width:38px; height:38px;
+  border:1px solid rgba(255,255,255,.12);
+  display:flex; align-items:center; justify-content:center;
+  text-decoration:none; color:rgba(255,255,255,.45);
+  font-family: 'Cormorant SC', serif;
+  font-size:13px; font-weight:500; font-style: normal;
+  transition:all .25s;
+}
+.soc-a:hover { border-color:var(--brand); color:var(--brand); }
+.foot-col-t {
+  font-family: 'Cinzel', serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--brand);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.foot-links { list-style:none; display:flex; flex-direction:column; gap:12px; }
+.foot-links li a {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: .1em;
+  color: rgba(255,255,255,.5);
+  text-decoration: none;
+  transition: color .2s;
+  line-height: 1.6;
+}
+.foot-links li a:hover { color:#fff; }
+.footer-bottom {
+  max-width:1320px; margin:0 auto; padding:0 56px;
+  height:60px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.foot-copy {
+  font-family: 'Cormorant SC', serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: .15em;
+  color: rgba(255,255,255,.3);
+  font-style: normal;
+}
+.foot-privacy {
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,.3);
+  text-decoration: none;
+  transition: color .2s;
+}
+.foot-privacy:hover { color:rgba(255,255,255,.6); }
+
+/* ══════════════════════════════════
+   ANIMATION
+══════════════════════════════════ */
+.rv { opacity: 0; transform: translateY(36px); transition: opacity 1s ease, transform 1s ease; }
+.rv.on { opacity: 1; transform: translateY(0); }
+.rv.d1 { transition-delay: .08s; }
+.rv.d2 { transition-delay: .16s; }
+.rv.d3 { transition-delay: .24s; }
+.rv.d4 { transition-delay: .32s; }
+.rv.d5 { transition-delay: .40s; }
+
+/* ══════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════ */
+@media (max-width: 1024px) {
+  header { padding: 0 24px; }
+  .section { padding: 90px 0; }
+  .section-inner, .section-inner-narrow, .about-hero-inner { padding: 0 32px; }
+  .stats { grid-template-columns: 1fr; }
+  .stat-cell {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 30px 24px;
+  }
+  .stat-cell:last-child { border-bottom: none; }
+  .steps-grid { grid-template-columns: 1fr; gap: 20px; }
+
+  /* 棒グラフ縦積みに */
+  .dep-bar { grid-template-columns: 1fr; gap: 30px; }
+  .dep-axis-label { left: -52px; font-size:var(--fs-body); }
+
+  .resale-bars { gap: 30px; padding: 0 24px 50px; }
+  .resale-bar-wrap { height: 280px; }
+
+  .reasons-cards { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+  .cta-strip { padding: 48px 32px; }
+  .cta-inner { flex-direction: column; gap: 24px; }
+  .cta-title { text-align: center; }
+}
+
+/* ── 3 STEPS：SP縦並び（768px以下） ── */
+@media (max-width: 768px) {
+  .cycle { margin-top: 10px; }
+  .cycle-stage {
+    height: auto;
+    max-width: 360px;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .cycle-node,
+  .cycle-node.node-top,
+  .cycle-node.node-left,
+  .cycle-node.node-right {
+    width: 300px;
+    height: 300px;
+    padding: 30px 32px;
+    margin-right: 0;
+  }
+  .cycle-node-char { width: 70px; height: 70px; margin-bottom: 10px; }
+  .cycle-node-num { font-size: 20px; margin-bottom: 4px; }
+  .cycle-node-title { font-size: 22px; letter-spacing: 2px; margin-bottom: 2px; }
+  .cycle-node-en { font-size: 10px; margin-bottom: 10px; }
+  .cycle-node-text { font-size: 13px; line-height: 1.7; letter-spacing: 0.5px; }
+  /* RESALE：SP破線撤廃（PCレイアウト前提のため正しい位置に置けない） */
+  .resale-bars-diff { display: none; }
+}
+@media (max-width: 700px) {
+  :root { --fs-body: 15px; --fs-head: 24px; }
+  body { line-height: 1.75; }
+  /* スマホ：本文の行間を詰める */
+  .lead, .about-hero-lead, .cycle-node-text, .dep-intro, .dep-side-text, .reason-text { line-height: 1.7; }
+  .btn-contact { padding: 10px 18px; letter-spacing: 2px; white-space: nowrap; }
+  .section { padding: 70px 0; }
+  .about-hero { min-height: 100vh; padding: 110px 0 40px; }
+  .h-en { font-size: 30px !important; letter-spacing: 2px !important; }
+  .about-hero-title { font-size: 60px !important; }
+  .h-menu-btn span:not(.h-menu-icon) { display: none; }
+  .h-drawer-inner { grid-template-columns: 1fr; padding: 28px 24px 36px; gap: 6px; }
+  .h-logo .logo-base, .h-logo .logo-hover { height: 32px; }
+  .footer-top { grid-template-columns: 1fr; gap: 32px; padding: 0 24px 60px; }
+  .footer-bottom { flex-direction: column; gap: 12px; height: auto; padding: 20px 24px; }
+  /* 375px基準 — はみ出し防止 */
+  .about-hero, .section { max-width: 100%; overflow-x: hidden; }
+  .about-hero-inner { padding-left: 20px; padding-right: 20px; }
+  .about-hero-sub { font-size: 30px; }
+  .about-hero-sub, .about-hero-lead { max-width: 100%; word-break: normal; overflow-wrap: anywhere; }
+  .resale-card { padding-left: 24px; padding-right: 24px; }
+  .resale-bars { padding-left: 6px; padding-right: 6px; }
+  .cta-btns { flex-direction: column; width: 100%; }
+  .btn-cta-w, .btn-cta-o { text-align: center; width: 100%; }
+  .stat-num { font-size: 52px; }
+
+  /* グラフ高さ縮小 */
+  .dep-bar-graph { height: 380px; }
+  .dep-zone-title { font-size: 22px; }
+  .movie-cta { flex-direction: column; width: 100%; }
+  .movie-cta .btn-w, .movie-cta .btn-o { width: 100%; }
+  .reasons-cards { grid-template-columns: 1fr; }
+  /* RESALE: SPでも2列維持＋縮小 */
+  .resale-bars { gap: 12px; padding: 0 8px 40px; }
+  .resale-bar-wrap { height: 220px; }
+  .resale-bar-title { font-size: 16px; }
+  .resale-bar-tag { font-size: 10px; letter-spacing: 2px; }
+  .resale-bar-col { gap: 14px; }
+}
+
+
+@media (max-width: 430px) {
+  .stats, .steps-grid { grid-template-columns: 1fr !important; }
+  .reasons-cards { grid-template-columns: 1fr !important; }
+  .resale-bars { grid-template-columns: repeat(2,1fr) !important; gap: 10px !important; padding: 0 4px 32px !important; }
+  .resale-bar-wrap { height: 240px !important; }
+  .resale-bar { padding: 14px 6px !important; }
+  .resale-bar.bar-high .resale-bar-rate { font-size: 20px !important; }
+  .resale-bar.bar-low .resale-bar-rate { font-size: 16px !important; }
+  .resale-bar-rate-sub { font-size: 11px !important; }
+  .resale-bar-tag { font-size: 9px !important; letter-spacing: 1px !important; }
+  .resale-bar-title { font-size: 13px !important; }
+  .about-hero-inner { padding-left: 16px !important; padding-right: 16px !important; }
+  .about-hero-sub { font-size: 26px !important; }
+  .about-hero-title { font-size: 46px !important; }
+  .resale-card, .step-card { padding-left: 18px !important; padding-right: 18px !important; }
+  .contact-menu { min-width: 200px !important; }
+  .btn-o { min-width: 0 !important; }
+  .cycle-node { width: 280px !important; height: 280px !important; }
+  .node-right { width: auto !important; }
+  .logo-item { width: 160px !important; }
+  *, *::before, *::after { max-width: 100% !important; min-width: 0 !important; box-sizing: border-box !important; }
+  img { height: auto; }
+  html, body { overflow-x: hidden !important; width: 100% !important; max-width: 100% !important; }
+  header, section, footer, .cta-strip, main, div { max-width: 100vw; }
+}
+
+/* ══════════════════════════════════
+   税制シミュレーター
+══════════════════════════════════ */
+.sim-section { padding: 120px 40px; background: var(--paper); }
+.sim-section-inner { max-width: 1080px; margin: 0 auto; }
+.sim-eyebrow { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 4px; color: var(--brand); text-transform: uppercase; text-align: center; margin-bottom: 14px; }
+.sim-title { font-family: 'Shippori Mincho B1', serif; font-size: 36px; font-weight: 700; letter-spacing: 3px; color: var(--ink); text-align: center; margin-bottom: 20px; line-height: 1.5; }
+.sim-lead { font-family: 'Shippori Mincho B1', serif; font-size: 15px; line-height: 1.95; letter-spacing: 1px; color: var(--mid); text-align: center; max-width: 720px; margin: 0 auto 60px; }
+
+/* タブ切替 */
+.sim-tabs { display: flex; gap: 0; justify-content: center; margin-bottom: 48px; border-bottom: 1px solid var(--border); }
+.sim-tab { font-family: 'Shippori Mincho B1', serif; font-size: 15px; font-weight: 700; letter-spacing: 2px; color: var(--mid); padding: 18px 36px; background: transparent; border: none; cursor: none; position: relative; transition: color .25s; }
+.sim-tab::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 0; height: 2px; background: var(--brand); transition: width .3s; }
+.sim-tab:hover { color: var(--ink); }
+.sim-tab.is-active { color: var(--ink); }
+.sim-tab.is-active::after { width: 100%; }
+
+.sim-panel { display: none; }
+.sim-panel.is-active { display: block; }
+
+/* 入力エリア */
+.sim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.sim-form { background: #fff; padding: 40px; border: 1px solid var(--border-soft); }
+.sim-form-h { font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 3px; color: var(--brand); margin-bottom: 28px; text-transform: uppercase; }
+.sim-field { margin-bottom: 24px; }
+.sim-field-label { display: block; font-family: 'Shippori Mincho B1', serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; color: var(--ink); margin-bottom: 10px; }
+.sim-field-hint { font-family: 'Shippori Mincho B1', serif; font-size: 11px; line-height: 1.6; color: var(--mid); margin-top: 6px; }
+.sim-select, .sim-input { width: 100%; font-family: 'Shippori Mincho B1', serif; font-size: 14px; padding: 12px 14px; border: 1px solid var(--border); background: #fff; color: var(--ink); transition: border-color .2s; -webkit-appearance: none; appearance: none; cursor: none; }
+.sim-select { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%2301ae84' d='M6 8L0 0h12z'/></svg>"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+.sim-input:focus, .sim-select:focus { outline: none; border-color: var(--brand); }
+.sim-slider-wrap { display: flex; align-items: center; gap: 16px; }
+.sim-slider { flex: 1; -webkit-appearance: none; appearance: none; height: 4px; background: var(--border); border-radius: 2px; outline: none; cursor: none; }
+.sim-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; background: var(--brand); border-radius: 50%; cursor: none; }
+.sim-slider::-moz-range-thumb { width: 18px; height: 18px; background: var(--brand); border-radius: 50%; border: none; cursor: none; }
+.sim-slider-value { font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700; color: var(--brand); min-width: 60px; text-align: right; }
+.sim-toggle-wrap { display: flex; align-items: center; gap: 12px; }
+.sim-toggle { position: relative; width: 44px; height: 24px; background: var(--border); border-radius: 12px; cursor: none; transition: background .25s; flex-shrink: 0; }
+.sim-toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: #fff; border-radius: 50%; transition: transform .25s; }
+.sim-toggle.is-on { background: var(--brand); }
+.sim-toggle.is-on::after { transform: translateX(20px); }
+.sim-toggle-label { font-family: 'Shippori Mincho B1', serif; font-size: 13px; color: var(--ink); }
+
+.sim-btn { width: 100%; font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; color: #fff; background: var(--brand); border: 1px solid var(--brand); padding: 18px; margin-top: 12px; cursor: none; transition: background .3s; }
+.sim-btn:hover { background: var(--brand-deep); }
+
+/* 結果エリア */
+.sim-result { background: #fff; padding: 40px; border: 1px solid var(--border-soft); }
+.sim-result-h { font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 3px; color: var(--brand); margin-bottom: 28px; text-transform: uppercase; }
+.sim-result-empty { font-family: 'Shippori Mincho B1', serif; font-size: 14px; line-height: 1.95; color: var(--mid); text-align: center; padding: 60px 0; }
+.sim-result-row { display: flex; justify-content: space-between; align-items: baseline; padding: 18px 0; border-bottom: 1px solid var(--border-soft); }
+.sim-result-row:last-of-type { border-bottom: none; }
+.sim-result-row.is-final { padding: 24px 0; border-top: 2px solid var(--ink); border-bottom: none; margin-top: 12px; }
+.sim-result-label { font-family: 'Shippori Mincho B1', serif; font-size: 13px; font-weight: 700; color: var(--mid); letter-spacing: 1px; }
+.sim-result-value { font-family: 'Cinzel', serif; font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: 1px; }
+.sim-result-row.is-final .sim-result-label { font-size: 14px; color: var(--ink); }
+.sim-result-row.is-final .sim-result-value { font-size: 32px; color: var(--brand); }
+.sim-result-row.is-final .sim-result-value.is-negative { color: #c44; }
+
+.sim-warning { background: rgba(220,68,68,.06); border-left: 3px solid #c44; padding: 14px 16px; margin-top: 20px; font-family: 'Shippori Mincho B1', serif; font-size: 12px; line-height: 1.7; color: var(--ink); letter-spacing: .5px; }
+.sim-warning + .sim-warning { margin-top: 10px; }
+.sim-notice { background: var(--brand-soft); border-left: 3px solid var(--brand); padding: 14px 16px; margin-top: 20px; font-family: 'Shippori Mincho B1', serif; font-size: 12px; line-height: 1.7; color: var(--ink); letter-spacing: .5px; }
+
+/* 年次テーブル（減価償却シミュレーター） */
+.sim-table { width: 100%; border-collapse: collapse; margin-top: 28px; }
+.sim-table th, .sim-table td { padding: 10px 8px; text-align: right; font-family: 'Shippori Mincho B1', serif; font-size: 12px; border-bottom: 1px solid var(--border-soft); }
+.sim-table th { background: var(--paper); color: var(--brand); font-weight: 700; text-align: center; letter-spacing: 1px; }
+.sim-table td:first-child { text-align: center; font-weight: 700; color: var(--ink); }
+
+/* 年次グラフ */
+.sim-chart { margin-top: 28px; padding: 24px; background: var(--paper); }
+.sim-chart-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.sim-chart-row:last-child { margin-bottom: 0; }
+.sim-chart-y { font-family: 'Cinzel', serif; font-size: 11px; color: var(--mid); width: 36px; flex-shrink: 0; }
+.sim-chart-bar-wrap { flex: 1; display: flex; align-items: center; height: 22px; background: rgba(33,33,33,.04); }
+.sim-chart-bar { height: 100%; background: var(--brand); transition: width .6s ease; min-width: 1px; }
+.sim-chart-val { font-family: 'Cinzel', serif; font-size: 11px; color: var(--ink); width: 70px; flex-shrink: 0; text-align: right; }
+
+/* 免責 */
+.sim-disclaimer { margin-top: 60px; padding: 32px; background: rgba(33,33,33,.03); border: 1px dashed var(--border); }
+
+/* ARTを探すCTAボタン */
+.sim-cta-wrap { text-align: center; margin-top: 60px; }
+.sim-cta-btn { display: inline-block; font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; color: var(--ink); background: transparent; border: 1px solid var(--ink); padding: 18px 56px; text-decoration: none; transition: background .3s, color .3s, border-color .3s; cursor: none; }
+.sim-cta-btn:hover { background: var(--brand); color: #fff; border-color: var(--brand); }
+@media(max-width:700px){
+  .sim-cta-wrap { margin-top: 40px; }
+  .sim-cta-btn { padding: 16px 36px; font-size: 13px; letter-spacing: 2px; }
+}
+.sim-disclaimer-h { font-family: 'Shippori Mincho B1', serif; font-size: 13px; font-weight: 700; color: var(--brand); margin-bottom: 14px; letter-spacing: 1px; }
+.sim-disclaimer ul { margin: 0; padding-left: 20px; }
+.sim-disclaimer li { font-family: 'Shippori Mincho B1', serif; font-size: 11px; line-height: 1.85; color: var(--mid); margin-bottom: 6px; letter-spacing: .5px; }
+
+/* レスポンシブ */
+@media (max-width: 980px) {
+  .sim-grid { grid-template-columns: 1fr; gap: 24px; }
+  .sim-section { padding: 80px 24px; }
+  .sim-title { font-size: 28px; }
+}
+@media (max-width: 700px) {
+  .sim-section { padding: 60px 16px; }
+  .sim-title { font-size: 22px; margin-bottom: 14px; }
+  .sim-lead { font-size: 13px; margin-bottom: 40px; }
+  .sim-tab { padding: 14px 14px; font-size: 13px; letter-spacing: 1px; }
+  .sim-form, .sim-result { padding: 24px 20px; }
+  .sim-result-value { font-size: 18px; }
+  .sim-result-row.is-final .sim-result-value { font-size: 24px; }
+  .sim-table th, .sim-table td { font-size: 10px; padding: 8px 4px; }
+  .sim-disclaimer { padding: 22px 18px; }
+  .sim-chart-y { width: 28px; font-size: 10px; }
+  .sim-chart-val { width: 60px; font-size: 10px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ════════ PRELOADER ════════ -->
+<div id="preloader">
+  <img class="preloader-logo" src="boa-11.png" alt="Loading">
+  <div class="preloader-text">LOADING</div>
+</div>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- ════════ HEADER ════════ -->
+<header id="hdr">
+  <button class="h-menu-btn" id="menuToggle" aria-label="Menu">
+    <span class="h-menu-icon"></span>
+    <span>MENU</span>
+  </button>
+
+  <a href="index.html" class="h-logo" aria-label="BANK OF ART">
+    <img class="logo-base" src="boa-07.png" alt="BANK OF ART">
+    <img class="logo-hover" src="boa-06.png" alt="">
+  </a>
+
+  <div class="h-actions">
+    <div class="contact-dropdown" id="contactDropdown">
+      <button class="btn-contact" id="contactToggle" aria-haspopup="true" aria-expanded="false">CONTACT</button>
+      <div class="contact-menu">
+        <a href="https://business.form-mailer.jp/fms/1c6a81d4280183" target="_blank" class="contact-menu-item">資料請求</a>
+        <a href="https://booking.receptionist.jp/5ade6c6d-ae6c-44d9-9921-000ad24af9f9/30min" target="_blank" class="contact-menu-item">オンライン説明会</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ════════ DRAWER ════════ -->
+<div class="h-drawer" id="drawer">
+  <div class="h-drawer-inner">
+    <a href="about.html"><span>ABOUT</span><span class="ja">バンクオブアートとは</span></a>
+    <a href="index.html#artist"><span>ARTIST</span><span class="ja">アーティスト一覧</span></a>
+    <a href="index.html#art"><span>ART</span><span class="ja">作品一覧</span></a>
+    <a href="index.html#collector"><span>COLLECTOR</span><span class="ja">画家応援企業</span></a>
+    <a href="index.html#news"><span>NEWS</span><span class="ja">最新記事</span></a>
+    <a href="journal.html"><span>JOURNAL</span><span class="ja">読み物</span></a>
+  </div>
+</div>
+
+<!-- ════════ 1. ABOUT HERO（FV：〜コレクト可能。まで） ════════ -->
+<section class="about-hero">
+  <div class="about-hero-inner">
+    <h1 class="about-hero-title rv">ABOUT</h1>
+    <p class="about-hero-ja rv d1">バンク・オブ・アートとは</p>
+    <div class="about-hero-rule"></div>
+
+    <h2 class="about-hero-sub rv d2">
+      <span>節税対策</span>
+      <span class="x">×</span>
+      <span>画家支援</span>
+    </h2>
+    <div class="about-hero-lead rv d3">
+      <p>バンク・オブ・アートは、<br class="br-pc">アート作品を<span class="hl">「資産」</span>として活用する、<br class="br-pc">法人・事業者向けサービス。</p>
+      <p style="margin-top:18px;">減価償却・即時償却など税務上の仕組みを活用して、<br class="br-pc">本物のアートを<span class="hl">無料に近い費用</span>でコレクト可能。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 1-2. ABOUT 数字＆クライアントロゴ ════════ -->
+<section class="about-second">
+  <div class="about-hero-inner">
+    <!-- 統計（アイコン付き） -->
+    <div class="stats rv">
+      <div class="stat-cell">
+        <div class="stat-icon">
+          <img src="BOAicon-18.png" alt="">
+        </div>
+        <div class="stat-num"><span class="count-up" data-target="172">0</span><span class="unit">ヶ所</span></div>
+        <div class="stat-label">導入先</div>
+        <div class="stat-eng">CLIENTS</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-icon">
+          <img src="BOAicon-17.png" alt="">
+        </div>
+        <div class="stat-num"><span class="count-up" data-target="22">0</span><span class="unit">名</span></div>
+        <div class="stat-label">所属画家</div>
+        <div class="stat-eng">ARTISTS</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-icon">
+          <img src="BOAicon-16.png" alt="">
+        </div>
+        <div class="stat-num"><span class="count-up" data-target="1230">0</span><span class="unit">枚</span></div>
+        <div class="stat-label">取扱作品数</div>
+        <div class="stat-eng">ARTWORKS</div>
+      </div>
+    </div>
+
+    <!-- 導入会社ロゴ（マーキー） -->
+    <div class="logo-marquee rv">
+      <div class="logo-marquee-label">CLIENT COMPANIES</div>
+      <div class="logo-marquee-track">
+        <div class="logo-marquee-row">
+          <div class="logo-item"><img src="AMASSY.png" alt="Amassy"></div>
+          <div class="logo-item"><img src="B_C.png" alt="B&middot;C Investors"></div>
+          <div class="logo-item"><img src="DES.png" alt="DES International"></div>
+          <div class="logo-item"><img src="KOUEI.png" alt="KOUEI"></div>
+          <div class="logo-item"><img src="MEDIAAID.png" alt="MEDIA AID"></div>
+          <div class="logo-item"><img src="MOOOVE.png" alt="MOOOVE"></div>
+          <div class="logo-item"><img src="SBS.png" alt="SBS GROUP"></div>
+          <div class="logo-item"><img src="STBELIEF.png" alt="ST-BELIEF"></div>
+          <!-- 複製でループ用 -->
+          <div class="logo-item"><img src="AMASSY.png" alt=""></div>
+          <div class="logo-item"><img src="B_C.png" alt=""></div>
+          <div class="logo-item"><img src="DES.png" alt=""></div>
+          <div class="logo-item"><img src="KOUEI.png" alt=""></div>
+          <div class="logo-item"><img src="MEDIAAID.png" alt=""></div>
+          <div class="logo-item"><img src="MOOOVE.png" alt=""></div>
+          <div class="logo-item"><img src="SBS.png" alt=""></div>
+          <div class="logo-item"><img src="STBELIEF.png" alt=""></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-rule"><hr></div>
+
+<!-- ════════ 2. 3 STEPS（サイクル型） ════════ -->
+<section class="section" id="steps">
+  <div class="section-inner">
+    <div class="head-block">
+      <h2 class="h-en rv">3 STEPS</h2>
+      <p class="h-ja rv d1">3つのしくみ</p>
+      <div class="h-rule"></div>
+    </div>
+
+    <div class="cycle rv">
+      <div class="cycle-stage">
+        <!-- 01 コレクト（緑） -->
+        <div class="cycle-node node-left">
+          <div class="cycle-node-char">
+            <img src="char-02.png" alt="">
+          </div>
+          <div class="cycle-node-num">01</div>
+          <div class="cycle-node-title">コレクト</div>
+          <div class="cycle-node-en">COLLECT</div>
+          <p class="cycle-node-text">専属コレクターが<br><span class="hl">全国各地の若手画家</span>と直接契約。<br>独自の評価基準を満たした<br>原画を厳選してご提供します。</p>
+        </div>
+
+        <!-- 02 減価償却（黒） -->
+        <div class="cycle-node node-top">
+          <div class="cycle-node-char">
+            <img src="char-03.png" alt="">
+          </div>
+          <div class="cycle-node-num">02</div>
+          <div class="cycle-node-title">減価償却</div>
+          <div class="cycle-node-en">DEPRECIATION</div>
+          <p class="cycle-node-text">取り扱う絵画は原則として<br><span class="hl">減価償却資産の美術工芸品</span>。<br>1年〜8年で経費計上を<br>行うことが可能です。</p>
+        </div>
+
+        <!-- 03 リセール（緑） -->
+        <div class="cycle-node node-right">
+          <div class="cycle-node-char">
+            <img src="char-01.png" alt="">
+          </div>
+          <div class="cycle-node-num">03</div>
+          <div class="cycle-node-title">リセール</div>
+          <div class="cycle-node-en">RESALE</div>
+          <p class="cycle-node-text">当方より販売した作品は<br><span class="hl">販売価格の30〜70%</span>の<br>査定評価にて買取いたします。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-rule"><hr></div>
+
+<!-- ════════ 3. MOVIE ════════ -->
+<section class="section section-dark" id="movie">
+  <div class="section-inner-narrow">
+    <div class="head-block">
+      <h2 class="h-en rv">WATCH THE STORY</h2>
+      <p class="h-ja rv d1">バンク・オブ・アートを動画で知る</p>
+      <div class="h-rule"></div>
+    </div>
+
+    <div class="movie-frame rv">
+      <iframe src="https://www.youtube.com/embed/wTWIQXGHlfQ" title="What is BANK OF ART?" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="movie-caption rv d1">BANK OF ART — OFFICIAL MOVIE</div>
+
+    <div class="movie-cta rv d2">
+      <a href="https://business.form-mailer.jp/fms/1c6a81d4280183" class="btn-w" target="_blank">資料請求</a>
+      <a href="https://booking.receptionist.jp/5ade6c6d-ae6c-44d9-9921-000ad24af9f9/30min" class="btn-o" target="_blank">オンライン説明会</a>
+    </div>
+  </div>
+</section>
+
+<div class="section-rule"><hr></div>
+
+<!-- ════════ 4. 絵画償却制度のルール（棒グラフ風） ════════ -->
+<section class="section" id="dep-rules">
+  <div class="section-inner">
+    <div class="head-block">
+      <h2 class="h-en rv">DEPRECIATION RULES</h2>
+      <p class="h-ja rv d1">絵画償却制度のルール</p>
+      <div class="h-rule"></div>
+    </div>
+
+    <p class="dep-intro rv d1">
+      取得価額が1点100万円未満の美術品等は原則として減価償却資産に該当します。<br class="br-pc">税制改正により少額減価償却資産の特例上限が30万円→40万円に拡大されました。
+    </p>
+
+    <div class="dep-bar rv">
+      <!-- 棒グラフ -->
+      <div class="dep-bar-graph">
+        <div class="dep-zone-over">100万円以上は対象外</div>
+
+        <div class="dep-line-100"></div>
+
+        <!-- 100万〜40万：減価償却ゾーン -->
+        <div class="dep-zone-shoukyaku">
+          <div class="dep-zone-tag">RULE 01</div>
+          <div class="dep-zone-title">減価償却</div>
+          <div class="dep-zone-cond">絵画1点につき<br>100万円未満が対象</div>
+        </div>
+
+        <div class="dep-line-30"></div>
+
+        <!-- 40万以下：即時償却ゾーン -->
+        <div class="dep-zone-sokuji">
+          <div class="dep-zone-tag">RULE 02</div>
+          <div class="dep-zone-title">即時償却</div>
+          <div class="dep-zone-cond">中小企業・個人事業主は<br>40万円未満で即時償却</div>
+        </div>
+
+        <!-- Y軸ラベル -->
+        <div class="dep-axis-label top">100<span class="yen">万円</span></div>
+        <div class="dep-axis-label mid">40<span class="yen">万円</span></div>
+        <div class="dep-axis-label bot">0<span class="yen">円</span></div>
+      </div>
+
+      <!-- 右サイド説明 -->
+      <div class="dep-side">
+        <div class="dep-side-card">
+          <div class="dep-side-tag">RULE 01</div>
+          <div class="dep-side-headline">減価償却</div>
+          <p class="dep-side-text">絵画1点につき100万円未満であれば、<br>減価償却資産として1年〜8年で<br>経費計上が可能。</p>
+        </div>
+        <div class="dep-side-card primary">
+          <div class="dep-side-tag">RULE 02</div>
+          <div class="dep-side-headline">即時償却</div>
+          <p class="dep-side-text">中小企業・個人事業主は<br>40万円未満で取得価額の全額を、<br>その年の経費にできる特例があります。</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="dep-source rv d1">
+      引用：<a href="https://www.nta.go.jp/law/joho-zeikaishaku/hojin/bijutsuhin_FAQ/index.htm" target="_blank">国税庁HP明記事項</a><br>
+      ※100％保証するものではありません。使用目的によっては否認されるケースもあります。<br class="br-pc">顧問税理士等にご相談ください。
+    </p>
+  </div>
+</section>
+
+<div class="section-rule"><hr></div>
+
+<!-- ════════ 5. RESALE SERVICE（サイズで強弱） ════════ -->
+<!-- ════════ 税制シミュレーター ════════ -->
+<section class="section" id="resale">
+  <div class="section-inner">
+    <div class="head-block">
+      <h2 class="h-en rv">RESALE SERVICE</h2>
+      <p class="h-ja rv d1">リセールサービス</p>
+      <div class="h-rule"></div>
+    </div>
+
+    <p class="lead rv">
+      バンク・オブ・アートより販売した作品は<span class="hl">販売価格30〜70%</span>の査定評価にて買取を行います。
+    </p>
+
+    <div class="resale-bars rv">
+      <!-- Y軸 0% -->
+
+      <!-- 斜め破線：高比率の右上 ⇄ 標準比率の左上 を結ぶ -->
+      <svg class="resale-bars-diff" aria-hidden="true">
+        <line id="resaleDiffLine" stroke="#01ae84" stroke-width="2" stroke-dasharray="6 6"/>
+      </svg>
+
+      <!-- 左：組換有（高比率＝高いバー） -->
+      <div class="resale-bar-col with">
+        <div class="resale-bar-label">
+          <div class="resale-bar-tag">RECOMMENDED</div>
+          <div class="resale-bar-title">売却と同時に<br>新たな絵画を<br>組み替える場合</div>
+        </div>
+        <div class="resale-bar-wrap">
+          <div class="resale-bar bar-high">
+            <div class="resale-bar-rate">高比率</div>
+            <div class="resale-bar-rate-sub">で買取</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右：組換無（標準比率＝低いバー） -->
+      <div class="resale-bar-col without">
+        <div class="resale-bar-label">
+          <div class="resale-bar-tag">STANDARD</div>
+          <div class="resale-bar-title">新たな絵画を<br>組み替えない場合</div>
+        </div>
+        <div class="resale-bar-wrap">
+          <div class="resale-bar bar-low">
+            <div class="resale-bar-rate">標準比率</div>
+            <div class="resale-bar-rate-sub">で買取</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="dep-source rv d2">
+      ※バンク・オブ・アートブランドの絵画のみリセールサービス対象。<br class="br-pc">当方の定める保管展示方法を守り、額装管理している事がリセールサービスの条件です。
+    </p>
+  </div>
+</section>
+
+<div class="section-rule"><hr></div>
+
+<!-- ════════ 6. 5 REASONS ════════ -->
+<!-- ════════ コレクトシミュレーター ════════ -->
+<!-- ════════ コレクトシミュレーター（タブ式：即時償却 / 減価償却） ════════ -->
+<section class="sim-section" id="collect-simulator">
+  <div class="sim-section-inner">
+    <div class="sim-eyebrow rv">Simulator</div>
+    <h2 class="sim-title rv d1">コレクトシミュレーター</h2>
+    <p class="sim-lead rv d2">
+      バンク・オブ・アートでアートを資産として持つことで生まれる節税効果と回収を、ご自身の条件で試算いただけます。<br>
+      即時償却タイプは「実質コスト」を、減価償却タイプは「年ごとの経費計上額・期末帳簿価額」を確認いただけます。
+    </p>
+
+    <div class="sim-tabs rv d3">
+      <button class="sim-tab is-active" data-tab="immediate">即時償却シミュレーター</button>
+      <button class="sim-tab" data-tab="depreciation">減価償却シミュレーター</button>
+    </div>
+
+    <!-- ━━━━━━ パネル1：即時償却シミュレーター ━━━━━━ -->
+    <div class="sim-panel is-active" data-panel="immediate">
+      <div class="sim-grid">
+        <div class="sim-form">
+          <div class="sim-form-h">条件を入力</div>
+
+          <div class="sim-field">
+            <label class="sim-field-label">事業形態</label>
+            <select class="sim-select" id="cs-entity">
+              <option value="corp">法人</option>
+              <option value="sole">個人事業主</option>
+            </select>
+          </div>
+
+          <div class="sim-field" id="cs-corp-region">
+            <label class="sim-field-label">地域・規模</label>
+            <select class="sim-select" id="cs-corpRate">
+              <option value="0.3459">東京都・中小法人（所得年800万円超）</option>
+              <option value="0.3358">標準税率地域・中小法人（所得年800万円超）</option>
+              <option value="0.2559">中小法人（所得年800万円以下が中心）</option>
+            </select>
+            <div class="sim-field-hint">所在自治体・資本金・所得規模により実効税率は変動します。プリセットは参考値です。</div>
+          </div>
+
+          <div class="sim-field" id="cs-sole-region" style="display:none;">
+            <label class="sim-field-label">地域</label>
+            <select class="sim-select" id="cs-soleRate">
+              <option value="0.10">標準地域（住民税10%）</option>
+              <option value="0.10025">超過課税地域（10.025%）</option>
+            </select>
+          </div>
+
+          <div class="sim-field" id="cs-sole-income" style="display:none;">
+            <label class="sim-field-label">年間の課税所得（アート取得前）</label>
+            <input type="number" class="sim-input" id="cs-income" value="9000000" min="1000000" max="50000000" step="100000">
+            <div class="sim-field-hint">売上から経費・各種控除を引いた後の金額です。アート取得による経費はこの金額から差し引いて試算します。</div>
+          </div>
+
+          <div class="sim-field" id="cs-sole-tax-toggle" style="display:none;">
+            <div class="sim-toggle-wrap">
+              <div class="sim-toggle" id="cs-bizTaxToggle"></div>
+              <span class="sim-toggle-label">個人事業税を計算に含める</span>
+            </div>
+            <div class="sim-field-hint">ONにすると個人事業税の節税分も加算します。業種により非課税の場合もあります。正確な扱いは顧問税理士にご確認ください。</div>
+          </div>
+
+          <div class="sim-field" id="cs-sole-biztype" style="display:none;">
+            <label class="sim-field-label">業種（事業税率）</label>
+            <select class="sim-select" id="cs-bizRate">
+              <option value="0.05">第3種事業（デザイン業・コンサル 等）5%</option>
+              <option value="0.05">第1種事業（物品販売・不動産業 等）5%</option>
+              <option value="0.03">一部の第3種事業（あんま・マッサージ 等）3%</option>
+            </select>
+          </div>
+
+          <div class="sim-field">
+            <label class="sim-field-label">リセールサービス比率</label>
+            <div class="sim-slider-wrap">
+              <input type="range" class="sim-slider" id="cs-resale" min="30" max="70" step="5" value="70">
+              <span class="sim-slider-value" id="cs-resaleVal">70%</span>
+            </div>
+          </div>
+
+          <div class="sim-field">
+            <label class="sim-field-label">コレクト点数</label>
+            <div class="sim-slider-wrap">
+              <input type="range" class="sim-slider" id="cs-qty" min="1" max="20" step="1" value="7">
+              <span class="sim-slider-value" id="cs-qtyVal">7点</span>
+            </div>
+          </div>
+
+          <button class="sim-btn" id="cs-calc">計算する</button>
+        </div>
+
+        <div class="sim-result" id="cs-result">
+          <div class="sim-result-h">試算結果</div>
+          <div class="sim-result-empty">条件を入力して<br>「計算する」を押してください</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ━━━━━━ パネル2：減価償却シミュレーター ━━━━━━ -->
+    <div class="sim-panel" data-panel="depreciation">
+      <div class="sim-grid">
+        <div class="sim-form">
+          <div class="sim-form-h">条件を入力</div>
+
+          <div class="sim-field">
+            <label class="sim-field-label">作品タイプ</label>
+            <select class="sim-select" id="ds-artType">
+              <option value="390000">即時償却タイプ（10号）</option>
+              <option value="700000">減価償却タイプ（20号）</option>
+              <option value="990000">減価償却タイプ（30号）</option>
+            </select>
+            <div class="sim-field-hint">即時償却タイプは取得年に全額を経費計上できます（中小企業者等・青色申告が対象）。減価償却タイプは法定耐用年数8年で分割して経費計上します。</div>
+          </div>
+
+          <div class="sim-field">
+            <label class="sim-field-label">事業形態</label>
+            <select class="sim-select" id="ds-entity">
+              <option value="corp">法人</option>
+              <option value="sole">個人事業主</option>
+            </select>
+          </div>
+
+          <div class="sim-field" id="ds-corp-region">
+            <label class="sim-field-label">地域・規模</label>
+            <select class="sim-select" id="ds-corpRate">
+              <option value="0.3459">東京都・中小法人（所得年800万円超）</option>
+              <option value="0.3358">標準税率地域・中小法人（所得年800万円超）</option>
+              <option value="0.2559">中小法人（所得年800万円以下が中心）</option>
+            </select>
+          </div>
+
+          <div class="sim-field" id="ds-sole-region" style="display:none;">
+            <label class="sim-field-label">地域</label>
+            <select class="sim-select" id="ds-soleRate">
+              <option value="0.10">標準地域（住民税10%）</option>
+              <option value="0.10025">超過課税地域（10.025%）</option>
+            </select>
+          </div>
+
+          <div class="sim-field" id="ds-sole-income" style="display:none;">
+            <label class="sim-field-label">年間の課税所得（アート取得前）</label>
+            <input type="number" class="sim-input" id="ds-income" value="9000000" min="1000000" max="50000000" step="100000">
+            <div class="sim-field-hint">各年とも同一の課税所得を前提とした簡易計算です。</div>
+          </div>
+
+          <div class="sim-field">
+            <label class="sim-field-label">コレクト点数</label>
+            <div class="sim-slider-wrap">
+              <input type="range" class="sim-slider" id="ds-qty" min="1" max="20" step="1" value="1">
+              <span class="sim-slider-value" id="ds-qtyVal">1点</span>
+            </div>
+          </div>
+
+          <button class="sim-btn" id="ds-calc">計算する</button>
+        </div>
+
+        <div class="sim-result" id="ds-result">
+          <div class="sim-result-h">試算結果</div>
+          <div class="sim-result-empty">条件を入力して<br>「計算する」を押してください</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARTを探すCTAボタン -->
+    <div class="sim-cta-wrap rv">
+      <a href="art.html" class="sim-cta-btn">ARTを探す</a>
+    </div>
+
+    <!-- 免責 -->
+    <div class="sim-disclaimer">
+      <div class="sim-disclaimer-h">免責・注記</div>
+      <ul>
+        <li>本シミュレーションは概算であり、節税効果・リセール額を100%保証するものではありません。使用目的等により税務上否認されるケースもあります。実際の適用は必ず顧問税理士にご相談ください。</li>
+        <li>即時償却（少額減価償却資産の特例）は、資本金1億円以下・青色申告・常時使用従業員数400人以下の中小企業者等が対象です。1点40万円未満（2026年4月1日以降取得分。それ以前は30万円未満）・年間合計300万円までが上限です。本制度は2029年3月31日まで適用されます。</li>
+        <li>法人実効税率は所在自治体・資本金・所得規模により変動します。表示のプリセットは参考値です。</li>
+        <li>個人事業主の試算は所得税・復興特別所得税・住民税所得割を対象とします。個人事業税は即時償却シミュレーターで「計算に含める」を選択した場合のみ加算します。減価償却シミュレーターでは個人事業税は試算対象に含みません。</li>
+        <li>リセールサービスによる売却収益は将来の売却時点で発生するものであり、税金圧縮（取得年）とは発生時期が異なります。本試算は累計の損益を示すものです。</li>
+        <li>出典：国税庁「美術品等についての減価償却資産の判定に関するFAQ」</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  'use strict';
+
+  function fmt(n){ return Math.round(n).toLocaleString('ja-JP'); }
+  function fmtMan(n){ return Math.round(n / 10000).toLocaleString('ja-JP') + '万'; }
+
+  function incomeTax(x){
+    if (x <= 0) return 0;
+    if (x < 1950000)  return x * 0.05;
+    if (x < 3300000)  return x * 0.10 -  97500;
+    if (x < 6950000)  return x * 0.20 - 427500;
+    if (x < 9000000)  return x * 0.23 - 636000;
+    if (x < 18000000) return x * 0.33 - 1536000;
+    if (x < 40000000) return x * 0.40 - 2796000;
+    return x * 0.45 - 4796000;
+  }
+
+  // タブ切替
+  document.querySelectorAll('.sim-tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      var target = this.dataset.tab;
+      document.querySelectorAll('.sim-tab').forEach(function(t){ t.classList.toggle('is-active', t.dataset.tab === target); });
+      document.querySelectorAll('.sim-panel').forEach(function(p){ p.classList.toggle('is-active', p.dataset.panel === target); });
+    });
+  });
+
+  // ════════ 即時償却シミュレーター ════════
+  var UNIT = 390000;
+  var CAP = 3000000;
+  var DEP = 0.25;
+
+  var csBiz = document.getElementById('cs-bizTaxToggle');
+  csBiz.addEventListener('click', function(){
+    csBiz.classList.toggle('is-on');
+    document.getElementById('cs-sole-biztype').style.display = csBiz.classList.contains('is-on') ? '' : 'none';
+  });
+
+  document.getElementById('cs-entity').addEventListener('change', function(){
+    var isCorp = this.value === 'corp';
+    document.getElementById('cs-corp-region').style.display = isCorp ? '' : 'none';
+    document.getElementById('cs-sole-region').style.display = isCorp ? 'none' : '';
+    document.getElementById('cs-sole-income').style.display = isCorp ? 'none' : '';
+    document.getElementById('cs-sole-tax-toggle').style.display = isCorp ? 'none' : '';
+    document.getElementById('cs-sole-biztype').style.display = (isCorp || !csBiz.classList.contains('is-on')) ? 'none' : '';
+  });
+
+  document.getElementById('cs-resale').addEventListener('input', function(){
+    document.getElementById('cs-resaleVal').textContent = this.value + '%';
+  });
+  document.getElementById('cs-qty').addEventListener('input', function(){
+    document.getElementById('cs-qtyVal').textContent = this.value + '点';
+  });
+
+  document.getElementById('cs-calc').addEventListener('click', function(){
+    var entity = document.getElementById('cs-entity').value;
+    var qty = parseInt(document.getElementById('cs-qty').value, 10);
+    var resaleRate = parseInt(document.getElementById('cs-resale').value, 10) / 100;
+    var investment = UNIT * qty;
+
+    var immediateBase = Math.min(investment, CAP);
+    var excess = Math.max(0, investment - CAP);
+    var excessFirstYear = excess * DEP;
+    var deductible = immediateBase + excessFirstYear;
+
+    var taxSaving = 0;
+    var warnings = [];
+
+    if (entity === 'corp') {
+      var corpRate = parseFloat(document.getElementById('cs-corpRate').value);
+      taxSaving = deductible * corpRate;
+    } else {
+      var income = parseInt(document.getElementById('cs-income').value, 10);
+      var soleRate = parseFloat(document.getElementById('cs-soleRate').value);
+      var taxableAfter = Math.max(0, income - deductible);
+      var incomeTaxSaving = incomeTax(income) - incomeTax(taxableAfter);
+      var fukko = incomeTaxSaving * 0.021;
+      var resTaxSaving = Math.min(deductible, income) * soleRate;
+      taxSaving = incomeTaxSaving + fukko + resTaxSaving;
+
+      if (csBiz.classList.contains('is-on')) {
+        var bizRate = parseFloat(document.getElementById('cs-bizRate').value);
+        var bizBaseBefore = Math.max(0, income - 2900000);
+        var bizBaseAfter = Math.max(0, income - deductible - 2900000);
+        var bizSaving = (bizBaseBefore - bizBaseAfter) * bizRate;
+        taxSaving += bizSaving;
+      }
+
+      if (deductible > income) {
+        warnings.push('経費額が課税所得を上回っています。課税所得を超える分は当年の節税には使えません（純損失の繰越等は本試算の対象外です）。');
+      }
+    }
+
+    var resaleRevenue = investment * resaleRate;
+    var netResult = taxSaving + resaleRevenue - investment;
+
+    if (investment > CAP) {
+      warnings.push('投資額が年間300万円を超えています。超過分は当年の即時償却の対象外となり、法定耐用年数8年（定率法）の減価償却に移行します。本試算では超過分の初年度償却額のみを反映しています。');
+    }
+
+    var netLabel = netResult >= 0 ? '実質メリット' : '実質コスト';
+    var netSign = netResult >= 0 ? '+' : '−';
+    var netClass = netResult >= 0 ? '' : 'is-negative';
+    var netAbs = Math.abs(netResult);
+
+    var warnHtml = warnings.map(function(w){ return '<div class="sim-warning">' + w + '</div>'; }).join('');
+
+    document.getElementById('cs-result').innerHTML =
+      '<div class="sim-result-h">試算結果</div>' +
+      '<div class="sim-result-row"><span class="sim-result-label">投資額</span><span class="sim-result-value">' + fmtMan(investment) + '円</span></div>' +
+      '<div class="sim-result-row"><span class="sim-result-label">MERIT 01　税金圧縮</span><span class="sim-result-value">' + fmtMan(taxSaving) + '円</span></div>' +
+      '<div class="sim-result-row"><span class="sim-result-label">MERIT 02　売却収益</span><span class="sim-result-value">' + fmtMan(resaleRevenue) + '円</span></div>' +
+      '<div class="sim-result-row is-final"><span class="sim-result-label">' + netLabel + '</span><span class="sim-result-value ' + netClass + '">' + netSign + fmtMan(netAbs) + '円</span></div>' +
+      warnHtml +
+      '<div class="sim-notice">即時償却の対象は、資本金1億円以下・青色申告・常時使用従業員数400人以下の中小企業者等です。</div>';
+  });
+
+  // ════════ 減価償却シミュレーター ════════
+  document.getElementById('ds-entity').addEventListener('change', function(){
+    var isCorp = this.value === 'corp';
+    document.getElementById('ds-corp-region').style.display = isCorp ? '' : 'none';
+    document.getElementById('ds-sole-region').style.display = isCorp ? 'none' : '';
+    document.getElementById('ds-sole-income').style.display = isCorp ? 'none' : '';
+  });
+  document.getElementById('ds-qty').addEventListener('input', function(){
+    document.getElementById('ds-qtyVal').textContent = this.value + '点';
+  });
+
+  function depreciationSchedule(investment){
+    var rate = 0.25, recoveryRate = 0.334, years = 8;
+    var guarantee = investment * 0.07909;
+    var book = investment;
+    var schedule = [];
+    var switched = false, recoveryBase = 0;
+    for (var y = 1; y <= years; y++) {
+      var straightDep = book * rate;
+      var dep;
+      if (!switched && straightDep < guarantee) {
+        switched = true; recoveryBase = book;
+      }
+      dep = switched ? recoveryBase * recoveryRate : straightDep;
+      if (book - dep < 1) dep = book - 1;
+      if (y === years) dep = book - 1;
+      book = book - dep;
+      schedule.push({ year: y, depreciation: dep, bookValue: book });
+    }
+    return schedule;
+  }
+
+  document.getElementById('ds-calc').addEventListener('click', function(){
+    var unitPrice = parseInt(document.getElementById('ds-artType').value, 10);
+    var qty = parseInt(document.getElementById('ds-qty').value, 10);
+    var entity = document.getElementById('ds-entity').value;
+    var investment = unitPrice * qty;
+    var isImmediate = (unitPrice === 390000);
+
+    var taxRate = 0, income = 0, soleRate = 0;
+    if (entity === 'corp') {
+      taxRate = parseFloat(document.getElementById('ds-corpRate').value);
+    } else {
+      income = parseInt(document.getElementById('ds-income').value, 10);
+      soleRate = parseFloat(document.getElementById('ds-soleRate').value);
+    }
+
+    var schedule = [];
+    var warnings = [];
+
+    if (isImmediate) {
+      var immediateBase = Math.min(investment, CAP);
+      var excess = Math.max(0, investment - CAP);
+      if (excess > 0) {
+        var excessSched = depreciationSchedule(excess);
+        schedule = excessSched.map(function(s, i){
+          return {
+            year: s.year,
+            depreciation: i === 0 ? immediateBase + s.depreciation : s.depreciation,
+            bookValue: i === 0 ? excess - s.depreciation : s.bookValue
+          };
+        });
+        warnings.push('投資額が年間300万円を超えています。超過分は即時償却の対象外となり、法定耐用年数8年（定率法）で償却されます。グラフは超過分の年次償却を反映しています。');
+      } else {
+        schedule = [{ year: 1, depreciation: investment, bookValue: 0 }];
+      }
+    } else {
+      schedule = depreciationSchedule(investment);
+    }
+
+    var totalTaxSaving = 0;
+    schedule.forEach(function(s){
+      var dep = s.depreciation;
+      var save = 0;
+      if (entity === 'corp') {
+        save = dep * taxRate;
+      } else {
+        var taxableAfter = Math.max(0, income - dep);
+        var itSave = incomeTax(income) - incomeTax(taxableAfter);
+        var fukko = itSave * 0.021;
+        var resSave = Math.min(dep, income) * soleRate;
+        save = itSave + fukko + resSave;
+        if (dep > income) {
+          var w = '経費額が課税所得を上回る年があります（' + s.year + '年目）。課税所得を超える分はその年の節税には使えません。';
+          if (warnings.indexOf(w) === -1) warnings.push(w);
+        }
+      }
+      s.taxSaving = save;
+      totalTaxSaving += save;
+    });
+
+    var maxDep = Math.max.apply(null, schedule.map(function(s){ return s.depreciation; }));
+    var chartHtml = schedule.map(function(s){
+      var pct = (s.depreciation / maxDep) * 100;
+      return '<div class="sim-chart-row">' +
+        '<span class="sim-chart-y">' + s.year + '年</span>' +
+        '<div class="sim-chart-bar-wrap"><div class="sim-chart-bar" style="width:' + pct.toFixed(1) + '%;"></div></div>' +
+        '<span class="sim-chart-val">' + fmtMan(s.depreciation) + '円</span>' +
+        '</div>';
+    }).join('');
+
+    var tableRows = schedule.map(function(s){
+      return '<tr>' +
+        '<td>' + s.year + '年目</td>' +
+        '<td>' + fmt(s.depreciation) + '円</td>' +
+        '<td>' + fmt(s.bookValue) + '円</td>' +
+        '<td>' + fmt(s.taxSaving) + '円</td>' +
+        '</tr>';
+    }).join('');
+
+    var completeYears = schedule.filter(function(s){ return s.depreciation > 0; }).length;
+    var warnHtml = warnings.map(function(w){ return '<div class="sim-warning">' + w + '</div>'; }).join('');
+
+    document.getElementById('ds-result').innerHTML =
+      '<div class="sim-result-h">試算結果</div>' +
+      '<div class="sim-result-row"><span class="sim-result-label">投資額</span><span class="sim-result-value">' + fmt(investment) + '円</span></div>' +
+      '<div class="sim-result-row"><span class="sim-result-label">償却完了</span><span class="sim-result-value">' + completeYears + '年</span></div>' +
+      '<div class="sim-result-row is-final"><span class="sim-result-label">総税金圧縮額</span><span class="sim-result-value">' + fmtMan(totalTaxSaving) + '円</span></div>' +
+      '<div class="sim-chart">' + chartHtml + '</div>' +
+      '<table class="sim-table">' +
+        '<thead><tr><th>年</th><th>経費計上額</th><th>期末帳簿価額</th><th>税金圧縮額</th></tr></thead>' +
+        '<tbody>' + tableRows + '</tbody>' +
+      '</table>' +
+      warnHtml +
+      '<div class="sim-notice">即時償却（少額減価償却資産の特例）の対象は、資本金1億円以下・青色申告・常時使用従業員数400人以下の中小企業者等です。減価償却タイプはこの要件を問わず減価償却資産として扱えます。</div>';
+  });
+})();
+</script>
+
+
+<section class="section section-dark" id="reasons">
+  <div class="section-inner">
+    <div class="head-block">
+      <h2 class="h-en rv">5 REASONS</h2>
+      <p class="h-ja rv d1">バンク・オブ・アートが選ばれる、5つの理由。</p>
+      <div class="h-rule"></div>
+    </div>
+
+    <p class="reasons-tagline rv">
+      節税<span class="x">×</span>画家支援<span class="x">×</span>空間演出
+    </p>
+
+    <div class="reasons-cards rv d1">
+      <!-- 01 -->
+      <div class="reason-card">
+        <div class="reason-icon">
+          <img src="BOAicon-07.png" alt="">
+        </div>
+        <h3 class="reason-title">即時償却 ＆<br>減価償却</h3>
+        <p class="reason-text">税負担の<br>軽減につながる</p>
+      </div>
+      <!-- 02 -->
+      <div class="reason-card">
+        <div class="reason-icon">
+          <img src="BOAicon-08.png" alt="">
+        </div>
+        <h3 class="reason-title">最大リセール70%</h3>
+        <p class="reason-text">販売価格の<br>30〜70%で<br>買取保証</p>
+      </div>
+      <!-- 03 -->
+      <div class="reason-card">
+        <div class="reason-icon">
+          <img src="BOAicon-09.png" alt="">
+        </div>
+        <h3 class="reason-title">価値上昇の可能性</h3>
+        <p class="reason-text">作家価値の上昇で<br>取得額を超える<br>買取の可能性</p>
+      </div>
+      <!-- 04 -->
+      <div class="reason-card">
+        <div class="reason-icon">
+          <img src="BOAicon-16.png" alt="">
+        </div>
+        <h3 class="reason-title">空間演出 ＆<br>ブランディング</h3>
+        <p class="reason-text">企業イメージ向上と<br>空間価値の演出</p>
+      </div>
+      <!-- 05 -->
+      <div class="reason-card">
+        <div class="reason-icon">
+          <img src="BOAicon-15.png" alt="">
+        </div>
+        <h3 class="reason-title">委託から買取へ</h3>
+        <p class="reason-text">買取で画家を<br>確実に支援</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ 7. CTA — トップ準拠 ════════ -->
+<div class="cta-strip" id="contact">
+  <div class="cta-inner">
+    <h2 class="cta-title rv">CONTACT</h2>
+    <div class="cta-btns rv d1">
+      <a href="https://business.form-mailer.jp/fms/1c6a81d4280183" class="btn-cta-w" target="_blank">資料請求</a>
+      <a href="https://booking.receptionist.jp/5ade6c6d-ae6c-44d9-9921-000ad24af9f9/30min" class="btn-cta-o" target="_blank">説明会を予約</a>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ FOOTER ════════ -->
+<footer>
+  <div class="footer-top">
+    <div class="foot-brand">
+      <div class="foot-logo"><img src="boa-07.png" alt="BANK OF ART"></div>
+      <p class="foot-tagline">絵描きの明日を創出する。<br>減価償却 × 画家応援</p>
+      <div class="foot-social">
+        <a href="https://www.facebook.com/bankofart2022/" class="soc-a" target="_blank" title="Facebook">F</a>
+        <a href="https://www.youtube.com/@bankofart2022" class="soc-a" target="_blank" title="YouTube">Y</a>
+        <a href="https://www.instagram.com/bankof_art2022/" class="soc-a" target="_blank" title="Instagram">I</a>
+        <a href="https://x.com/bankof_art" class="soc-a" target="_blank" title="X">X</a>
+      </div>
+    </div>
+    <div>
+      <div class="foot-col-t">NAVIGATION</div>
+      <ul class="foot-links">
+        <li><a href="about.html">バンクオブアートとは</a></li>
+        <li><a href="https://bankof-art.com/?page_id=5707" target="_blank">アーティスト一覧</a></li>
+        <li><a href="https://bankof-art.com/?cat=59" target="_blank">作品</a></li>
+        <li><a href="https://bankof-art.com/?cat=64" target="_blank">画家応援企業</a></li>
+        <li><a href="https://bankof-art.com/?post_type=news" target="_blank">最新記事</a></li>
+        <li><a href="journal.html">読み物</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-t">CONTACT</div>
+      <ul class="foot-links">
+        <li><a href="https://business.form-mailer.jp/fms/1c6a81d4280183" target="_blank">資料ダウンロード</a></li>
+        <li><a href="https://booking.receptionist.jp/5ade6c6d-ae6c-44d9-9921-000ad24af9f9/30min" target="_blank">オンライン説明会</a></li>
+        <li><a href="#contact">お問い合わせ</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot-col-t">For Artists</div>
+      <ul class="foot-links">
+        <li><a href="recruit.html">画家募集</a></li>
+        <li><a href="https://tally.so/r/MeMEV0" target="_blank">応募フォーム</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <a href="#" class="foot-privacy">Privacy Policy</a>
+    <span class="foot-copy">© BANK OF ART, INC.</span>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('load', () => {
+  const pl = document.getElementById('preloader');
+  if (!pl) return;
+  setTimeout(() => pl.classList.add('hidden'), 800);
+});
+setTimeout(() => {
+  const pl = document.getElementById('preloader');
+  if (pl) pl.classList.add('hidden');
+}, 5000);
+
+const cur = document.getElementById('cur');
+const ring = document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  cur.style.left=mx+'px'; cur.style.top=my+'px';
+});
+(function loop(){
+  rx+=(mx-rx)*.11; ry+=(my-ry)*.11;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(loop);
+})();
+
+const hdr=document.getElementById('hdr');
+window.addEventListener('scroll',()=>hdr.classList.toggle('scrolled',scrollY>30));
+
+(function(){
+  const dd = document.getElementById('contactDropdown');
+  const btn = document.getElementById('contactToggle');
+  if (!dd || !btn) return;
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dd.classList.toggle('open');
+    btn.setAttribute('aria-expanded', dd.classList.contains('open'));
+  });
+  document.addEventListener('click', (e) => {
+    if (!dd.contains(e.target)) {
+      dd.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+  dd.querySelectorAll('.contact-menu-item').forEach(a => {
+    a.addEventListener('click', () => {
+      dd.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+})();
+
+(function(){
+  const btn = document.getElementById('menuToggle');
+  const drawer = document.getElementById('drawer');
+  if (!btn || !drawer) return;
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    drawer.classList.toggle('open');
+  });
+  drawer.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => drawer.classList.remove('open'));
+  });
+  document.addEventListener('click', (e) => {
+    if (!drawer.contains(e.target) && !btn.contains(e.target)) {
+      drawer.classList.remove('open');
+    }
+  });
+})();
+
+const els = document.querySelectorAll('.rv');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('on');
+    else e.target.classList.remove('on');
+  });
+}, { threshold: .1, rootMargin: '0px 0px -50px 0px' });
+els.forEach(el=>obs.observe(el));
+
+/* ── 数字カウントアップ（2秒 easeOutCubic, カンマ区切り） ── */
+(function(){
+  const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+  const formatNum = n => Math.floor(n).toLocaleString('en-US');
+  const animate = (el) => {
+    if (el.dataset.done === '1') return;
+    el.dataset.done = '1';
+    const target = parseInt(el.dataset.target, 10) || 0;
+    const duration = 2000;
+    const start = performance.now();
+    const tick = (now) => {
+      const p = Math.min((now - start) / duration, 1);
+      const v = target * easeOutCubic(p);
+      el.textContent = formatNum(v);
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = formatNum(target);
+    };
+    requestAnimationFrame(tick);
+  };
+  const countEls = document.querySelectorAll('.count-up');
+  const countObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) animate(e.target);
+    });
+  }, { threshold: .4 });
+  countEls.forEach(el => countObs.observe(el));
+})();
+
+/* RESALE SERVICE 破線：高比率バーの右上角 ⇄ 標準比率バーの左上角 を結ぶ */
+(function(){
+  function drawResaleDiff(){
+    var bars = document.querySelector('.resale-bars');
+    var high = document.querySelector('.resale-bar.bar-high');
+    var low  = document.querySelector('.resale-bar.bar-low');
+    var line = document.getElementById('resaleDiffLine');
+    if(!bars || !high || !low || !line) return;
+    var b = bars.getBoundingClientRect();
+    var h = high.getBoundingClientRect();
+    var l = low.getBoundingClientRect();
+    // 高比率バーの右上角
+    var x1 = h.right - b.left;
+    var y1 = h.top - b.top;
+    // 標準比率バーの左上角
+    var x2 = l.left - b.left;
+    var y2 = l.top - b.top;
+    line.setAttribute('x1', x1);
+    line.setAttribute('y1', y1);
+    line.setAttribute('x2', x2);
+    line.setAttribute('y2', y2);
+  }
+  window.addEventListener('load', drawResaleDiff);
+  window.addEventListener('resize', drawResaleDiff);
+  setTimeout(drawResaleDiff, 300);
+})();
+</script>
+</body>
+</html>
