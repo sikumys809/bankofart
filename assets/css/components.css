@@ -1,0 +1,816 @@
+/*
+ * components.css
+ * Bank of Art 再利用コンポーネント（カード / CTA）
+ *
+ * mockups/（artist / art / collector / news / journal / index）の各カードCSSを
+ * 正として移植。フォント・カラーは tokens.css の CSS変数経由に統一している。
+ *   'Shippori Mincho B1' → var(--f-jp)
+ *   'Cormorant SC'       → var(--f-display)
+ *   'Cinzel'             → var(--f-deco)
+ * 画像ホバー時のオーバーレイ（rgba の影グラデーション）はブランド色ではない
+ * 演出用のため、トークン化せず元の値を保持している。
+ */
+
+/* 数字は Shippori Mincho B1（CLAUDE.md 厳格ルール） */
+.boa-num {
+	font-family: var(--f-jp);
+}
+
+/* =========================================================
+ * グリッド（一覧）
+ * ======================================================= */
+.artist-grid,
+.art-grid,
+.collector-grid {
+	width: 100%;
+	max-width: var(--container-max);
+	margin: 0 auto;
+	display: grid;
+}
+
+.artist-grid {
+	grid-template-columns: repeat(4, 1fr);
+	gap: 76px 40px;
+}
+
+.art-grid {
+	grid-template-columns: repeat(4, 1fr);
+	gap: 60px 32px;
+}
+
+.collector-grid {
+	grid-template-columns: repeat(3, 1fr);
+	gap: 60px 40px;
+}
+
+.news-list {
+	max-width: 1000px;
+	margin: 0 auto;
+}
+
+/* =========================================================
+ * カード：アーティスト（artist-card）
+ * ======================================================= */
+.artist-card {
+	display: block;
+	text-align: left;
+	text-decoration: none;
+	transition: transform .4s ease;
+}
+
+.artist-card:hover {
+	transform: translateY(-6px);
+}
+
+.artist-photo {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 1 / 1.15;
+	background: var(--warm-gray);
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+
+.artist-photo-inner {
+	position: absolute;
+	inset: 0;
+	background-size: cover;
+	background-position: center;
+	transition: transform .8s cubic-bezier(.2, .7, .2, 1);
+}
+
+.artist-card:hover .artist-photo-inner {
+	transform: scale(1.04);
+}
+
+.artist-photo::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(to top, rgba(33, 33, 33, .4) 0%, transparent 50%);
+	opacity: 0;
+	transition: opacity .4s;
+	pointer-events: none;
+}
+
+.artist-card:hover .artist-photo::after {
+	opacity: 1;
+}
+
+.artist-number {
+	position: absolute;
+	top: 16px;
+	left: 16px;
+	font-family: var(--f-jp);
+	font-size: var(--fs-body);
+	letter-spacing: var(--ls-1);
+	color: rgba(245, 240, 234, .95);
+	background: rgba(33, 33, 33, .4);
+	padding: 4px 12px;
+	backdrop-filter: blur(8px);
+	z-index: 2;
+}
+
+.artist-tag-badge {
+	position: absolute;
+	bottom: 16px;
+	left: 16px;
+	font-family: var(--f-jp);
+	font-size: var(--fs-min);
+	letter-spacing: var(--ls-1);
+	color: var(--white);
+	background: var(--brand);
+	padding: 5px 12px;
+	z-index: 2;
+	opacity: 0;
+	transform: translateY(6px);
+	transition: opacity .4s, transform .4s;
+}
+
+.artist-card:hover .artist-tag-badge {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.artist-name {
+	font-family: var(--f-jp);
+	font-size: 20px;
+	font-weight: var(--fw-bold);
+	letter-spacing: var(--ls-1);
+	color: var(--ink);
+	margin-bottom: 6px;
+	line-height: 1.4;
+}
+
+.artist-name-en {
+	font-family: var(--f-deco);
+	font-size: 12px;
+	letter-spacing: var(--ls-3);
+	text-transform: uppercase;
+	color: var(--mid);
+	margin-bottom: 14px;
+}
+
+.artist-catch {
+	font-family: var(--f-jp);
+	font-weight: var(--fw-bold);
+	font-size: var(--fs-body);
+	color: var(--brand);
+	line-height: 1.5;
+	margin-bottom: 12px;
+	letter-spacing: var(--ls-1);
+}
+
+.artist-theme {
+	font-family: var(--f-jp);
+	font-size: var(--fs-body);
+	color: var(--mid);
+	line-height: 1.75;
+	letter-spacing: var(--ls-1);
+}
+
+/* =========================================================
+ * カード：作品（art-card）
+ * ======================================================= */
+.art-card {
+	display: block;
+	text-align: left;
+	text-decoration: none;
+	transition: transform .4s ease;
+}
+
+.art-card:hover {
+	transform: translateY(-4px);
+}
+
+.art-image {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 1 / 1;
+	background: var(--ink);
+	overflow: hidden;
+	margin-bottom: 18px;
+}
+
+.art-image-inner {
+	position: absolute;
+	inset: 0;
+	background-size: cover;
+	background-position: center;
+	transition: transform .8s cubic-bezier(.2, .7, .2, 1);
+}
+
+.art-card:hover .art-image-inner {
+	transform: scale(1.06);
+}
+
+.art-image::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(180deg, rgba(33, 33, 33, 0) 60%, rgba(33, 33, 33, .65) 100%);
+	opacity: 0;
+	transition: opacity .4s;
+	pointer-events: none;
+}
+
+.art-card:hover .art-image::after {
+	opacity: 1;
+}
+
+.art-status {
+	position: absolute;
+	top: 14px;
+	left: 14px;
+	font-family: var(--f-deco);
+	font-size: 14px;
+	letter-spacing: var(--ls-3);
+	text-transform: uppercase;
+	padding: 6px 12px;
+	z-index: 2;
+	backdrop-filter: blur(6px);
+}
+
+.art-status.is-available {
+	background: var(--brand);
+	color: var(--white);
+}
+
+.art-status.is-owned {
+	background: rgba(33, 33, 33, .7);
+	color: var(--gold);
+	border: 1px solid rgba(184, 149, 106, .5);
+}
+
+.art-number {
+	position: absolute;
+	top: 14px;
+	right: 14px;
+	font-family: var(--f-jp);
+	font-size: var(--fs-body);
+	letter-spacing: var(--ls-1);
+	color: rgba(245, 240, 234, .8);
+	z-index: 2;
+}
+
+.art-card:hover .art-info {
+	padding-top: 4px;
+}
+
+.art-artist {
+	font-family: var(--f-deco);
+	font-size: 12px;
+	letter-spacing: var(--ls-3);
+	text-transform: uppercase;
+	color: var(--mid);
+	margin-bottom: 10px;
+}
+
+.art-title {
+	font-family: var(--f-jp);
+	font-size: 20px;
+	font-weight: var(--fw-bold);
+	color: var(--ink);
+	line-height: 1.4;
+	margin-bottom: 12px;
+	letter-spacing: var(--ls-1);
+}
+
+.art-meta {
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: baseline;
+	gap: 0;
+	font-family: var(--f-jp);
+	font-size: 15px;
+	color: var(--mid);
+	white-space: nowrap;
+}
+
+.art-meta span + span::before {
+	content: '/';
+	margin: 0 6px;
+	color: var(--border);
+}
+
+/* =========================================================
+ * カード：画家応援企業（collector-card）
+ * ======================================================= */
+.collector-card {
+	display: block;
+	text-align: left;
+	text-decoration: none;
+	transition: transform .4s ease;
+}
+
+.collector-card:hover {
+	transform: translateY(-6px);
+}
+
+.collector-image {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 4 / 3;
+	background: var(--warm-gray);
+	overflow: hidden;
+	margin-bottom: 22px;
+}
+
+.collector-image-inner {
+	position: absolute;
+	inset: 0;
+	background-size: cover;
+	background-position: center;
+	transition: transform .8s cubic-bezier(.2, .7, .2, 1);
+}
+
+.collector-card:hover .collector-image-inner {
+	transform: scale(1.04);
+}
+
+.collector-image::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(to top, rgba(33, 33, 33, .35) 0%, transparent 55%);
+	opacity: 0;
+	transition: opacity .4s;
+	pointer-events: none;
+}
+
+.collector-card:hover .collector-image::after {
+	opacity: 1;
+}
+
+.collector-issue-tag {
+	position: absolute;
+	top: 16px;
+	left: 16px;
+	font-family: var(--f-jp);
+	font-size: var(--fs-body);
+	letter-spacing: var(--ls-1);
+	color: var(--white);
+	background: var(--brand);
+	padding: 5px 14px;
+	z-index: 2;
+}
+
+.collector-name {
+	font-family: var(--f-jp);
+	font-size: 20px;
+	font-weight: var(--fw-bold);
+	letter-spacing: var(--ls-1);
+	color: var(--ink);
+	line-height: 1.45;
+	margin-bottom: 16px;
+}
+
+.collector-effect {
+	font-family: var(--f-jp);
+	font-size: var(--fs-body);
+	color: var(--mid);
+	line-height: 1.85;
+	letter-spacing: var(--ls-1);
+}
+
+.collector-meta {
+	margin-top: 16px;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0;
+	font-family: var(--f-jp);
+	font-size: 13px;
+	letter-spacing: .5px;
+	color: var(--mid);
+	line-height: 1.7;
+}
+
+.collector-meta span + span::before {
+	content: '/';
+	margin: 0 8px;
+	color: var(--border);
+}
+
+.collector-readmore {
+	margin-top: 18px;
+	font-family: var(--f-deco);
+	font-size: 13px;
+	letter-spacing: var(--ls-3);
+	text-transform: uppercase;
+	color: var(--brand);
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.collector-readmore::after {
+	content: '';
+	width: 18px;
+	height: 1px;
+	background: currentColor;
+	transition: width .25s;
+}
+
+.collector-card:hover .collector-readmore::after {
+	width: 32px;
+}
+
+/* =========================================================
+ * カード：NEWS / JOURNAL（news-item 横並び行・archive用 / 明るい背景）
+ * ※ news-card（縦カード・TOP用）と同名の子クラスを使うため、
+ *   行版の子要素ルールは .news-item 配下にスコープして衝突を防ぐ。
+ * ======================================================= */
+.news-item {
+	display: grid;
+	grid-template-columns: 200px 1fr auto;
+	gap: 40px;
+	align-items: center;
+	padding: 36px 8px;
+	text-decoration: none;
+	border-bottom: 1px solid var(--border-soft);
+	transition: background .25s, padding .25s;
+}
+
+.news-item:first-child {
+	border-top: 1px solid var(--border-soft);
+}
+
+.news-item:hover {
+	background: var(--brand-soft);
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.news-item .news-thumb {
+	width: 200px;
+	height: 130px;
+	background: var(--warm-gray);
+	overflow: hidden;
+	position: relative;
+}
+
+.news-item .news-thumb-inner {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: var(--f-display);
+	font-size: 28px;
+	letter-spacing: var(--ls-2);
+	text-transform: uppercase;
+	color: rgba(33, 33, 33, .2);
+	background-size: cover;
+	background-position: center;
+	transition: transform .8s cubic-bezier(.2, .7, .2, 1);
+}
+
+.news-item:hover .news-thumb-inner {
+	transform: scale(1.05);
+}
+
+.news-item .news-meta {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	margin-bottom: 12px;
+	flex-wrap: wrap;
+}
+
+.news-item .news-date {
+	font-family: var(--f-deco);
+	font-size: 14px;
+	letter-spacing: var(--ls-2);
+	color: var(--mid);
+}
+
+.news-item .news-cat {
+	font-family: var(--f-jp);
+	font-size: 14px;
+	font-weight: var(--fw-bold);
+	letter-spacing: var(--ls-1);
+	color: var(--white);
+	background: var(--brand);
+	padding: 4px 12px;
+}
+
+.news-item .news-cat.media {
+	background: var(--ink);
+}
+
+.news-item .journal-reading {
+	font-family: var(--f-jp);
+	font-size: 13px;
+	letter-spacing: var(--ls-1);
+	color: var(--mid);
+}
+
+.news-item .news-title {
+	font-family: var(--f-jp);
+	font-size: 22px;
+	font-weight: var(--fw-bold);
+	letter-spacing: var(--ls-1);
+	line-height: 1.6;
+	color: var(--ink);
+	transition: color .25s;
+}
+
+.news-item:hover .news-title {
+	color: var(--brand);
+}
+
+.news-item .news-source {
+	font-family: var(--f-jp);
+	font-size: var(--fs-body);
+	letter-spacing: var(--ls-1);
+	color: var(--mid);
+	margin-top: 8px;
+}
+
+.news-item .journal-author {
+	font-family: var(--f-jp);
+	font-size: 13px;
+	letter-spacing: var(--ls-1);
+	color: var(--mid);
+	margin-top: 8px;
+}
+
+.news-arrow {
+	width: 44px;
+	height: 44px;
+	border: 1px solid var(--border);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	transition: all .25s;
+}
+
+.news-arrow::after {
+	content: '';
+	width: 9px;
+	height: 9px;
+	border-top: 1px solid var(--ink);
+	border-right: 1px solid var(--ink);
+	transform: rotate(45deg);
+	margin-left: -3px;
+	transition: border-color .25s;
+}
+
+.news-item:hover .news-arrow {
+	background: var(--brand);
+	border-color: var(--brand);
+}
+
+.news-item:hover .news-arrow::after {
+	border-color: var(--white);
+}
+
+/* =========================================================
+ * カード：NEWS / JOURNAL（news-card 縦カード・TOP用 / ダーク背景）
+ * mockups/index.html の NEWS セクション（背景 var(--ink)）を正とする。
+ * ダーク背景のセクション（front-page 側）内での使用を前提にした
+ * 半透明白の配色。明るい背景では視認性が低いので context='top' 専用。
+ * ======================================================= */
+.news-card {
+	display: block;
+	background: rgba(255, 255, 255, .02);
+	overflow: hidden;
+	text-decoration: none;
+	border: 1px solid rgba(255, 255, 255, .05);
+	transition: background .25s;
+}
+
+.news-card:hover {
+	background: rgba(255, 255, 255, .05);
+}
+
+.news-card .news-thumb {
+	width: 100%;
+	padding-top: 65%;
+	position: relative;
+	overflow: hidden;
+	background: rgba(255, 255, 255, .03);
+}
+
+.news-card .news-thumb-bg {
+	position: absolute;
+	inset: 0;
+	background-size: cover;
+	background-position: center;
+	transition: transform .6s ease;
+}
+
+.news-card:hover .news-thumb-bg {
+	transform: scale(1.05);
+}
+
+.news-card .news-body {
+	padding: 24px 24px 28px;
+}
+
+.news-card .news-cat {
+	display: block;
+	font-family: var(--f-deco);
+	font-size: 10px;
+	font-weight: var(--fw-bold);
+	letter-spacing: var(--ls-3);
+	color: var(--brand);
+	text-transform: uppercase;
+	margin-bottom: 14px;
+}
+
+.news-card .news-title {
+	font-family: var(--f-jp);
+	font-size: 13px;
+	font-weight: var(--fw-medium);
+	line-height: 1.85;
+	letter-spacing: .05em;
+	color: var(--white);
+	margin-bottom: 18px;
+}
+
+.news-card .news-date {
+	font-family: var(--f-display);
+	font-size: 11px;
+	font-weight: var(--fw-medium);
+	letter-spacing: .22em;
+	color: rgba(255, 255, 255, .4);
+}
+
+/* =========================================================
+ * CTA（cta-strip）
+ * ======================================================= */
+.cta-strip {
+	padding: var(--space-xl) 56px;
+	background: var(--cta-gray);
+	color: var(--white);
+	position: relative;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+.cta-strip--compact {
+	padding: var(--space-lg) 56px;
+}
+
+.cta-inner {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	gap: 32px;
+	position: relative;
+	z-index: 1;
+	max-width: 1100px;
+	width: 100%;
+}
+
+.cta-title {
+	font-family: var(--f-display);
+	font-size: clamp(28px, 3.4vw, 48px);
+	font-weight: var(--fw-regular);
+	letter-spacing: .08em;
+	color: var(--white);
+	line-height: 1;
+	text-transform: uppercase;
+	text-align: left;
+}
+
+.cta-btns {
+	display: flex;
+	gap: 14px;
+	flex-shrink: 0;
+}
+
+.btn-cta-w,
+.btn-cta-o {
+	font-family: var(--f-jp);
+	font-size: var(--fs-min);
+	font-weight: var(--fw-bold);
+	letter-spacing: .14em;
+	color: var(--white);
+	padding: 14px 28px;
+	text-decoration: none;
+	transition: all .25s;
+	display: block;
+}
+
+.btn-cta-w {
+	background: var(--brand);
+}
+
+.btn-cta-w:hover {
+	background: var(--brand-deep);
+	transform: translateY(-2px);
+}
+
+.btn-cta-o {
+	border: 1px solid rgba(255, 255, 255, .5);
+}
+
+.btn-cta-o:hover {
+	background: var(--white);
+	color: var(--cta-gray);
+	border-color: var(--white);
+}
+
+/* =========================================================
+ * レスポンシブ
+ * ======================================================= */
+@media (max-width: 1200px) {
+	.artist-grid {
+		grid-template-columns: repeat(3, 1fr);
+		gap: 60px 32px;
+	}
+
+	.art-grid {
+		grid-template-columns: repeat(3, 1fr);
+		gap: 52px 28px;
+	}
+}
+
+@media (max-width: 980px) {
+	.artist-grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 52px 24px;
+	}
+
+	.art-grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 44px 20px;
+	}
+
+	.collector-grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 52px 32px;
+	}
+}
+
+@media (max-width: 760px) {
+	.collector-grid {
+		grid-template-columns: 1fr;
+		gap: 52px;
+	}
+
+	.news-item {
+		grid-template-columns: 1fr;
+		gap: 14px;
+		padding: 28px 8px;
+	}
+
+	.news-item:hover {
+		padding-left: 8px;
+		padding-right: 8px;
+	}
+
+	.news-thumb {
+		width: 100%;
+		height: 180px;
+	}
+
+	.news-arrow {
+		display: none;
+	}
+
+	.cta-inner {
+		flex-direction: column;
+		gap: var(--space-md);
+	}
+
+	.cta-title {
+		text-align: center;
+	}
+
+	.cta-btns {
+		flex-direction: column;
+		width: 100%;
+	}
+
+	.btn-cta-w,
+	.btn-cta-o {
+		text-align: center;
+	}
+}
+
+@media (max-width: 600px) {
+	.artist-grid,
+	.art-grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 28px 12px;
+	}
+
+	.art-meta {
+		font-size: 10px;
+	}
+
+	.collector-issue-tag {
+		font-size: var(--fs-min);
+		letter-spacing: .5px;
+		padding: 4px 9px;
+	}
+}

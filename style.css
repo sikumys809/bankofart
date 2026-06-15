@@ -1,0 +1,23 @@
+/*
+Theme Name: Bank of Art
+Theme URI: https://bankof-art.com/
+Author: 株式会社シクミーズ
+Author URI: https://sikumys.co.jp/
+Description: Bank of Art（バンク・オブ・アート）公式WEBサイト用オリジナルテーマ。アート作品を「資産」として法人・事業者に提供するサービスサイト。減価償却 × 画家応援。Vanilla PHP / CSS / JS で構築。
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.5
+Requires PHP: 8.1
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: bankofart
+Tags: custom-theme, art, business
+*/
+
+/*
+ * このファイルは WordPress がテーマを認識するための「テーマヘッダー」専用ファイル。
+ * 実際のスタイルは assets/css/ 配下に分割し、inc/enqueue.php から読み込む。
+ * （tokens.css / reset.css / base.css / header.css / footer.css / components.css / pages/*.css）
+ *
+ * このファイル自体には原則スタイルを書かない。
+ */

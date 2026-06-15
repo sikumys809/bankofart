@@ -1,0 +1,97 @@
+/*
+ * tokens.css
+ * Bank of Art デザイントークン（CSS変数定義）
+ *
+ * カラー・フォント・余白・サイズは必ずこの変数経由で参照する（ハードコード禁止）。
+ * 値の出典は CLAUDE.md「デザインシステム」。
+ */
+
+:root {
+	/* ===== カラー ===== */
+	--brand: #01ae84;                   /* ブランドメインカラー（緑） */
+	--brand-deep: #018c6a;              /* ホバー時の濃い緑 */
+	--brand-soft: rgba(1, 174, 132, .08); /* 緑の薄いアクセント */
+
+	--ink: #212121;                     /* メインテキスト（黒） */
+	--paper: #f5f0ea;                   /* 背景ベージュ */
+	--dark: #212121;                    /* ダークセクション背景 */
+	--mid: #6e6862;                     /* サブテキスト */
+
+	--white: #ffffff;
+	--warm-gray: #e8e3da;  /* 画像プレースホルダ背景（mockups由来） */
+	--gold: #b8956a;       /* OWNED バッジ等のゴールド（mockups由来） */
+	--cta-gray: #4a4a4a;   /* CTAストリップ背景（mockups由来） */
+
+	--header-bg: var(--brand);  /* ヘッダー背景（ブランド緑） */
+	--footer-bg: #050505;       /* フッター背景（ほぼ黒） */
+
+	--border: rgba(33, 33, 33, .18);
+	--border-soft: rgba(33, 33, 33, .08);
+
+	/* ダーク背景上のオーバーレイ（白の透過）。境界線・サブテキスト用 */
+	--on-dark-line: rgba(255, 255, 255, .08);
+	--on-dark-line-soft: rgba(255, 255, 255, .06);
+	--on-dark-text: rgba(255, 255, 255, .85);
+	--on-dark-text-mid: rgba(255, 255, 255, .5);
+	--on-dark-text-dim: rgba(255, 255, 255, .3);
+
+	/* ===== フォント ===== */
+	--f-display: 'Cormorant SC', serif;   /* 英大文字ディスプレイ（英字専用） */
+	--f-deco: 'Cinzel', serif;            /* 英字ラベル・小見出し */
+	--f-jp: 'Shippori Mincho B1', serif;  /* 日本語全般・数字 */
+
+	/* 既定本文フォント（日本語ベース） */
+	--f-base: var(--f-jp);
+
+	/* ===== フォントウェイト ===== */
+	--fw-regular: 400;
+	--fw-medium: 500;
+	--fw-bold: 700;
+	--fw-heavy: 800;
+
+	/* ===== フォントサイズ ===== */
+	--fs-min: 18px;     /* 最小フォントサイズ（PC/タブレット） */
+	--fs-min-mobile: 10px; /* モバイル375px以下の最小 */
+	--fs-body: 18px;
+	--fs-heading: 40px; /* 見出し（PC） */
+	--fs-heading-mobile: 24px; /* 見出し（モバイル） */
+
+	/* ===== 行間 ===== */
+	--lh-tight: 1.3;
+	--lh-base: 1.8;
+	--lh-loose: 2.0;
+
+	/* ===== 字間（最大3px） ===== */
+	--ls-none: 0;
+	--ls-1: 1px;
+	--ls-2: 2px;
+	--ls-3: 3px; /* 最大値 */
+
+	/* ===== レイアウト ===== */
+	--container-max: 1280px;  /* PC基準 */
+	--container-pad: 24px;    /* コンテナ左右パディング */
+	--container-pad-mobile: 16px;
+
+	/* ===== 余白スケール ===== */
+	--space-xs: 8px;
+	--space-sm: 16px;
+	--space-md: 24px;
+	--space-lg: 48px;
+	--space-xl: 80px;
+	--space-2xl: 120px;
+
+	/* ===== ブレイクポイント（参照用メモ：CSS変数はMQに使えない） =====
+	 * PC      : 1280px 以上
+	 * タブレット : 980px 以下で1カラム化
+	 * モバイル  : 375px 完全対応
+	 */
+
+	/* ===== その他 ===== */
+	--radius: 0;          /* 美術館的な直線基調。基本角丸なし */
+	--transition: .3s ease;
+	--header-height: 92px;
+	--z-header: 1000;
+	--z-drawer: 999;
+	--z-overlay: 1100;
+	--z-menu: 1200;
+}

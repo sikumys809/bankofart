@@ -1,0 +1,227 @@
+/*
+ * base.css
+ * Bank of Art ベーススタイル（html / body / 見出し / リンク等の基本）
+ *
+ * カラー・フォントは必ず tokens.css の CSS変数経由で参照する。
+ * 厳格テキストルール（CLAUDE.md）:
+ *   - 英字フォントはすべて大文字統一
+ *   - 斜体（italic）使用禁止
+ *   - 字間は最大3px
+ *   - 数字は Shippori Mincho B1
+ *   - 最小フォントサイズ 18px（モバイル375px以下は10px）
+ */
+
+html {
+	font-size: 100%; /* 16px 基準。本文は body で 18px に */
+	scroll-behavior: smooth;
+}
+
+body {
+	font-family: var(--f-base);
+	font-weight: var(--fw-regular);
+	font-size: var(--fs-body);     /* 18px */
+	line-height: var(--lh-base);
+	color: var(--ink);
+	background-color: var(--paper);
+	letter-spacing: var(--ls-1);
+	font-style: normal;            /* 斜体禁止 */
+	text-align: left;
+}
+
+/* ===== 見出し ===== */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--f-jp);
+	font-weight: var(--fw-bold);
+	line-height: var(--lh-tight);
+	letter-spacing: var(--ls-2);
+	color: var(--ink);
+}
+
+h1 {
+	font-size: var(--fs-heading); /* 40px */
+}
+
+h2 {
+	font-size: 32px;
+}
+
+h3 {
+	font-size: 24px;
+}
+
+h4 {
+	font-size: 20px;
+}
+
+h5,
+h6 {
+	font-size: var(--fs-body); /* 18px（最小） */
+}
+
+/* ===== 英字ディスプレイ / ラベル =====
+ * 英字は大文字統一。data 属性やクラスで使うユーティリティとして用意。
+ */
+.font-display {
+	font-family: var(--f-display);
+	text-transform: uppercase;
+	letter-spacing: var(--ls-2);
+}
+
+.font-deco {
+	font-family: var(--f-deco);
+	text-transform: uppercase;
+	letter-spacing: var(--ls-3); /* ラベルは最大字間まで許容 */
+}
+
+/* ===== 段落・本文 ===== */
+p {
+	font-size: var(--fs-body);
+	line-height: var(--lh-base);
+}
+
+p + p {
+	margin-top: var(--space-sm);
+}
+
+small {
+	font-size: var(--fs-min); /* 18px を下回らない */
+}
+
+/* ===== リンク ===== */
+a {
+	color: var(--ink);
+	transition: color var(--transition);
+}
+
+a:hover,
+a:focus {
+	color: var(--brand-deep);
+}
+
+a:focus-visible {
+	outline: 2px solid var(--brand);
+	outline-offset: 2px;
+}
+
+/* ===== 強調 ===== */
+strong,
+b {
+	font-weight: var(--fw-bold);
+}
+
+/* em / i は reset.css で italic 解除済み。意味付けのみ。 */
+em,
+i {
+	font-style: normal;
+}
+
+mark {
+	background-color: var(--brand-soft);
+	color: inherit;
+	padding: 0 .2em;
+}
+
+hr {
+	border: 0;
+	border-top: 1px solid var(--border);
+	margin: var(--space-lg) 0;
+}
+
+/* ===== レイアウトユーティリティ ===== */
+.container {
+	width: 100%;
+	max-width: var(--container-max);
+	margin-inline: auto;
+	padding-inline: var(--container-pad);
+}
+
+.section {
+	padding-block: var(--space-2xl);
+}
+
+.visually-hidden {
+	position: absolute !important;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+img {
+	font-style: normal;
+}
+
+/* ===== フォーム要素の基本 ===== */
+input,
+textarea,
+select {
+	font-family: var(--f-base);
+	font-size: var(--fs-body);
+	color: var(--ink);
+	background-color: var(--white);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+	outline: none;
+	border-color: var(--brand);
+}
+
+/* ===== レスポンシブ ===== */
+
+/* タブレット（980px以下で1カラム化想定） */
+@media (max-width: 980px) {
+	.section {
+		padding-block: var(--space-xl);
+	}
+
+	h1 {
+		font-size: 32px;
+	}
+
+	h2 {
+		font-size: 26px;
+	}
+}
+
+/* モバイル（375px完全対応） */
+@media (max-width: 480px) {
+	.container {
+		padding-inline: var(--container-pad-mobile);
+	}
+
+	h1 {
+		font-size: var(--fs-heading-mobile); /* 24px */
+	}
+
+	h2 {
+		font-size: 22px;
+	}
+
+	h3 {
+		font-size: 20px;
+	}
+}
+
+/* 375px以下：最小フォントサイズの下限を 10px まで許容 */
+@media (max-width: 375px) {
+	body {
+		font-size: 16px;
+	}
+
+	small {
+		font-size: var(--fs-min-mobile); /* 10px */
+	}
+}

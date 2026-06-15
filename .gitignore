@@ -1,0 +1,36 @@
+# ===== OS =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== ログ =====
+*.log
+debug.log
+
+# ===== 依存・ビルド成果物 =====
+/node_modules/
+/vendor/
+
+# ===== エディタ・ローカル設定 =====
+.claude/settings.local.json
+.vscode/
+.idea/
+*.code-workspace
+
+# ===== 環境・秘匿情報 =====
+.env
+.env.*
+*.local
+
+# ===== WordPress ローカル成果物（テーマリポジトリに含めない） =====
+wp-config.php
+/uploads/
+*.sql
+*.sql.gz
+*.sqlite
+
+# ===== ライセンス・鍵（万一の混入防止） =====
+*.pem
+*.key
+*license-key*
+meta-box-aio-license*
