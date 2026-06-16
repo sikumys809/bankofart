@@ -172,6 +172,23 @@ function bankofart_enqueue_assets() {
 		);
 	}
 
+	// ページ別アセット：フロントページ（TOP）。
+	if ( is_front_page() ) {
+		wp_enqueue_style(
+			'bankofart-front-page',
+			"{$theme_uri}/assets/css/pages/front-page.css",
+			array( 'bankofart-components' ),
+			$ver
+		);
+		wp_enqueue_script(
+			'bankofart-front-page',
+			"{$theme_uri}/assets/js/front-page.js",
+			array(),
+			$ver,
+			true
+		);
+	}
+
 	// ページ別アセット：ART アーカイブ（CSS + 7軸AND+ソートJS）。
 	if ( is_post_type_archive( 'art' ) ) {
 		wp_enqueue_style(

@@ -92,6 +92,9 @@ $render_filter_row = static function ( $axis, $label, $terms, $en = false ) {
 		<h1 class="page-hero-title rv">ART</h1>
 		<p class="page-hero-ja rv d1">作品一覧</p>
 		<div class="page-hero-rule rv d2"></div>
+		<div class="page-statement rv d3">
+			<p><?php echo esc_html__( 'バンク・オブ・アート公認作品の一覧。', 'bankofart' ); ?></p>
+		</div>
 	</section>
 
 	<section class="filter-section">

@@ -15,7 +15,8 @@
 .page-hero { padding: 184px 40px 84px; background: var(--paper); text-align: center; }
 .page-hero-title { font-family: var(--f-display); font-size: 96px; font-weight: var(--fw-regular); letter-spacing: var(--ls-3); line-height: 1; text-transform: uppercase; color: var(--ink); margin-bottom: 16px; }
 .page-hero-ja { font-family: var(--f-deco); font-size: 13px; font-weight: var(--fw-medium); letter-spacing: var(--ls-3); text-transform: uppercase; color: var(--brand); margin-bottom: 36px; }
-.page-hero-rule { width: 1px; height: 64px; background: var(--border); margin: 0 auto; }
+.page-hero-rule { width: 1px; height: 64px; background: var(--border); margin: 0 auto 36px; }
+.page-statement { max-width: 720px; margin: 0 auto; font-family: var(--f-jp); font-size: var(--fs-body); line-height: 2.2; letter-spacing: var(--ls-1); color: var(--ink); }
 
 /* ═══ FILTER ═══ */
 .filter-section { background: var(--paper); padding: 56px 40px 24px; border-top: 1px solid var(--border-soft); }
