@@ -59,7 +59,8 @@ function bankofart_enqueue_assets() {
 	wp_enqueue_script( 'bankofart-header', "{$theme_uri}/assets/js/header.js", array(), $ver, true );
 
 	// 単一ページ共通インタラクション（ヒーロー切替・リビール・ライトボックス）。
-	$single_detail_needed = ( is_singular( 'artist' ) || is_singular( 'art' ) || is_singular( 'collector' ) || is_singular( 'news' ) || is_singular( 'journal' ) );
+	$single_detail_needed = ( is_singular( 'artist' ) || is_singular( 'art' ) || is_singular( 'collector' ) || is_singular( 'news' ) || is_singular( 'journal' )
+		|| is_post_type_archive( 'news' ) || is_post_type_archive( 'journal' ) || is_post_type_archive( 'artist' ) || is_post_type_archive( 'collector' ) ); // アーカイブは .rv リビールに使用.
 	if ( $single_detail_needed ) {
 		wp_enqueue_script(
 			'bankofart-single-detail',
@@ -117,6 +118,57 @@ function bankofart_enqueue_assets() {
 			"{$theme_uri}/assets/css/pages/single-journal.css",
 			array( 'bankofart-components' ),
 			$ver
+		);
+	}
+
+	// ページ別アセット：NEWS / JOURNAL アーカイブ（共通CSS + フィルターJS）。
+	if ( is_post_type_archive( 'news' ) || is_post_type_archive( 'journal' ) ) {
+		wp_enqueue_style(
+			'bankofart-archive-list',
+			"{$theme_uri}/assets/css/pages/archive-list.css",
+			array( 'bankofart-components' ),
+			$ver
+		);
+		wp_enqueue_script(
+			'bankofart-archive-filter',
+			"{$theme_uri}/assets/js/archive-filter.js",
+			array(),
+			$ver,
+			true
+		);
+	}
+
+	// ページ別アセット：ARTIST アーカイブ（CSS + 2軸ANDフィルターJS）。
+	if ( is_post_type_archive( 'artist' ) ) {
+		wp_enqueue_style(
+			'bankofart-archive-artist',
+			"{$theme_uri}/assets/css/pages/archive-artist.css",
+			array( 'bankofart-components' ),
+			$ver
+		);
+		wp_enqueue_script(
+			'bankofart-archive-artist-filter',
+			"{$theme_uri}/assets/js/archive-artist-filter.js",
+			array(),
+			$ver,
+			true
+		);
+	}
+
+	// ページ別アセット：COLLECTOR アーカイブ（CSS + 1軸フィルターJS）。
+	if ( is_post_type_archive( 'collector' ) ) {
+		wp_enqueue_style(
+			'bankofart-archive-collector',
+			"{$theme_uri}/assets/css/pages/archive-collector.css",
+			array( 'bankofart-components' ),
+			$ver
+		);
+		wp_enqueue_script(
+			'bankofart-archive-collector-filter',
+			"{$theme_uri}/assets/js/archive-collector-filter.js",
+			array(),
+			$ver,
+			true
 		);
 	}
 }

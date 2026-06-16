@@ -33,13 +33,22 @@ $date      = get_the_modified_date( 'Y.m.d', $news_id ); // 更新日.
 // 「メディア掲載」はダーク系バッジ（mockup: news-cat.media）。
 $cat_mod = ( 'メディア掲載' === $category ) ? ' media' : '';
 
+// NEWS は外部記事リンク方式：external_url があればそのURLへ（別タブ）、無ければ内部パーマリンク。
+$external    = rwmb_meta( 'news_external_url', '', $news_id );
+$href        = ! empty( $external ) ? $external : $permalink;
+$target_attr = ! empty( $external ) ? ' target="_blank" rel="noopener"' : '';
+
+// 一覧フィルター用にカテゴリ slug を data 属性に持たせる。
+$cat_terms = get_the_terms( $news_id, 'news_category' );
+$cat_slug  = ( ! is_wp_error( $cat_terms ) && ! empty( $cat_terms ) ) ? $cat_terms[0]->slug : '';
+
 if ( 'top' === $context ) :
 	/*
 	 * TOP用：縦カード（ダーク背景）。mockups/index.html の .news-card。
 	 * ダーク背景セクション内での使用前提。要約は表示しない（mockup準拠）。
 	 */
 	?>
-	<a class="news-card" href="<?php echo esc_url( $permalink ); ?>">
+	<a class="news-card" href="<?php echo esc_url( $href ); ?>"<?php echo $target_attr; // phpcs:ignore WordPress.Security.EscapeOutput ?> data-category="<?php echo esc_attr( $cat_slug ); ?>">
 		<div class="news-thumb">
 			<div class="news-thumb-bg"<?php if ( ! empty( $image['url'] ) ) : ?> style="background-image:url('<?php echo esc_url( $image['url'] ); ?>');" role="img" aria-label="<?php echo esc_attr( $image['alt'] ? $image['alt'] : $title ); ?>"<?php endif; ?>></div>
 		</div>
@@ -59,7 +68,7 @@ if ( 'top' === $context ) :
 	return;
 endif;
 ?>
-<a class="news-item news-item--<?php echo esc_attr( $context ); ?>" href="<?php echo esc_url( $permalink ); ?>">
+<a class="news-item news-item--<?php echo esc_attr( $context ); ?>" href="<?php echo esc_url( $href ); ?>"<?php echo $target_attr; // phpcs:ignore WordPress.Security.EscapeOutput ?> data-category="<?php echo esc_attr( $cat_slug ); ?>">
 	<div class="news-thumb">
 		<span class="news-thumb-inner"<?php if ( ! empty( $image['url'] ) ) : ?> style="background-image:url('<?php echo esc_url( $image['url'] ); ?>');" role="img" aria-label="<?php echo esc_attr( $image['alt'] ? $image['alt'] : $title ); ?>"<?php endif; ?>><?php
 		if ( empty( $image['url'] ) && ! empty( $category ) ) {

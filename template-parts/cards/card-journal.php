@@ -33,13 +33,17 @@ $category     = bankofart_get_first_term_name( $journal_id, 'journal_category' )
 $image        = bankofart_get_image( 'journal_main_image', $journal_id, 'medium' );
 $date         = get_the_date( 'Y.m.d', $journal_id );
 
+// 一覧フィルター用にカテゴリ slug を data 属性に持たせる。
+$cat_terms = get_the_terms( $journal_id, 'journal_category' );
+$cat_slug  = ( ! is_wp_error( $cat_terms ) && ! empty( $cat_terms ) ) ? $cat_terms[0]->slug : '';
+
 if ( 'top' === $context ) :
 	/*
 	 * TOP用：縦カード（ダーク背景）。news-card（index.html の NEWS縦カード）を流用。
 	 * ダーク背景セクション内での使用前提。要約・著者・読了時間は表示しない（簡潔表示）。
 	 */
 	?>
-	<a class="news-card news-card--journal" href="<?php echo esc_url( $permalink ); ?>">
+	<a class="news-card news-card--journal" href="<?php echo esc_url( $permalink ); ?>" data-category="<?php echo esc_attr( $cat_slug ); ?>">
 		<div class="news-thumb">
 			<div class="news-thumb-bg"<?php if ( ! empty( $image['url'] ) ) : ?> style="background-image:url('<?php echo esc_url( $image['url'] ); ?>');" role="img" aria-label="<?php echo esc_attr( $image['alt'] ? $image['alt'] : $title ); ?>"<?php endif; ?>></div>
 		</div>
@@ -59,7 +63,7 @@ if ( 'top' === $context ) :
 	return;
 endif;
 ?>
-<a class="news-item news-item--journal news-item--<?php echo esc_attr( $context ); ?>" href="<?php echo esc_url( $permalink ); ?>">
+<a class="news-item news-item--journal news-item--<?php echo esc_attr( $context ); ?>" href="<?php echo esc_url( $permalink ); ?>" data-category="<?php echo esc_attr( $cat_slug ); ?>">
 	<div class="news-thumb">
 		<span class="news-thumb-inner"<?php if ( ! empty( $image['url'] ) ) : ?> style="background-image:url('<?php echo esc_url( $image['url'] ); ?>');" role="img" aria-label="<?php echo esc_attr( $image['alt'] ? $image['alt'] : $title ); ?>"<?php endif; ?>><?php
 		if ( empty( $image['url'] ) && ! empty( $category ) ) {

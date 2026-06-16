@@ -44,8 +44,15 @@ if ( ! is_wp_error( $tag_terms ) && ! empty( $tag_terms ) ) {
 	$names     = wp_list_pluck( array_slice( $tag_terms, 0, 2 ), 'name' );
 	$tag_label = implode( ' / ', $names );
 }
+
+// 一覧フィルター用：ステータス・ジャンルのタームIDを data 属性に持たせる
+// （ジャンルは複数前提でスペース区切り。スラッグは日本語=URLエンコードのためIDを使用）。
+$status_terms = get_the_terms( $artist_id, 'artist_status' );
+$genre_terms  = get_the_terms( $artist_id, 'artist_genre' );
+$data_status  = ( ! is_wp_error( $status_terms ) && $status_terms ) ? implode( ' ', wp_list_pluck( $status_terms, 'term_id' ) ) : '';
+$data_genre   = ( ! is_wp_error( $genre_terms ) && $genre_terms ) ? implode( ' ', wp_list_pluck( $genre_terms, 'term_id' ) ) : '';
 ?>
-<a class="artist-card artist-card--<?php echo esc_attr( $context ); ?>" href="<?php echo esc_url( $permalink ); ?>">
+<a class="artist-card artist-card--<?php echo esc_attr( $context ); ?>" href="<?php echo esc_url( $permalink ); ?>" data-status="<?php echo esc_attr( $data_status ); ?>" data-genre="<?php echo esc_attr( $data_genre ); ?>">
 	<div class="artist-photo">
 		<?php if ( '' !== $number ) : ?>
 			<span class="artist-number">No.<span class="boa-num"><?php echo esc_html( $number ); ?></span></span>

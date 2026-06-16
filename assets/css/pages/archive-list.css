@@ -1,0 +1,73 @@
+/*
+ * pages/archive-list.css
+ * NEWS / JOURNAL アーカイブ共通スタイル。
+ * mockups/news.html・journal.html の page-hero / filter / news-section / pagination を移植。
+ *
+ * - 記事行（.news-item）の見た目は components.css（card-news/card-journal と共通）を流用。
+ * - フォント・カラーは tokens.css の変数のみ。英字大文字 / italic 不使用 / 字間最大3px。
+ * - .rv は JS無効時に消えないよう body.reveal-ready 配下にスコープ。
+ * - ページネーションは WordPress の paginate_links（.page-numbers）出力に合わせて
+ *   モックの .pagination デザインへ寄せている。
+ */
+
+.boa-num { font-family: var(--f-jp); font-weight: var(--fw-medium); }
+
+/* ═══ PAGE HERO ═══ */
+.page-hero { padding: 184px 40px 84px; background: var(--paper); text-align: center; }
+.page-hero-title { font-family: var(--f-display); font-size: 96px; font-weight: var(--fw-regular); letter-spacing: var(--ls-3); line-height: 1; text-transform: uppercase; color: var(--ink); margin-bottom: 16px; }
+.page-hero-ja { font-family: var(--f-deco); font-size: 13px; font-weight: var(--fw-medium); letter-spacing: var(--ls-3); text-transform: uppercase; color: var(--brand); margin-bottom: 40px; }
+.page-statement { max-width: 680px; margin: 0 auto; font-family: var(--f-jp); font-size: var(--fs-body); line-height: 2.1; letter-spacing: var(--ls-1); color: var(--mid); }
+
+/* ═══ FILTER ═══ */
+.filter-section { background: var(--paper); padding: 40px 40px 24px; border-top: 1px solid var(--border-soft); }
+.filter-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: baseline; gap: 32px; flex-wrap: wrap; justify-content: flex-start; }
+.filter-label { font-family: var(--f-deco); font-size: 13px; letter-spacing: var(--ls-3); text-transform: uppercase; color: var(--brand); flex-shrink: 0; }
+.filter-tags { display: flex; gap: 8px 28px; flex-wrap: wrap; justify-content: flex-start; }
+.filter-tag { font-family: var(--f-jp); font-size: var(--fs-body); letter-spacing: var(--ls-1); color: var(--mid); padding: 8px 0; position: relative; transition: color .25s; background: none; border: 0; cursor: pointer; }
+.filter-tag.en { font-family: var(--f-deco); letter-spacing: var(--ls-3); font-size: 14px; text-transform: uppercase; }
+.filter-tag::after { content: ''; position: absolute; bottom: 4px; left: 0; width: 0; height: 1px; background: var(--brand); transition: width .3s ease; }
+.filter-tag:hover { color: var(--ink); }
+.filter-tag.is-active { color: var(--ink); }
+.filter-tag.is-active::after { width: 100%; }
+.filter-count { font-family: var(--f-deco); font-size: 14px; letter-spacing: var(--ls-3); text-transform: uppercase; color: var(--brand); flex-shrink: 0; margin-left: auto; }
+.filter-count .boa-num { color: var(--brand); margin-right: 4px; }
+
+/* ═══ LIST ═══ */
+.news-section { padding: 56px 40px 110px; background: var(--paper); }
+.news-list { max-width: 1000px; margin: 0 auto; }
+
+/* ═══ 0件 ═══ */
+.news-empty { max-width: 1000px; margin: 0 auto; padding: 40px 0; text-align: center; }
+.news-empty p { font-family: var(--f-jp); font-size: var(--fs-body); letter-spacing: var(--ls-1); color: var(--mid); }
+
+/* ═══ PAGINATION（paginate_links 出力に適用）═══ */
+.pagination { max-width: 1000px; margin: 64px auto 0; padding-top: 48px; border-top: 1px solid var(--border-soft); }
+.pagination .nav-links { display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap; }
+.pagination .page-numbers { font-family: var(--f-jp); padding: 10px 18px; color: var(--mid); letter-spacing: var(--ls-1); text-decoration: none; transition: color .2s; }
+.pagination .page-numbers:hover { color: var(--ink); }
+.pagination .page-numbers.current { font-family: var(--f-jp); color: var(--brand); border-bottom: 1px solid var(--brand); }
+.pagination .page-numbers.dots { color: var(--mid); }
+.pagination .prev, .pagination .next { font-family: var(--f-deco); letter-spacing: var(--ls-3); font-size: 14px; text-transform: uppercase; }
+
+/* ═══ REVEAL（JS有効時のみ隠す）═══ */
+body.reveal-ready .rv { opacity: 0; transform: translateY(30px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
+body.reveal-ready .rv.on { opacity: 1; transform: translateY(0); }
+.rv.d1 { transition-delay: .08s; }
+.rv.d2 { transition-delay: .16s; }
+
+/* ═══ レスポンシブ ═══ */
+@media (max-width: 700px) {
+	.page-statement { line-height: 1.7; }
+	.page-hero { padding: 132px 20px 64px; }
+	.page-hero-title { font-size: 46px; }
+	.filter-section { padding: 36px 20px 20px; }
+	.filter-inner { gap: 18px; }
+	.filter-count { margin-left: 0; }
+	.news-section { padding: 48px 20px 90px; }
+}
+@media (max-width: 430px) {
+	.page-hero { padding: 120px 16px 56px; }
+	.page-hero-title { font-size: 40px; }
+	.filter-section { padding: 28px 16px 16px; }
+	.news-section { padding: 40px 16px 80px; }
+}
