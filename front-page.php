@@ -33,6 +33,69 @@ $artist_archive    = get_post_type_archive_link( 'artist' );
 $art_archive       = get_post_type_archive_link( 'art' );
 $collector_archive = get_post_type_archive_link( 'collector' );
 $news_archive      = get_post_type_archive_link( 'news' );
+
+/*
+ * STEP2 データ取得（各セクションは「最新N件抜粋」。アーカイブ全件とは別物）。
+ * 出力には get_posts()（配列）を使い、メインクエリのグローバルを汚さない。
+ * 各フィールドは post_id を明示して rwmb_meta / ヘルパーで取得する。
+ */
+// ARTIST：公認画家のみ、最新5名（menu_order → 公開日降順）。
+$front_artists = get_posts(
+	array(
+		'post_type'      => 'artist',
+		'post_status'    => 'publish',
+		'posts_per_page' => 5,
+		'orderby'        => array(
+			'menu_order' => 'ASC',
+			'date'       => 'DESC',
+		),
+		'tax_query'      => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- TOP抜粋。件数は5件に限定。
+			array(
+				'taxonomy' => 'artist_status',
+				'field'    => 'name',
+				'terms'    => '公認画家',
+			),
+		),
+	)
+);
+
+// ART：作品の最新7点（コラージュ＝上段3＋下段4）。ステータス問わず公開日降順。
+$front_arts = get_posts(
+	array(
+		'post_type'      => 'art',
+		'post_status'    => 'publish',
+		'posts_per_page' => 7,
+		'orderby'        => 'date',
+		'order'          => 'DESC',
+	)
+);
+
+// COLLECTOR：画家応援企業の最新12社（ロゴグリッド）。
+$front_collectors = get_posts(
+	array(
+		'post_type'      => 'collector',
+		'post_status'    => 'publish',
+		'posts_per_page' => 12,
+		'orderby'        => array(
+			'menu_order' => 'ASC',
+			'date'       => 'DESC',
+		),
+	)
+);
+
+// NEWS：最新4件（公開日降順）。card-news を context='top'（縦カード）で出力。
+$front_news = get_posts(
+	array(
+		'post_type'      => 'news',
+		'post_status'    => 'publish',
+		'posts_per_page' => 4,
+		'orderby'        => 'date',
+		'order'          => 'DESC',
+	)
+);
+
+// ART コラージュのフレーム比率（モック準拠：上段 wide/tall/square、下段 tall/square/tall/wide）。
+$front_frame_types = array( 'type-wide', 'type-tall', 'type-square', 'type-tall', 'type-square', 'type-tall', 'type-wide' );
 ?>
 
 <main id="main" class="front-page">
@@ -72,7 +135,38 @@ $news_archive      = get_post_type_archive_link( 'news' );
 
 				<div class="artist-inner">
 					<div class="artist-rail">
-						<!-- STEP2: 公認アーティストの最新5名をここに（artist_status=公認画家 等で抽出し card） -->
+						<?php if ( $front_artists ) : ?>
+							<?php
+							$artist_i = 0;
+							foreach ( $front_artists as $artist ) :
+								$artist_i++;
+								$a_id    = $artist->ID;
+								$a_name  = get_the_title( $a_id );
+								$a_desc  = (string) rwmb_meta( 'artist_theme_short', '', $a_id );
+								if ( '' === trim( $a_desc ) ) {
+									$a_desc = (string) rwmb_meta( 'artist_catch_phrase', '', $a_id );
+								}
+								$a_photo = bankofart_get_image( 'artist_main_photo', $a_id, 'large' );
+								$ap      = 'ap' . ( ( ( $artist_i - 1 ) % 5 ) + 1 ); // 写真未設定時のフォールバック背景。
+								$a_delay = $artist_i > 1 ? ' d' . min( $artist_i - 1, 4 ) : '';
+								$a_bg    = ! empty( $a_photo['url'] ) ? ' style="background-image:url(\'' . esc_url( $a_photo['url'] ) . '\');"' : '';
+								?>
+								<a href="<?php echo esc_url( get_permalink( $a_id ) ); ?>" class="artist-card rv<?php echo esc_attr( $a_delay ); ?>">
+									<div class="artist-portrait">
+										<div class="artist-port-img <?php echo esc_attr( $ap ); ?>"<?php echo $a_bg; // phpcs:ignore WordPress.Security.EscapeOutput -- URLは esc_url 済み ?>></div>
+										<div class="artist-history">HISTORY →</div>
+									</div>
+									<div class="artist-info">
+										<div class="artist-name-ja"><?php echo esc_html( $a_name ); ?></div>
+										<?php if ( '' !== trim( (string) $a_desc ) ) : ?>
+											<div class="artist-desc"><?php echo esc_html( $a_desc ); ?></div>
+										<?php endif; ?>
+									</div>
+								</a>
+							<?php endforeach; ?>
+						<?php else : ?>
+							<p class="front-empty">公認アーティストを準備中です。</p>
+						<?php endif; ?>
 					</div>
 					<div class="guest-more rv d2">
 						<a href="<?php echo esc_url( $artist_archive ); ?>" class="guest-more-btn">View All Artists →</a>
@@ -91,7 +185,59 @@ $news_archive      = get_post_type_archive_link( 'news' );
 			<p class="dark-section-head-ja rv d1">作品一覧</p>
 			<div class="head-rule"></div>
 		</div>
-		<!-- STEP2: 作品の最新N件をここに（card-art / art-collage 等） -->
+		<?php if ( $front_arts ) : ?>
+			<?php
+			$rows  = array( array_slice( $front_arts, 0, 3 ), array_slice( $front_arts, 3, 4 ) );
+			$order = 0;
+			?>
+			<div class="art-collage" id="artCollage">
+				<?php
+				foreach ( $rows as $row ) :
+					if ( empty( $row ) ) {
+						continue;
+					}
+					?>
+					<div class="art-row">
+						<?php
+						foreach ( $row as $art ) :
+							$art_id2     = $art->ID;
+							$type        = isset( $front_frame_types[ $order ] ) ? $front_frame_types[ $order ] : 'type-square';
+							$art_num     = (string) rwmb_meta( 'art_number', '', $art_id2 );
+							$art_img     = bankofart_get_image( 'art_main_image', $art_id2, 'large' );
+							$art_en      = (string) rwmb_meta( 'art_title_en', '', $art_id2 );
+							$art_disp    = '' !== trim( $art_en ) ? $art_en : get_the_title( $art_id2 );
+							$art_makers  = bankofart_get_connected( 'artist_to_art', 'to', $art_id2 );
+							$art_artist  = ! empty( $art_makers ) ? get_the_title( $art_makers[0]->ID ) : '';
+							$art_bg      = ! empty( $art_img['url'] ) ? ' style="background-image:url(\'' . esc_url( $art_img['url'] ) . '\');"' : '';
+							$art_num_dig = preg_replace( '/[^0-9]/', '', $art_num );
+							?>
+							<a href="<?php echo esc_url( get_permalink( $art_id2 ) ); ?>" class="frame <?php echo esc_attr( $type ); ?>" data-order="<?php echo esc_attr( $order ); ?>">
+								<?php if ( '' !== trim( $art_num ) ) : ?>
+									<div class="frame-num">#<?php echo esc_html( $art_num ); ?></div>
+								<?php endif; ?>
+								<div class="frame-inner">
+									<div class="frame-art"<?php echo $art_bg; // phpcs:ignore WordPress.Security.EscapeOutput -- URLは esc_url 済み ?>></div>
+									<div class="frame-label">
+										<?php if ( '' !== $art_num_dig ) : ?>
+											<div class="frame-label-no">No. <?php echo esc_html( str_pad( $art_num_dig, 4, '0', STR_PAD_LEFT ) ); ?></div>
+										<?php endif; ?>
+										<div class="frame-label-name"><?php echo esc_html( $art_disp ); ?></div>
+										<?php if ( '' !== trim( (string) $art_artist ) ) : ?>
+											<div class="frame-label-artist"><?php echo esc_html( $art_artist ); ?></div>
+										<?php endif; ?>
+									</div>
+								</div>
+							</a>
+							<?php
+							$order++;
+						endforeach;
+						?>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		<?php else : ?>
+			<div class="front-empty-wrap"><p class="front-empty">作品を準備中です。</p></div>
+		<?php endif; ?>
 		<div class="art-cta rv">
 			<a href="<?php echo esc_url( $art_archive ); ?>" class="art-see-all">View All Works →</a>
 		</div>
@@ -105,7 +251,32 @@ $news_archive      = get_post_type_archive_link( 'news' );
 				<p class="collector-head-ja">画家応援企業</p>
 				<div class="head-rule"></div>
 			</div>
-			<!-- STEP2: 画家応援企業ロゴ／カードをここに（collector を N件） -->
+			<?php if ( $front_collectors ) : ?>
+				<div class="collector-grid">
+					<?php
+					$collector_i = 0;
+					foreach ( $front_collectors as $collector ) :
+						$collector_i++;
+						$c_id    = $collector->ID;
+						$c_name  = (string) rwmb_meta( 'collector_company_name', '', $c_id );
+						if ( '' === trim( $c_name ) ) {
+							$c_name = get_the_title( $c_id );
+						}
+						$c_logo  = bankofart_get_image( 'collector_logo', $c_id, 'medium' );
+						$c_bg    = ! empty( $c_logo['url'] ) ? ' style="background-image:url(\'' . esc_url( $c_logo['url'] ) . '\');"' : '';
+						?>
+						<a href="<?php echo esc_url( get_permalink( $c_id ) ); ?>" class="collector-card rv">
+							<div class="collector-card-img"<?php echo $c_bg; // phpcs:ignore WordPress.Security.EscapeOutput -- URLは esc_url 済み ?>></div>
+							<div class="collector-card-body">
+								<div class="collector-card-num">No. <?php echo esc_html( str_pad( (string) $collector_i, 2, '0', STR_PAD_LEFT ) ); ?></div>
+								<div class="collector-card-name"><?php echo esc_html( $c_name ); ?></div>
+							</div>
+						</a>
+					<?php endforeach; ?>
+				</div>
+			<?php else : ?>
+				<div class="front-empty-wrap"><p class="front-empty">画家応援企業を準備中です。</p></div>
+			<?php endif; ?>
 			<div class="collector-cta rv">
 				<a href="<?php echo esc_url( $collector_archive ); ?>" class="collector-see-all">View All Collectors →</a>
 			</div>
@@ -241,7 +412,24 @@ $news_archive      = get_post_type_archive_link( 'news' );
 				<p class="news-head-ja rv d1">最新記事</p>
 				<div class="head-rule"></div>
 			</div>
-			<!-- STEP2: NEWS の最新4件をここに（card-news context='top'＝縦カード） -->
+			<?php if ( $front_news ) : ?>
+				<div class="news-grid">
+					<?php
+					foreach ( $front_news as $news_item ) :
+						get_template_part(
+							'template-parts/cards/card-news',
+							null,
+							array(
+								'news_id' => $news_item->ID,
+								'context' => 'top',
+							)
+						);
+					endforeach;
+					?>
+				</div>
+			<?php else : ?>
+				<div class="front-empty-wrap"><p class="front-empty">NEWS を準備中です。</p></div>
+			<?php endif; ?>
 			<div class="news-all-wrap">
 				<a href="<?php echo esc_url( $news_archive ); ?>" class="news-all">All News →</a>
 			</div>

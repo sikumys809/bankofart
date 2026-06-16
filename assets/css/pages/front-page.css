@@ -322,17 +322,14 @@ body.reveal-ready [data-tr].on { opacity: 1; }
   box-shadow: none;
   overflow: hidden;
   cursor: none;
-  opacity: 0;
-  transform: translateY(20px);
   transition:
     opacity 1s cubic-bezier(.2,.7,.25,1),
     transform 1s cubic-bezier(.2,.7,.25,1);
   will-change: opacity, transform;
 }
-.frame.flipped {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* JS有効時のみ伏せて起き上がらせる（JS無効時はそのまま表示）。 */
+body.reveal-ready .frame { opacity: 0; transform: translateY(20px); }
+body.reveal-ready .frame.flipped { opacity: 1; transform: translateY(0); }
 .frame:hover { box-shadow: none; }
 .frame-inner { width: 100%; height: 100%; position: relative; overflow: hidden; }
 .frame-art {
@@ -1268,6 +1265,19 @@ body.reveal-ready [data-tr].on { opacity: 1; }
   transition: opacity .2s, letter-spacing .3s;
 }
 .news-all:hover { letter-spacing: .48em; }
+
+/* 0件時の「準備中」プレースホルダ（セクションを崩さない） */
+.front-empty-wrap { width: 100%; text-align: center; padding: 40px 0; }
+.front-empty {
+  font-family: var(--f-jp);
+  font-size: var(--fs-body);
+  letter-spacing: var(--ls-1);
+  color: var(--mid);
+  text-align: center;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 0;
+}
 
 @media (max-width: 1200px) {
   .car-item { flex: 0 0 calc((100% - 24px) / 2); }

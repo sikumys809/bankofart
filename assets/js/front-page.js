@@ -138,6 +138,38 @@
 			update( false );
 		} )();
 
+		/* ---- 5) ART コラージュ：data-order 順に時間差で起き上がる（双方向） ---- */
+		( function () {
+			var collage = document.getElementById( 'artCollage' );
+			if ( ! collage || ! ( 'IntersectionObserver' in window ) ) {
+				return;
+			}
+			var frames = collage.querySelectorAll( '.frame' );
+			var timers = new Map();
+			var obs    = new IntersectionObserver(
+				function ( entries ) {
+					entries.forEach( function ( e ) {
+						if ( e.isIntersecting ) {
+							frames.forEach( function ( f ) {
+								var o = parseInt( f.dataset.order || 0, 10 );
+								if ( timers.has( f ) ) { clearTimeout( timers.get( f ) ); }
+								timers.set( f, setTimeout( function () {
+									f.classList.add( 'flipped' );
+								}, o * 180 ) );
+							} );
+						} else {
+							frames.forEach( function ( f ) {
+								if ( timers.has( f ) ) { clearTimeout( timers.get( f ) ); timers.delete( f ); }
+								f.classList.remove( 'flipped' );
+							} );
+						}
+					} );
+				},
+				{ threshold: 0.15 }
+			);
+			obs.observe( collage );
+		} )();
+
 		/* ---- 4) HOW スクロールライン ---- */
 		( function () {
 			var stack = document.getElementById( 'howStack' );
