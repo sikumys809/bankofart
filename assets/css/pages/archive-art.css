@@ -1,0 +1,112 @@
+/*
+ * pages/archive-art.css
+ * ART アーカイブ。mockups/art.html を移植（7軸フィルタ + ソート）。
+ *
+ * - art-card 自体の見た目は components.css（card-art と共通）を流用。
+ *   グリッド段組みのみモック準拠（4→3@1200→2@800→2@480, max 1500）に上書き。
+ * - フォント・カラーは tokens.css の変数のみ。英字大文字 / italic 不使用 / 字間最大3px。
+ * - カラースウォッチの色は term-meta（color_hex）をPHPで動的出力。
+ * - .rv は JS無効時に消えないよう body.reveal-ready 配下にスコープ。
+ */
+
+.boa-num { font-family: var(--f-jp); font-weight: var(--fw-medium); }
+
+/* ═══ PAGE HERO ═══ */
+.page-hero { padding: 184px 40px 84px; background: var(--paper); text-align: center; }
+.page-hero-title { font-family: var(--f-display); font-size: 96px; font-weight: var(--fw-regular); letter-spacing: var(--ls-3); line-height: 1; text-transform: uppercase; color: var(--ink); margin-bottom: 16px; }
+.page-hero-ja { font-family: var(--f-deco); font-size: 13px; font-weight: var(--fw-medium); letter-spacing: var(--ls-3); text-transform: uppercase; color: var(--brand); margin-bottom: 36px; }
+.page-hero-rule { width: 1px; height: 64px; background: var(--border); margin: 0 auto; }
+
+/* ═══ FILTER ═══ */
+.filter-section { background: var(--paper); padding: 56px 40px 24px; border-top: 1px solid var(--border-soft); }
+.filter-inner { max-width: 1500px; margin: 0 auto; }
+
+/* モバイル用フィルタートグル（PCでは非表示） */
+.filter-toggle { display: none; width: 100%; align-items: center; justify-content: space-between; background: var(--paper); border: 1px solid var(--border); padding: 16px 20px; font-family: var(--f-jp); font-size: var(--fs-body); font-weight: var(--fw-bold); letter-spacing: var(--ls-1); color: var(--ink); cursor: pointer; }
+.filter-toggle-icon { width: 11px; height: 11px; border-right: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); transform: rotate(45deg); transition: transform .3s ease; margin-top: -3px; }
+.filter-toggle.is-open .filter-toggle-icon { transform: rotate(-135deg); margin-top: 2px; }
+.filter-row { display: flex; align-items: baseline; gap: 32px; flex-wrap: wrap; justify-content: flex-start; padding: 16px 0; }
+.filter-row + .filter-row { border-top: 1px solid var(--border-soft); }
+.filter-label { font-family: var(--f-deco); font-size: 13px; letter-spacing: var(--ls-3); text-transform: uppercase; color: var(--brand); flex-shrink: 0; min-width: 90px; }
+.filter-tags { display: flex; gap: 8px 28px; flex-wrap: wrap; justify-content: flex-start; }
+.filter-tag { font-family: var(--f-jp); font-size: var(--fs-body); letter-spacing: var(--ls-1); color: var(--mid); padding: 6px 0; position: relative; transition: color .25s; background: none; border: 0; cursor: pointer; }
+.filter-tag.en { font-family: var(--f-deco); letter-spacing: var(--ls-3); font-size: 14px; text-transform: uppercase; }
+.filter-tag::after { content: ''; position: absolute; bottom: 2px; left: 0; width: 0; height: 1px; background: var(--brand); transition: width .3s ease; }
+.filter-tag:hover { color: var(--ink); }
+.filter-tag.is-active { color: var(--ink); }
+.filter-tag.is-active::after { width: 100%; }
+
+/* ═══ MAIN COLOR スウォッチ ═══ */
+.color-swatches { display: flex; gap: 14px; flex-wrap: wrap; justify-content: flex-start; }
+.color-swatch { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 4px; background: none; border: none; cursor: pointer; transition: transform .25s; }
+.color-swatch:hover { transform: translateY(-2px); }
+.color-dot { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border); position: relative; transition: box-shadow .25s, transform .25s; }
+.color-swatch:hover .color-dot { box-shadow: 0 4px 14px rgba(33,33,33,.18); }
+.color-swatch.is-active .color-dot { box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--brand); }
+.color-dot.is-allcolor { background: conic-gradient(#d64533, #e0892e, #e8c33a, #3e9e6d, #3a6ea5, #7a5a9e, #8a5a3a, #212121, #d64533); }
+.color-name { font-family: var(--f-jp); font-size: var(--fs-body); letter-spacing: var(--ls-1); color: var(--mid); transition: color .25s; }
+.color-swatch.is-active .color-name { color: var(--ink); }
+
+/* ═══ カラー効果パネル ═══ */
+.color-panel { max-width: 1500px; margin: 20px auto 0; display: none; }
+.color-panel.is-open { display: block; }
+.color-panel-inner { display: grid; grid-template-columns: auto 1fr 1fr; gap: 36px; align-items: center; padding: 32px 36px; background: var(--paper); border: 1px solid var(--border-soft); }
+.color-panel-chip { width: 84px; height: 84px; border-radius: 50%; border: 1px solid var(--border); flex-shrink: 0; }
+.color-panel-label { font-family: var(--f-deco); font-size: 12px; font-weight: var(--fw-medium); letter-spacing: var(--ls-3); text-transform: uppercase; color: var(--brand); margin-bottom: 10px; }
+.color-panel-title { font-family: var(--f-jp); font-size: 20px; font-weight: var(--fw-heavy); letter-spacing: var(--ls-1); color: var(--ink); margin-bottom: 8px; }
+.color-panel-text { font-family: var(--f-jp); font-size: var(--fs-body); letter-spacing: var(--ls-1); line-height: 1.85; color: var(--mid); }
+.color-panel-place { font-family: var(--f-jp); font-size: var(--fs-body); font-weight: var(--fw-bold); letter-spacing: var(--ls-1); line-height: 1.7; color: var(--ink); }
+
+/* ═══ 件数 + ソート ═══ */
+.filter-result { max-width: 1500px; margin: 24px auto 0; padding-top: 24px; border-top: 1px solid var(--border-soft); display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 16px; }
+.filter-count-text { font-family: var(--f-jp); font-size: 15px; color: var(--mid); letter-spacing: var(--ls-1); }
+.filter-count-text .boa-num { color: var(--brand); margin-right: 4px; }
+.sort-tabs { display: flex; gap: 24px; font-family: var(--f-deco); font-size: 14px; letter-spacing: var(--ls-3); text-transform: uppercase; color: var(--mid); }
+.sort-tabs button { background: none; border: 0; color: var(--mid); cursor: pointer; transition: color .2s; letter-spacing: var(--ls-3); font-family: var(--f-deco); }
+.sort-tabs button:hover { color: var(--ink); }
+.sort-tabs button.is-active { color: var(--ink); }
+
+/* ═══ GRID（モック準拠：4→3@1200→2@800→2@480, max 1500）═══ */
+.art-section { padding: 40px 40px 110px; background: var(--paper); }
+.archive-art .art-grid { max-width: 1500px; margin: 0 auto; grid-template-columns: repeat(4, 1fr); gap: 60px 32px; }
+
+/* ═══ 0件 ═══ */
+.news-empty { max-width: 1000px; margin: 0 auto; padding: 40px 0; text-align: center; }
+.news-empty p { font-family: var(--f-jp); font-size: var(--fs-body); letter-spacing: var(--ls-1); color: var(--mid); }
+
+/* ═══ REVEAL（JS無効時は表示）═══ */
+body.reveal-ready .rv { opacity: 0; transform: translateY(30px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
+body.reveal-ready .rv.on { opacity: 1; transform: translateY(0); }
+.rv.d1 { transition-delay: .08s; }
+.rv.d2 { transition-delay: .16s; }
+
+/* ═══ レスポンシブ ═══ */
+@media (max-width: 1200px) {
+	.archive-art .art-grid { grid-template-columns: repeat(3, 1fr); gap: 52px 28px; }
+}
+@media (max-width: 800px) {
+	.archive-art .art-grid { grid-template-columns: repeat(2, 1fr); gap: 44px 20px; }
+}
+@media (max-width: 760px) {
+	.color-panel-inner { grid-template-columns: 1fr; gap: 22px; padding: 28px; text-align: center; }
+	.color-panel-chip { margin: 0 auto; }
+}
+@media (max-width: 700px) {
+	.page-hero { padding: 132px 20px 64px; }
+	.page-hero-title { font-size: 46px; }
+	.filter-section { padding: 40px 20px 20px; }
+	.filter-label { min-width: 70px; }
+	.art-section { padding: 32px 20px 90px; }
+	.filter-count-text { font-size: 12px; }
+	/* モバイル：トグル表示、フィルターは初期非表示（開いたら展開） */
+	.filter-toggle { display: flex; }
+	.filter-inner { display: none; }
+	.filter-inner.is-open { display: block; }
+}
+@media (max-width: 480px) {
+	.archive-art .art-grid { grid-template-columns: repeat(2, 1fr); gap: 32px 16px; }
+	.page-hero { padding: 120px 16px 56px; }
+	.page-hero-title { font-size: 40px; }
+	.filter-section { padding: 32px 16px 16px; }
+	.art-section { padding: 24px 16px 80px; }
+}

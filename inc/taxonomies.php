@@ -258,6 +258,32 @@ function bankofart_register_taxonomies() {
 add_action( 'init', 'bankofart_register_taxonomies', 0 );
 
 /**
+ * art_main_color のターム名 → 英語スラッグ対応表。
+ *
+ * 運用方針：name＝日本語表示（赤/橙/…）、slug＝英語（red/orange/…）。
+ * これにより mockup の data-color="red" 等の英語キーがそのまま使え、
+ * 変換テーブル不要でフィルター照合できる。
+ *
+ * @return array
+ */
+function bankofart_get_color_slug_map() {
+	return array(
+		'赤'     => 'red',
+		'橙'     => 'orange',
+		'黄'     => 'yellow',
+		'緑'     => 'green',
+		'青'     => 'blue',
+		'紫'     => 'purple',
+		'茶'     => 'brown',
+		'白'     => 'white',
+		'黒'     => 'black',
+		'金'     => 'gold',
+		'銀'     => 'silver',
+		'その他' => 'other',
+	);
+}
+
+/**
  * 既定タームを一度だけ投入する。
  *
  * theme-structure.md に列挙された値を初期データとして登録する。
@@ -270,18 +296,36 @@ function bankofart_seed_default_terms() {
 	//   v3: artist_diagnosis_tag 追加・collector_issue 統一
 	//   v4: 診断タグを正式55個へ（オルタナリー / 物語 追加）・art_main_color のカラー情報メタ投入
 	//   v5: art_main_color に色（color_hex）初期値を投入
-	if ( get_option( 'bankofart_terms_seeded_v5' ) ) {
+	//   v6: art_main_color のスラッグを英語化（赤→red 等。name は日本語のまま）
+	if ( get_option( 'bankofart_terms_seeded_v6' ) ) {
 		return;
 	}
+
+	$color_slug_map = bankofart_get_color_slug_map();
 
 	foreach ( bankofart_get_taxonomy_config() as $slug => $config ) {
 		if ( ! taxonomy_exists( $slug ) ) {
 			continue;
 		}
 		foreach ( $config['terms'] as $term ) {
-			if ( ! term_exists( $term, $slug ) ) {
+			if ( term_exists( $term, $slug ) ) {
+				continue;
+			}
+			// art_main_color は新規作成時から英語スラッグを付与（新規インストール用）。
+			if ( 'art_main_color' === $slug && isset( $color_slug_map[ $term ] ) ) {
+				wp_insert_term( $term, $slug, array( 'slug' => $color_slug_map[ $term ] ) );
+			} else {
 				wp_insert_term( $term, $slug );
 			}
+		}
+	}
+
+	// 既存の art_main_color ターム（日本語スラッグ）を英語スラッグへ統一。
+	// term_id は変わらないため、作品とのひも付け（リレーション）は維持される。
+	foreach ( $color_slug_map as $color_name => $en_slug ) {
+		$term = get_term_by( 'name', $color_name, 'art_main_color' );
+		if ( $term && $term->slug !== $en_slug ) {
+			wp_update_term( $term->term_id, 'art_main_color', array( 'slug' => $en_slug ) );
 		}
 	}
 
@@ -320,6 +364,6 @@ function bankofart_seed_default_terms() {
 		}
 	}
 
-	update_option( 'bankofart_terms_seeded_v5', 1 );
+	update_option( 'bankofart_terms_seeded_v6', 1 );
 }
 add_action( 'init', 'bankofart_seed_default_terms', 20 );

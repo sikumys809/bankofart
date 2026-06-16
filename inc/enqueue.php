@@ -60,7 +60,7 @@ function bankofart_enqueue_assets() {
 
 	// 単一ページ共通インタラクション（ヒーロー切替・リビール・ライトボックス）。
 	$single_detail_needed = ( is_singular( 'artist' ) || is_singular( 'art' ) || is_singular( 'collector' ) || is_singular( 'news' ) || is_singular( 'journal' )
-		|| is_post_type_archive( 'news' ) || is_post_type_archive( 'journal' ) || is_post_type_archive( 'artist' ) || is_post_type_archive( 'collector' ) ); // アーカイブは .rv リビールに使用.
+		|| is_post_type_archive( 'news' ) || is_post_type_archive( 'journal' ) || is_post_type_archive( 'artist' ) || is_post_type_archive( 'collector' ) || is_post_type_archive( 'art' ) ); // アーカイブは .rv リビールに使用.
 	if ( $single_detail_needed ) {
 		wp_enqueue_script(
 			'bankofart-single-detail',
@@ -166,6 +166,23 @@ function bankofart_enqueue_assets() {
 		wp_enqueue_script(
 			'bankofart-archive-collector-filter',
 			"{$theme_uri}/assets/js/archive-collector-filter.js",
+			array(),
+			$ver,
+			true
+		);
+	}
+
+	// ページ別アセット：ART アーカイブ（CSS + 7軸AND+ソートJS）。
+	if ( is_post_type_archive( 'art' ) ) {
+		wp_enqueue_style(
+			'bankofart-archive-art',
+			"{$theme_uri}/assets/css/pages/archive-art.css",
+			array( 'bankofart-components' ),
+			$ver
+		);
+		wp_enqueue_script(
+			'bankofart-archive-art-filter',
+			"{$theme_uri}/assets/js/archive-art-filter.js",
 			array(),
 			$ver,
 			true
