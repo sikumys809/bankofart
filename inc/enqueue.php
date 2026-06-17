@@ -228,6 +228,37 @@ function bankofart_enqueue_assets() {
 		);
 	}
 
+	// ページ別アセット：MATCHING ISSUE 課題逆引き診断（スラッグ matching-issue または テンプレート）。
+	if ( is_page( 'matching-issue' ) || is_page_template( 'page-matching-issue.php' ) ) {
+		wp_enqueue_style(
+			'bankofart-page-matching-issue',
+			"{$theme_uri}/assets/css/pages/page-matching-issue.css",
+			array( 'bankofart-components' ),
+			$ver
+		);
+		wp_enqueue_script(
+			'bankofart-page-matching-issue',
+			"{$theme_uri}/assets/js/page-matching-issue.js",
+			array(),
+			$ver,
+			true
+		);
+		// 診断データ供給（Notion仕様準拠・完全動的）。質問/効用タイプ/対応表＝diagnosis-data.php、
+		// アーティスト・コレクターは投稿から動的取得。判定/推薦/記事抽出は JS。
+		wp_localize_script(
+			'bankofart-page-matching-issue',
+			'BOA_ISSUE',
+			array(
+				'questions'   => bankofart_get_issue_questions(),
+				'effectTypes' => bankofart_get_effect_types(),
+				'effectMap'   => bankofart_get_effect_to_artist_tag_map(),
+				'artists'     => bankofart_get_matching_artists(),
+				'collectors'  => bankofart_get_matching_collectors(),
+				'briefingUrl' => bankofart_briefing_url(),
+			)
+		);
+	}
+
 	// ページ別アセット：RECRUIT 固定ページ（スラッグ recruit または RECRUIT テンプレート）。
 	if ( is_page( 'recruit' ) || is_page_template( 'page-recruit.php' ) ) {
 		wp_enqueue_style(

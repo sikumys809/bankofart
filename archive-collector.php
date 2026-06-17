@@ -38,7 +38,7 @@ $collectors_q = new WP_Query(
 	)
 );
 
-// 課題逆引き診断ページ（Phase 2-E 実装予定。リンク先URLは仮設定）。
+// 課題逆引き診断ページ（Phase 2-E 実装済み・page-matching-issue.php / スラッグ matching-issue）。
 $matching_url = home_url( '/matching-issue/' );
 ?>
 

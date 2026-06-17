@@ -102,11 +102,12 @@ function bankofart_get_purpose_questions() {
 	);
 }
 
+
 /**
- * 課題逆引き診断の質問データ。
+ * 課題逆引き診断の質問データ（Notion「課題逆引き診断 構成指示書」3章）。
  *
- * 各 option の tags は効用タグ。集計結果から効用タイプを決定し、
- * 効用タグ→アーティストタグ変換でアーティストを推薦する。
+ * 各 option の tags は効用タグ。集計で効用タイプを判定（5.1）。
+ * 配点：Q1=50 / Q2=30 / Q3=20（満点100）。
  *
  * @return array
  */
@@ -114,200 +115,121 @@ function bankofart_get_issue_questions() {
 	return array(
 		array(
 			'id'       => 'q1',
-			'question' => '今、社内で最も解決したい課題は？',
+			'question' => '御社がいま、最も解決したい課題に近いのは？',
 			'weight'   => 50,
 			'options'  => array(
-				array(
-					'id'     => 'q1_a',
-					'label'  => '社員の離職を防ぎ、モチベーションを高めたい',
-					'issue'  => '離職・モチベーション',
-					'tags'   => array( '活気', '心の豊かさ' ),
-				),
-				array(
-					'id'     => 'q1_b',
-					'label'  => '採用や他社との差別化を強めたい',
-					'issue'  => '採用・差別化',
-					'tags'   => array( '個性', '唯一無二' ),
-				),
-				array(
-					'id'     => 'q1_c',
-					'label'  => '取引先・来客への印象を良くしたい',
-					'issue'  => '取引先への印象',
-					'tags'   => array( '風格', '信頼' ),
-				),
-				array(
-					'id'     => 'q1_d',
-					'label'  => '企業理念を社内外へ浸透させたい',
-					'issue'  => '理念浸透',
-					'tags'   => array( '物語', '理念', 'メッセージ' ),
-				),
-				array(
-					'id'     => 'q1_e',
-					'label'  => 'オフィス空間を活性化したい',
-					'issue'  => '空間の活性化',
-					'tags'   => array( '彩り', '活気', '安らぎ' ),
-				),
+				array( 'id' => 'q1_a', 'label' => '社員の離職・モチベーション低下', 'tags' => array( '活気', '安心', '心の豊かさ' ) ),
+				array( 'id' => 'q1_b', 'label' => '採用で他社と差をつけたい', 'tags' => array( '個性', '話題性', '先進性' ) ),
+				array( 'id' => 'q1_c', 'label' => '取引先・来訪者への印象を強めたい', 'tags' => array( '風格', '話題性', '信頼感' ) ),
+				array( 'id' => 'q1_d', 'label' => '経営理念が社員に浸透していない', 'tags' => array( '物語性', '求心力', '共感' ) ),
+				array( 'id' => 'q1_e', 'label' => 'オフィス・店舗の空間が画一的で寂しい', 'tags' => array( '彩り', '安らぎ', '個性' ) ),
 			),
 		),
 		array(
 			'id'       => 'q2',
-			'question' => 'アートを置く主な場所は？',
-			'weight'   => 25,
+			'question' => 'その課題について、特にどう感じていますか？',
+			'weight'   => 30,
 			'options'  => array(
-				array(
-					'id'    => 'q2_a',
-					'label' => 'エントランス・受付',
-					'tags'  => array( '風格', '個性' ),
-				),
-				array(
-					'id'    => 'q2_b',
-					'label' => '執務スペース',
-					'tags'  => array( '活気', '彩り' ),
-				),
-				array(
-					'id'    => 'q2_c',
-					'label' => '会議室・応接室',
-					'tags'  => array( '信頼', '物語' ),
-				),
-				array(
-					'id'    => 'q2_d',
-					'label' => '共用・リフレッシュスペース',
-					'tags'  => array( '安らぎ', '癒し' ),
-				),
-				array(
-					'id'    => 'q2_e',
-					'label' => '店舗・接客スペース',
-					'tags'  => array( '彩り', '個性' ),
-				),
+				array( 'id' => 'q2_a', 'label' => '社内の空気を前向きに変えたい', 'tags' => array( '活気', '彩り', '心の豊かさ' ) ),
+				array( 'id' => 'q2_b', 'label' => '「らしさ」や独自性を打ち出したい', 'tags' => array( '個性', '物語性', '先進性' ) ),
+				array( 'id' => 'q2_c', 'label' => '落ち着き・信頼される雰囲気がほしい', 'tags' => array( '風格', '安心', '信頼感' ) ),
+				array( 'id' => 'q2_d', 'label' => '人の心に残る・語りたくなるものがほしい', 'tags' => array( '話題性', '物語性', '求心力' ) ),
 			),
 		),
 		array(
 			'id'       => 'q3',
-			'question' => 'アートで生み出したい空気感は？',
-			'weight'   => 25,
+			'question' => 'アートを飾る場所として考えているのは？',
+			'weight'   => 20,
 			'options'  => array(
-				array(
-					'id'    => 'q3_a',
-					'label' => '明るく、活気のある空気',
-					'tags'  => array( '活気', '彩り' ),
-				),
-				array(
-					'id'    => 'q3_b',
-					'label' => '個性的で記憶に残る空気',
-					'tags'  => array( '個性', '唯一無二', '革新' ),
-				),
-				array(
-					'id'    => 'q3_c',
-					'label' => '信頼感・風格のある空気',
-					'tags'  => array( '風格', '信頼', '伝統' ),
-				),
-				array(
-					'id'    => 'q3_d',
-					'label' => '理念や想いが伝わる空気',
-					'tags'  => array( '物語', '理念', 'メッセージ' ),
-				),
-				array(
-					'id'    => 'q3_e',
-					'label' => '落ち着き・癒しのある空気',
-					'tags'  => array( '安らぎ', '癒し', '自然' ),
-				),
+				array( 'id' => 'q3_a', 'label' => '受付・エントランス', 'tags' => array( '風格', '話題性', '信頼感' ) ),
+				array( 'id' => 'q3_b', 'label' => '執務スペース・社員の働く場所', 'tags' => array( '活気', '安らぎ', '心の豊かさ' ) ),
+				array( 'id' => 'q3_c', 'label' => '会議室・応接室', 'tags' => array( '風格', '物語性', '信頼感' ) ),
+				array( 'id' => 'q3_d', 'label' => '店舗・顧客が訪れる空間', 'tags' => array( '彩り', '話題性', '個性' ) ),
 			),
 		),
 	);
 }
 
 /**
- * 効用タイプ（5種）。
+ * 効用タイプ（5種）。Notion 仕様 4章＋出典注記は 8.5.2 の割当。
  *
- * target_issues は collector_issue（統一後の値）と一致させること。
+ * target_issues は collector_issue タクソノミーのターム名と一致させること
+ * （離職・モチベーション / 採用・差別化 / 取引先への印象 / 理念浸透 / 空間の活性化）。
+ * citation の note は 8.5.3 の表示ルール準拠：断定せず「報告/指摘されています」、成果保証は書かない。
  *
  * @return array
  */
 function bankofart_get_effect_types() {
+	$meti = array(
+		'label' => 'アートと経済社会について考える研究会 報告書（経済産業省, 2023）',
+		'url'   => 'https://www.meti.go.jp/shingikai/mono_info_service/art_economic/20230704_report.html',
+	);
+	$who = array(
+		'label' => 'What is the evidence on the role of the arts in improving health and well-being?（WHO/Europe, 2019）',
+		'url'   => 'https://www.ncbi.nlm.nih.gov/books/NBK553773/',
+	);
 	return array(
 		'type_01' => array(
 			'name'          => '空間に活気を生むアート',
 			'effect_tags'   => array( '活気', '彩り', '心の豊かさ' ),
 			'target_issues' => array( '離職・モチベーション', '空間の活性化' ),
 			'description'   => '色彩豊かで生命力のある作品は、働く人の視界に毎日入ることで、空間そのものの空気を前向きに変えていきます。社員が日々アートからエネルギーを受け取る環境は、職場への愛着を静かに育てます。',
-			'citation'      => array(
-				'url'   => 'https://www.meti.go.jp/shingikai/mono_info_service/art_economic/',
-				'label' => 'アートと経済社会について考える研究会 報告書（経済産業省）',
-				'note'  => 'オフィスへのアート導入が、社員の気分転換や対話のきっかけになったとの声が報告されています。',
-			),
+			'citation'      => array( 'note' => '経済産業省の報告書では、オフィスへのアート導入により「気分転換につながった」「オフィスが行きたい場所になった」といった声が報告されています。', 'label' => $meti['label'], 'url' => $meti['url'] ),
 		),
 		'type_02' => array(
 			'name'          => '個性で差をつけるアート',
-			'effect_tags'   => array( '個性', '唯一無二', '革新' ),
+			'effect_tags'   => array( '個性', '話題性', '先進性' ),
 			'target_issues' => array( '採用・差別化' ),
-			'description'   => '他にはない世界観を持つ作品は、企業の独自性を一目で伝えます。採用候補者や来訪者の記憶に残り、「ここは他と違う」という第一印象を生み出します。',
-			'citation'      => array(
-				'url'   => 'https://www.meti.go.jp/shingikai/mono_info_service/art_economic/',
-				'label' => 'アートと経済社会について考える研究会 報告書（経済産業省）',
-				'note'  => 'アートが企業のブランドや個性の発信に寄与することが指摘されています。',
-			),
+			'description'   => '唯一無二の表現を持つ作品は、「この会社は他と違う」という印象を訪れた人の記憶に残します。採用候補者や来訪者に、企業のセンスと先進性を言葉以上に伝えます。',
+			'citation'      => array( 'note' => '経済産業省の報告書は、アートが企業のブランドイメージ形成や企業価値の向上につながり得ると指摘しています。', 'label' => $meti['label'], 'url' => $meti['url'] ),
 		),
 		'type_03' => array(
 			'name'          => '風格と信頼を伝えるアート',
-			'effect_tags'   => array( '風格', '信頼', '伝統' ),
+			'effect_tags'   => array( '風格', '信頼感', '安心' ),
 			'target_issues' => array( '取引先への印象' ),
-			'description'   => '落ち着いた品格のある作品は、エントランスや応接室に風格を与えます。取引先や来客に対して、企業の信頼性と文化的な厚みを静かに物語ります。',
-			'citation'      => array(
-				'url'   => 'https://www.meti.go.jp/shingikai/mono_info_service/art_economic/',
-				'label' => 'アートと経済社会について考える研究会 報告書（経済産業省）',
-				'note'  => '空間にアートを置くことが来訪者の企業印象に影響を与えうることが論じられています。',
-			),
+			'description'   => '落ち着いた佇まいと確かな技術に裏打ちされた作品は、空間に品格をもたらします。受付や応接室に置かれたとき、その企業の信頼性と成熟を静かに物語ります。',
+			'citation'      => array( 'note' => '経済産業省の報告書は、アートの「社会的価値」のひとつとして、空間や組織への信頼形成への寄与を挙げています。', 'label' => $meti['label'], 'url' => $meti['url'] ),
 		),
 		'type_04' => array(
 			'name'          => '物語で理念を語るアート',
-			'effect_tags'   => array( '物語', '理念', 'メッセージ' ),
+			'effect_tags'   => array( '物語性', '求心力', '共感' ),
 			'target_issues' => array( '理念浸透' ),
-			'description'   => '背景に強い物語やメッセージを持つ作品は、企業理念を言葉以上に伝えます。アートを通じて、社員と来訪者の双方に企業の想いを語りかけます。',
-			'citation'      => array(
-				'url'   => 'https://www.meti.go.jp/shingikai/mono_info_service/art_economic/',
-				'label' => 'アートと経済社会について考える研究会 報告書（経済産業省）',
-				'note'  => 'アートが価値観やビジョンの共有を促す媒介になりうると報告されています。',
-			),
+			'description'   => '背景に明確な物語を持つ作品は、企業理念を語るきっかけになります。アーティストの生き方や作品の意味を社員と共有することで、言葉だけでは伝わらない理念が、日常の風景の中に根づいていきます。',
+			'citation'      => array( 'note' => '経済産業省の報告書では、社員がアートに接することが新たな発想や対話のきっかけになると報告されています。', 'label' => $meti['label'], 'url' => $meti['url'] ),
 		),
 		'type_05' => array(
 			'name'          => '心に安らぎを与えるアート',
-			'effect_tags'   => array( '安らぎ', '癒し', '自然' ),
+			'effect_tags'   => array( '安らぎ', '安心', '心の豊かさ' ),
 			'target_issues' => array( '離職・モチベーション', '空間の活性化' ),
-			'description'   => '自然をモチーフにした穏やかな作品は、忙しい職場に余白と落ち着きをもたらします。社員が一息つける環境は、心理的な余裕とウェルビーイングを支えます。',
-			'citation'      => array(
-				'url'   => 'https://www.meti.go.jp/shingikai/mono_info_service/art_economic/',
-				'label' => 'アートと経済社会について考える研究会 報告書（経済産業省）',
-				'note'  => '職場環境の質の向上が従業員満足度に関わることが議論されています。',
-			),
+			'description'   => '自然や静謐をモチーフにした作品は、働く空間に呼吸の余白を生みます。視界に安らぎがあることは、社員の心理的な負荷をやわらげ、落ち着いて働ける環境づくりを支えます。',
+			'citation'      => array( 'note' => 'WHOの報告書では、3000以上の研究の統合により、芸術が心身の健康の促進に役割を果たし得ることが示されています。', 'label' => $who['label'], 'url' => $who['url'] ),
 		),
 	);
 }
 
 /**
- * 効用タグ → アーティストタグ 対応表。
+ * 効用タグ → アーティストタグ 対応表（Notion 仕様 5.2）。
  *
- * 課題逆引き診断で算出した効用タグを、アーティスト推薦用の
- * artist_diagnosis_tag へ変換する。値はすべて artist_diagnosis_tag に存在すること。
+ * 課題診断の効用タグと、artist投稿の診断タグ（artist_diagnosis_tag）は語彙が異なるため、
+ * この対応表で変換しておすすめ画家を選出する。右辺はすべて artist_diagnosis_tag に存在するターム。
  *
- * @return array
+ * @return array<string, string[]>
  */
 function bankofart_get_effect_to_artist_tag_map() {
 	return array(
-		'活気'       => array( '生命エネルギー', 'POP', '格闘' ),
+		'活気'       => array( '生命エネルギー', '力強さ', 'POP' ),
 		'彩り'       => array( 'POP', 'ポジティブ', '実験' ),
-		'心の豊かさ' => array( '心の豊かさ', '祈り', '愛' ),
-		'個性'       => array( '唯一無二', 'オルタナリー', '突破' ),
-		'唯一無二'   => array( '唯一無二', '挑戦', '実験' ),
-		'革新'       => array( '突破', '現代性', '探究' ),
-		'風格'       => array( '構造', '神性', '都市' ),
-		'信頼'       => array( '継承', '工芸', '普遍性' ),
-		'伝統'       => array( '伝統', '継承', '工芸' ),
-		'物語'       => array( 'メッセージ', '転機', '再生' ),
-		'理念'       => array( '社会貢献', 'SDGs', '祈り' ),
-		'メッセージ' => array( 'メッセージ', '社会批評', '不条理' ),
-		'安らぎ'     => array( '自然', '植物', '心の豊かさ' ),
-		'癒し'       => array( '祈り', '自然', '愛' ),
-		'自然'       => array( '自然', '植物', 'サステナビリティ' ),
+		'心の豊かさ' => array( '癒し', '救い', '心の豊かさ' ),
+		'個性'       => array( '唯一無二', '実験', '突破' ),
+		'話題性'     => array( 'ストリート', '力強さ', '唯一無二' ),
+		'先進性'     => array( '現代性', '都市', '実験' ),
+		'風格'       => array( '伝統', '工芸', '普遍性' ),
+		'信頼感'     => array( '静謐', '伝統', '普遍性' ),
+		'安心'       => array( '静謐', '癒し', '自然' ),
+		'物語性'     => array( '物語', '国際', '社会貢献' ),
+		'求心力'     => array( '希望', '子供', 'つながり' ),
+		'共感'       => array( 'つながり', '家族', '再生' ),
+		'安らぎ'     => array( '自然', '植物', '静謐' ),
 	);
 }
 
@@ -381,4 +303,62 @@ function bankofart_get_matching_artists() {
 	}
 
 	return $artists;
+}
+
+/**
+ * 課題診断のコレクター記事候補をWPの collector 投稿から動的取得する（Notion 仕様 5.3）。
+ *
+ * 課題タグは collector_issue タクソノミー（離職・モチベーション 等の5種）で管理。
+ * 課題タグ未設定の投稿は除外（紐付けキーが無く診断連携できないため）。
+ * 並びは公開日降順（新しい順）。JS 側で効用タイプの target_issues と突合し2〜3件表示、0件はブロック非表示。
+ *
+ * @return array JS（wp_localize_script）へ供給するコレクター配列。
+ */
+function bankofart_get_matching_collectors() {
+	$collectors = array();
+
+	$posts = get_posts(
+		array(
+			'post_type'      => 'collector',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+			'no_found_rows'  => true,
+		)
+	);
+
+	$has_rwmb = function_exists( 'rwmb_meta' );
+
+	foreach ( $posts as $collector_post ) {
+		$terms = get_the_terms( $collector_post->ID, 'collector_issue' );
+		if ( is_wp_error( $terms ) || empty( $terms ) ) {
+			continue; // 課題タグ未設定は除外。
+		}
+		$issues = array_values( wp_list_pluck( $terms, 'name' ) );
+
+		$company = $has_rwmb ? (string) rwmb_meta( 'collector_company_name', array(), $collector_post->ID ) : '';
+		if ( '' === trim( $company ) ) {
+			$company = get_the_title( $collector_post->ID );
+		}
+		$summary = $has_rwmb ? (string) rwmb_meta( 'collector_change_summary', array(), $collector_post->ID ) : '';
+		$summary = trim( wp_strip_all_tags( $summary ) );
+
+		// サムネ：オフィスメイン写真 → 企業ロゴ の順でフォールバック。
+		$photo = bankofart_get_image( 'collector_main_office_image', $collector_post->ID, 'medium' );
+		if ( empty( $photo['url'] ) ) {
+			$photo = bankofart_get_image( 'collector_logo', $collector_post->ID, 'medium' );
+		}
+
+		$collectors[] = array(
+			'id'      => $collector_post->post_name,
+			'name'    => $company,
+			'issues'  => $issues,
+			'summary' => $summary,
+			'url'     => get_permalink( $collector_post->ID ),
+			'photo'   => $photo['url'],
+		);
+	}
+
+	return $collectors;
 }
