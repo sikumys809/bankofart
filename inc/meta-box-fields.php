@@ -155,14 +155,6 @@ function bankofart_register_meta_boxes( $meta_boxes ) {
 			bankofart_taxonomy_picker( 'artist_status_picker', 'アーティストステータス', 'artist_status', 'basic', false, '公認画家 / 登録画家' ),
 			bankofart_taxonomy_picker( 'artist_genre_picker', 'ジャンル', 'artist_genre', 'basic', true, '複数選択可・検索可' ),
 			array(
-				'id'         => 'artist_birthday',
-				'name'       => '生年月日',
-				'type'       => 'date',
-				'tab'        => 'basic',
-				'desc'       => '表示しない・管理用',
-				'js_options' => array( 'dateFormat' => 'yy-mm-dd' ),
-			),
-			array(
 				'id'   => 'artist_birthplace',
 				'name' => '出身地',
 				'type' => 'text',
@@ -212,6 +204,13 @@ function bankofart_register_meta_boxes( $meta_boxes ) {
 				'tab'  => 'theme',
 			),
 			// --- 展示・経歴 ---
+			array(
+				'id'   => 'artist_education',
+				'name' => '学歴・経歴',
+				'type' => 'wysiwyg',
+				'tab'  => 'exhibition',
+				'desc' => '公開プロフィール用（出身校・主な経歴など）',
+			),
 			array(
 				'id'   => 'artist_solo_exhibitions',
 				'name' => '個展',
@@ -330,87 +329,11 @@ function bankofart_register_meta_boxes( $meta_boxes ) {
 		),
 	);
 
-	/* =========================================================
-	 * ARTIST（非公開・管理者のみ）
-	 * ======================================================= */
-	if ( $can_manage ) {
-		$meta_boxes[] = array(
-			'title'      => 'アーティスト管理情報（非公開）',
-			'id'         => 'bankofart_artist_private',
-			'post_types' => array( 'artist' ),
-			'context'    => 'normal',
-			'priority'   => 'low',
-			'fields'     => array(
-				array(
-					'id'   => 'artist_education',
-					'name' => '学歴・経歴',
-					'type' => 'wysiwyg',
-					'desc' => '非公開・管理用',
-				),
-				array(
-					'id'   => 'artist_legal_name',
-					'name' => '本名',
-					'type' => 'text',
-				),
-				array(
-					'id'   => 'artist_legal_name_kana',
-					'name' => '本名フリガナ',
-					'type' => 'text',
-				),
-				array(
-					'id'   => 'artist_phone',
-					'name' => '電話番号',
-					'type' => 'text',
-				),
-				array(
-					'id'   => 'artist_email',
-					'name' => '連絡先メール',
-					'type' => 'email',
-				),
-				array(
-					'id'   => 'artist_address',
-					'name' => '住所',
-					'type' => 'text',
-				),
-				array(
-					'id'     => 'artist_bank_info',
-					'name'   => '振込先（銀行・支店・口座）',
-					'type'   => 'group',
-					'fields' => array(
-						array(
-							'id'   => 'bank_name',
-							'name' => '銀行名',
-							'type' => 'text',
-						),
-						array(
-							'id'   => 'bank_branch',
-							'name' => '支店名',
-							'type' => 'text',
-						),
-						array(
-							'id'      => 'bank_account_type',
-							'name'    => '口座種別',
-							'type'    => 'select',
-							'options' => array(
-								'ordinary' => '普通',
-								'checking' => '当座',
-							),
-						),
-						array(
-							'id'   => 'bank_account_number',
-							'name' => '口座番号',
-							'type' => 'text',
-						),
-						array(
-							'id'   => 'bank_account_holder',
-							'name' => '口座名義',
-							'type' => 'text',
-						),
-					),
-				),
-			),
-		);
-	}
+	/*
+	 * ARTIST 非公開ボックス（本名・連絡先・住所・振込先・生年月日）は撤去。
+	 * 個人情報・契約情報はWPで管理せず、フォーム経由で別途収集する運用に変更。
+	 * 学歴・経歴は公開プロフィール（展示・経歴タブ）へ移設、出身地は基本情報タブに残置。
+	 */
 
 	/* =========================================================
 	 * ART（作品情報）— 5タブ
