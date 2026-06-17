@@ -84,10 +84,6 @@ $matching_url = home_url( '/matching-issue/' );
 					<button type="button" class="filter-tag" data-filter="<?php echo esc_attr( $term->term_id ); ?>"><?php echo esc_html( $term->name ); ?></button>
 				<?php endforeach; ?>
 			</div>
-			<a href="<?php echo esc_url( $matching_url ); ?>" class="filter-match-btn">
-				<span class="filter-match-eyebrow">Matching</span>
-				<span class="filter-match-label">課題から探す →</span>
-			</a>
 			<span class="filter-count"><span class="boa-num"><?php echo (int) $collectors_q->post_count; ?></span>COLLECTORS</span>
 		</div>
 
