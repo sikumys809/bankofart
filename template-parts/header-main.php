@@ -16,9 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 $bankofart_logo_base  = get_theme_file_uri( 'assets/img/logo/boa-07.png' );
 $bankofart_logo_hover = get_theme_file_uri( 'assets/img/logo/boa-06.png' );
 
-// CONTACT 系の外部リンク（将来 Customizer 化できるようフィルター経由）。
-$bankofart_url_document  = apply_filters( 'bankofart_document_request_url', 'https://business.form-mailer.jp/fms/1c6a81d4280183' );
-$bankofart_url_briefing  = apply_filters( 'bankofart_briefing_url', 'https://booking.receptionist.jp/5ade6c6d-ae6c-44d9-9921-000ad24af9f9/30min' );
+// CONTACT 系は一元管理ヘルパー経由（資料請求＝自前 /document-request/、説明会＝当面は外部URL）。
+$bankofart_url_document  = bankofart_document_request_url(); // 自前フォーム /document-request/.
+$bankofart_url_briefing  = bankofart_briefing_url();         // 説明会予約（当面は外部。後で自前化）.
 
 /*
  * グローバルナビ項目。英字（大文字）＋日本語の2段表示。
@@ -73,7 +73,7 @@ $bankofart_nav_items = array(
 		<div class="contact-dropdown" id="contactDropdown">
 			<button class="btn-contact" id="contactToggle" aria-haspopup="true" aria-expanded="false">CONTACT</button>
 			<div class="contact-menu">
-				<a href="<?php echo esc_url( $bankofart_url_document ); ?>" class="contact-menu-item" target="_blank" rel="noopener">資料請求</a>
+				<a href="<?php echo esc_url( $bankofart_url_document ); ?>" class="contact-menu-item">資料請求</a>
 				<a href="<?php echo esc_url( $bankofart_url_briefing ); ?>" class="contact-menu-item" target="_blank" rel="noopener">オンライン説明会</a>
 			</div>
 		</div>
