@@ -80,23 +80,21 @@ $recaptcha_key = defined( 'BANKOFART_RECAPTCHA_SITE_KEY' ) ? constant( 'BANKOFAR
 	<section class="ob-section">
 		<div class="ob-layout">
 
-			<!-- 左：説明・所要時間・担当 -->
-			<aside class="ob-intro">
-				<div class="boa-form-eyebrow">ONLINE BRIEFING</div>
-				<h1 class="ob-title">オンライン説明会</h1>
-				<p class="ob-duration"><span class="ob-duration-num boa-num">30</span> 分</p>
-				<p class="ob-lead">
-					Bank of Art のサービスを、貴社の課題に合わせてご説明します。<br>
-					即時償却・画家支援・アート活用について、オンラインでお気軽にご相談ください。
-				</p>
+			<!-- 上：説明（横長コンパクト） -->
+			<div class="ob-intro">
+				<div class="ob-intro-text">
+					<div class="boa-form-eyebrow">ONLINE BRIEFING</div>
+					<h1 class="ob-title">オンライン説明会<span class="ob-duration"><span class="ob-duration-num boa-num">30</span> 分</span></h1>
+					<p class="ob-lead">Bank of Art のサービスを、貴社の課題に合わせてご説明します。即時償却・画家支援・アート活用について、オンラインでお気軽にご相談ください。</p>
+				</div>
 				<dl class="ob-meta">
-					<dt>所要時間</dt><dd>約30分</dd>
-					<dt>形式</dt><dd>オンライン（ビデオ会議）</dd>
-					<dt>担当</dt><dd>株式会社シクミーズ / BANK OF ART</dd>
+					<div class="ob-meta-item"><dt>所要時間</dt><dd>約30分</dd></div>
+					<div class="ob-meta-item"><dt>形式</dt><dd>オンライン（ビデオ会議）</dd></div>
+					<div class="ob-meta-item"><dt>担当</dt><dd>株式会社シクミーズ / BANK OF ART</dd></div>
 				</dl>
-			</aside>
+			</div>
 
-			<!-- 右：ステップウィザード -->
+			<!-- 下：カレンダー全幅ウィザード -->
 			<div class="ob-wizard">
 				<ol class="ob-steps" aria-hidden="true">
 					<li class="is-current" data-step="1">日時を選ぶ</li>
@@ -127,7 +125,7 @@ $recaptcha_key = defined( 'BANKOFART_RECAPTCHA_SITE_KEY' ) ? constant( 'BANKOFAR
 							<div class="ob-week-scroll">
 								<div class="ob-week-cols" id="ob-week-cols"><p class="ob-slots-loading">読み込み中…</p></div>
 							</div>
-							<p class="ob-week-hint">時間枠をタップすると、お客様情報の入力に進みます。<span class="ob-week-hint-sp">（横にスクロールで他の日も表示）</span></p>
+							<p class="ob-week-hint">空いている時間枠をタップすると、お客様情報の入力に進みます。</p>
 						</div>
 					</div>
 

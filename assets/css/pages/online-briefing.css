@@ -1,23 +1,25 @@
 /*
  * pages/online-briefing.css
- * オンライン説明会予約（Calendly風）。左：説明／右：日付→時間→フォーム→確認のウィザード。
+ * オンライン説明会予約（調整アポ/receptionist.jp風）。
+ * 1カラム構成：上＝説明（横長コンパクト）／下＝週グリッドカレンダー（全幅・主役）。
  * フォーム要素は components.css の .boa-form 系を共用。
  */
 
-.ob-section { max-width: 1040px; margin: 0 auto; padding: 64px 24px 110px; }
-.ob-layout { display: grid; grid-template-columns: 320px 1fr; gap: 48px; align-items: start; }
+.ob-section { max-width: 1200px; margin: 0 auto; padding: 56px 24px 110px; }
+.ob-layout { display: block; }
 
-/* 左：説明 */
-.ob-intro { position: sticky; top: 120px; }
-.ob-title { font-family: var(--f-jp); font-size: clamp(26px, 3.4vw, 34px); font-weight: 700; letter-spacing: 2px; color: var(--ink); line-height: 1.4; margin: 6px 0 14px; }
-.ob-duration { font-family: var(--f-jp); font-size: 18px; font-weight: 700; color: var(--brand); letter-spacing: 1px; margin-bottom: 20px; }
-.ob-duration-num { font-size: 28px; }
-.ob-lead { font-family: var(--f-jp); font-size: 15px; line-height: 1.95; letter-spacing: .5px; color: var(--mid); margin-bottom: 28px; }
-.ob-meta { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; border-top: 1px solid var(--border-soft); padding-top: 20px; }
-.ob-meta dt { font-family: var(--f-deco); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--brand); }
+/* 上：説明（横長コンパクト） */
+.ob-intro { margin-bottom: 36px; padding-bottom: 28px; border-bottom: 1px solid var(--border-soft); }
+.ob-title { font-family: var(--f-jp); font-size: clamp(24px, 3vw, 32px); font-weight: 700; letter-spacing: 2px; color: var(--ink); line-height: 1.3; margin: 6px 0 14px; display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; }
+.ob-duration { font-family: var(--f-jp); font-size: 16px; font-weight: 700; color: var(--brand); letter-spacing: 1px; }
+.ob-duration-num { font-size: 24px; }
+.ob-lead { font-family: var(--f-jp); font-size: 15px; line-height: 1.9; letter-spacing: .5px; color: var(--mid); margin: 0; max-width: 820px; }
+.ob-meta { display: flex; flex-wrap: wrap; gap: 14px 48px; margin-top: 22px; padding: 0; }
+.ob-meta-item { } /* 各項目を横並びの1ブロックに */
+.ob-meta dt { font-family: var(--f-deco); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--brand); margin-bottom: 4px; }
 .ob-meta dd { font-family: var(--f-jp); font-size: 14px; color: var(--ink); margin: 0; letter-spacing: .5px; }
 
-/* 右：ウィザード */
+/* 下：カレンダー全幅ウィザード */
 .ob-wizard { background: var(--white); border: 1px solid var(--border-soft); padding: 36px 36px 40px; }
 .ob-steps { list-style: none; display: flex; gap: 8px; margin: 0 0 28px; padding: 0; counter-reset: ob; }
 .ob-steps li { flex: 1; font-family: var(--f-jp); font-size: 12px; letter-spacing: 1px; color: var(--mid); text-align: center; padding: 10px 4px; border-bottom: 2px solid var(--border); position: relative; }
@@ -55,7 +57,6 @@
 .ob-slot.is-selected { background: var(--brand); color: var(--white); border-color: var(--brand); }
 .ob-slot.is-off { color: var(--mid); background: var(--paper); border: 1px solid var(--border-soft); border-radius: 5px; opacity: .5; cursor: not-allowed; }
 .ob-week-hint { font-family: var(--f-jp); font-size: 13px; color: var(--mid); letter-spacing: .5px; margin-top: 16px; }
-.ob-week-hint-sp { display: none; }
 .ob-slots-loading, .ob-slots-empty { grid-column: 1 / -1; font-family: var(--f-jp); font-size: 14px; color: var(--mid); padding: 20px 0; text-align: center; }
 
 /* 確認 */
@@ -64,19 +65,21 @@
 .ob-confirm dd { font-family: var(--f-jp); font-size: 15px; color: var(--ink); margin: 0; letter-spacing: .5px; word-break: break-all; }
 .ob-form-msg { font-family: var(--f-jp); font-size: 14px; color: #c44; margin: 8px 0; min-height: 1em; }
 
-@media (max-width: 880px) {
-  .ob-layout { grid-template-columns: 1fr; gap: 28px; }
-  .ob-intro { position: static; }
-}
-@media (max-width: 700px) {
-  .ob-section { padding: 40px 16px 80px; }
+@media (max-width: 760px) {
+  .ob-section { padding: 44px 16px 84px; }
   .ob-wizard { padding: 24px 18px 28px; }
   .ob-steps li { font-size: 0; padding: 8px 2px; }
   .ob-steps li::before { margin-right: 0; }
-  /* スマホ：7日横並びは入りきらないため横スクロール（崩れ防止）。余白・角丸は維持。 */
-  .ob-week-cols { min-width: 640px; gap: 8px; }
-  .ob-day-slots { gap: 6px; }
-  .ob-day-num { font-size: 17px; }
-  .ob-slot { font-size: 13px; padding: 9px 3px; }
-  .ob-week-hint-sp { display: inline; }
+
+  /* スマホ：日付を縦積み（17水 → 18木 …）。各日の時間枠は横並び（折り返し）。横スクロールは出さない。 */
+  .ob-week-scroll { overflow-x: visible; }
+  .ob-week-cols { display: block; min-width: 0; }
+  .ob-day-col { margin-bottom: 16px; }
+  .ob-day-col.is-out { display: none; } /* 過去・範囲外の日はスマホでは非表示にしてすっきり */
+  .ob-day-head { display: flex; align-items: baseline; gap: 8px; text-align: left; padding: 0 0 8px; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
+  .ob-day-num { display: inline; font-size: 18px; }
+  .ob-day-wd { display: inline; margin-top: 0; }
+  .ob-day-col.is-today .ob-day-head { border-bottom-color: var(--brand); }
+  .ob-day-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(74px, 1fr)); gap: 8px; }
+  .ob-slot { font-size: 13px; padding: 10px 4px; }
 }
