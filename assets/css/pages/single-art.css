@@ -48,6 +48,8 @@
 .aw-spec-val.status-owned { color: var(--gold); font-weight: var(--fw-bold); }
 
 .aw-note { font-family: var(--f-jp); font-size: 15px; line-height: 1.85; letter-spacing: var(--ls-1); color: var(--mid); margin-bottom: 32px; }
+/* OWNED 作品：リセール待機リスト説明文 */
+.aw-resale-note { font-family: var(--f-jp); font-size: var(--fs-body); line-height: 1.95; letter-spacing: var(--ls-1); color: var(--ink); margin-bottom: 24px; }
 .aw-cta-btns { display: flex; gap: 14px; flex-wrap: wrap; }
 .aw-cta-primary { font-family: var(--f-jp); font-size: var(--fs-body); font-weight: var(--fw-bold); letter-spacing: var(--ls-2); color: var(--white); background: var(--ink); padding: 18px 36px; text-decoration: none; transition: all .25s; }
 .aw-cta-primary:hover { background: var(--brand); color: var(--white); }

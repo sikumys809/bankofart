@@ -150,8 +150,13 @@ while ( have_posts() ) :
 		);
 	}
 
-	$document_url = home_url( '/document-request/' );
-	$briefing_url = home_url( '/online-briefing/' );
+	// CONTACT 系は一元管理ヘルパー（現状は外部URL：form-mailer / receptionist。
+	// 後で自前ページ実装時にヘルパー側を差し替えれば全箇所反映）。
+	$document_url = bankofart_document_request_url();
+	$briefing_url = bankofart_briefing_url();
+	// リセール待機リスト登録ページURL（OWNED作品のボタン用）。
+	$resale_page  = get_page_by_path( 'resale-waitlist' );
+	$resale_url   = $resale_page ? add_query_arg( 'artwork_id', $art_id, get_permalink( $resale_page ) ) : '';
 	?>
 
 <main id="main" class="single-art">
@@ -220,12 +225,23 @@ while ( have_posts() ) :
 				</div>
 			<?php endif; ?>
 
-			<p class="aw-note"><?php echo esc_html__( '作品の販売は対面契約のみとなります。価格・在庫状況・即時償却の詳細は、資料請求またはオンライン説明会にてご案内いたします。', 'bankofart' ); ?></p>
-
-			<div class="aw-cta-btns">
-				<a href="<?php echo esc_url( $document_url ); ?>" class="aw-cta-primary"><?php echo esc_html__( 'この作品を購入したい方はこちら', 'bankofart' ); ?></a>
-				<a href="<?php echo esc_url( $briefing_url ); ?>" class="aw-cta-outline"><?php echo esc_html__( 'オンライン説明会', 'bankofart' ); ?></a>
-			</div>
+			<?php if ( $is_owned ) : ?>
+				<!-- OWNED：リセール待機リスト導線（同一サイト内のため target=_blank なし） -->
+				<p class="aw-resale-note"><?php echo esc_html__( 'この作品は現在、応援企業が所有しています。リセール待機リストにご登録いただくと、作品が入荷した際に担当者よりご案内いたします。', 'bankofart' ); ?></p>
+				<div class="aw-cta-btns">
+					<?php if ( $resale_url ) : ?>
+						<a href="<?php echo esc_url( $resale_url ); ?>" class="aw-cta-primary"><?php echo esc_html__( 'リセール待機リストに登録', 'bankofart' ); ?></a>
+					<?php endif; ?>
+					<a href="<?php echo esc_url( $briefing_url ); ?>" class="aw-cta-outline"><?php echo esc_html__( 'オンライン説明会', 'bankofart' ); ?></a>
+				</div>
+			<?php else : ?>
+				<!-- AVAILABLE：通常の問い合わせ導線（外部URL。後で自前ページに差し替え予定） -->
+				<p class="aw-note"><?php echo esc_html__( '作品の販売は対面契約のみとなります。価格・在庫状況・即時償却の詳細は、資料請求またはオンライン説明会にてご案内いたします。', 'bankofart' ); ?></p>
+				<div class="aw-cta-btns">
+					<a href="<?php echo esc_url( $document_url ); ?>" class="aw-cta-primary" target="_blank" rel="noopener"><?php echo esc_html__( 'この作品を購入したい方はこちら', 'bankofart' ); ?></a>
+					<a href="<?php echo esc_url( $briefing_url ); ?>" class="aw-cta-outline" target="_blank" rel="noopener"><?php echo esc_html__( 'オンライン説明会', 'bankofart' ); ?></a>
+				</div>
+			<?php endif; ?>
 		</div>
 	</section>
 

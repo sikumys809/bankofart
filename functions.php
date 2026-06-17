@@ -38,6 +38,7 @@ $bankofart_includes = array(
 	'inc/term-meta-fields.php', // MB Term Meta（art_main_color のカラー情報）
 	'inc/relationships.php',    // MB Relationships 定義（要 Meta Box AIO）
 	'inc/customizer.php',       // WP カスタマイザー（サイト数値等）
+	'inc/resale-waitlist.php',  // リセール待機リスト（テーブル/フォーム送信/管理画面）
 	'inc/diagnosis-data.php',   // マッチング診断データ（PHP配列）
 	'inc/helpers.php',          // テンプレート用ヘルパー（セクション可視性判定等）
 );
