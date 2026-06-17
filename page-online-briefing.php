@@ -99,10 +99,9 @@ $recaptcha_key = defined( 'BANKOFART_RECAPTCHA_SITE_KEY' ) ? constant( 'BANKOFAR
 			<!-- 右：ステップウィザード -->
 			<div class="ob-wizard">
 				<ol class="ob-steps" aria-hidden="true">
-					<li class="is-current" data-step="1">日付</li>
-					<li data-step="2">時間</li>
-					<li data-step="3">情報入力</li>
-					<li data-step="4">確認</li>
+					<li class="is-current" data-step="1">日時を選ぶ</li>
+					<li data-step="2">情報入力</li>
+					<li data-step="3">確認</li>
 				</ol>
 
 				<?php if ( '' !== $err ) : ?>
@@ -116,29 +115,25 @@ $recaptcha_key = defined( 'BANKOFART_RECAPTCHA_SITE_KEY' ) ? constant( 'BANKOFAR
 					<?php if ( $recaptcha_key ) : ?><input type="hidden" name="g-recaptcha-response" id="ob-recaptcha-response" value=""><?php endif; ?>
 					<input type="hidden" name="booked_at" id="ob-booked-at" value="">
 
-					<!-- Step1 日付 -->
+					<!-- Step1 日時（週表示グリッド：横=日付7日 × 縦=時間） -->
 					<div class="ob-step is-active" data-panel="1">
-						<h2 class="ob-step-h">日付を選ぶ</h2>
-						<div class="ob-cal" id="ob-cal">
-							<div class="ob-cal-head">
-								<button type="button" class="ob-cal-nav" id="ob-cal-prev" aria-label="前の月">‹</button>
-								<span class="ob-cal-month" id="ob-cal-month"></span>
-								<button type="button" class="ob-cal-nav" id="ob-cal-next" aria-label="次の月">›</button>
+						<h2 class="ob-step-h">日時を選ぶ</h2>
+						<div class="ob-week">
+							<div class="ob-week-head">
+								<button type="button" class="ob-week-nav" id="ob-week-prev">‹ 前の週</button>
+								<span class="ob-week-range" id="ob-week-range"></span>
+								<button type="button" class="ob-week-nav" id="ob-week-next">次の週 ›</button>
 							</div>
-							<div class="ob-cal-grid" id="ob-cal-grid"></div>
+							<div class="ob-week-scroll">
+								<div class="ob-week-cols" id="ob-week-cols"><p class="ob-slots-loading">読み込み中…</p></div>
+							</div>
+							<p class="ob-week-hint">時間枠をタップすると、お客様情報の入力に進みます。<span class="ob-week-hint-sp">（横にスクロールで他の日も表示）</span></p>
 						</div>
 					</div>
 
-					<!-- Step2 時間 -->
+					<!-- Step2 フォーム -->
 					<div class="ob-step" data-panel="2">
-						<button type="button" class="ob-back" data-back="1">‹ 日付に戻る</button>
-						<h2 class="ob-step-h"><span id="ob-sel-date"></span> の時間を選ぶ</h2>
-						<div class="ob-slots" id="ob-slots"><p class="ob-slots-loading">読み込み中…</p></div>
-					</div>
-
-					<!-- Step3 フォーム -->
-					<div class="ob-step" data-panel="3">
-						<button type="button" class="ob-back" data-back="2">‹ 時間に戻る</button>
+						<button type="button" class="ob-back" data-back="1">‹ 日時に戻る</button>
 						<h2 class="ob-step-h">お客様情報</h2>
 						<div class="boa-target"><span class="boa-target-label">ご予約日時</span><span class="boa-target-value" id="ob-dt-label"></span></div>
 						<div class="boa-field">
@@ -170,9 +165,9 @@ $recaptcha_key = defined( 'BANKOFART_RECAPTCHA_SITE_KEY' ) ? constant( 'BANKOFAR
 						<div class="boa-form-actions"><button type="button" class="boa-submit" id="ob-to-confirm">確認画面へ</button></div>
 					</div>
 
-					<!-- Step4 確認 -->
-					<div class="ob-step" data-panel="4">
-						<button type="button" class="ob-back" data-back="3">‹ 入力に戻る</button>
+					<!-- Step3 確認 -->
+					<div class="ob-step" data-panel="3">
+						<button type="button" class="ob-back" data-back="2">‹ 入力に戻る</button>
 						<h2 class="ob-step-h">ご予約内容の確認</h2>
 						<dl class="ob-confirm" id="ob-confirm"></dl>
 						<p class="boa-note">この内容で予約を確定します。オンライン会議URLは追ってご案内いたします。</p>

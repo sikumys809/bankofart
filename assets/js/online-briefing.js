@@ -1,9 +1,9 @@
 /*
  * online-briefing.js
- * オンライン説明会予約の Calendly 風ウィザード（素のJS・jQuery不使用）。
- *   Step1 日付 → Step2 時間（admin-ajax で空き取得）→ Step3 情報 → Step4 確認 → 確定（admin-post）
- * 状態はJS上のみ（localStorage不使用）。戻るボタンで前ステップへ。
- * window.BOA_BOOKING = { ajaxUrl, nonce, today:'YYYY-MM-DD', maxDate:'YYYY-MM-DD', recaptchaSiteKey }
+ * オンライン説明会予約：週表示グリッド（横=日付7日 × 縦=時間）→ 情報入力 → 確認 → 確定。
+ *   Calendly / receptionist.jp 風。日時選択を1画面（週表示）に統合（旧：日付→時間の2分割）。
+ * 空きは週切り替え時に admin-ajax（boa_booking_week）でまとめて取得。状態はJS上のみ（localStorage不使用）。
+ * 素のJS・jQuery不使用。window.BOA_BOOKING = { ajaxUrl, nonce, today, maxDate, recaptchaSiteKey }
  */
 ( function () {
 	'use strict';
@@ -12,124 +12,108 @@
 		var form = document.getElementById( 'ob-form' );
 		if ( ! form ) { return; }
 
-		var cfg = ( typeof window.BOA_BOOKING === 'object' && window.BOA_BOOKING ) ? window.BOA_BOOKING : {};
+		var cfg   = ( typeof window.BOA_BOOKING === 'object' && window.BOA_BOOKING ) ? window.BOA_BOOKING : {};
 		var state = { date: '', time: '' };
+		var WD    = [ '日', '月', '火', '水', '木', '金', '土' ];
 
-		var WD = [ '日', '月', '火', '水', '木', '金', '土' ];
 		function pad( n ) { return ( n < 10 ? '0' : '' ) + n; }
-		function ymd( y, m, d ) { return y + '-' + pad( m ) + '-' + pad( d ); }
-		function parseYmd( s ) { var p = s.split( '-' ); return { y: +p[0], m: +p[1], d: +p[2] }; }
+		function ymd( dt ) { return dt.getFullYear() + '-' + pad( dt.getMonth() + 1 ) + '-' + pad( dt.getDate() ); }
+		function fromYmd( s ) { var p = s.split( '-' ); return new Date( +p[0], +p[1] - 1, +p[2] ); }
 
-		var today = cfg.today || '';
-		var maxD  = cfg.maxDate || '';
-		var tod   = parseYmd( today );
-		var view  = { y: tod.y, m: tod.m }; // 表示中の月.
+		var today    = cfg.today || '';
+		var maxDate  = cfg.maxDate || '';
+		var weekStart = fromYmd( today ); // 週の起点（初期＝今日）。
 
-		// ───── ステップ表示 ─────
+		// ───── ステップ表示（3ステップ）─────
 		function gotoStep( n ) {
 			form.querySelectorAll( '.ob-step' ).forEach( function ( el ) {
 				el.classList.toggle( 'is-active', el.getAttribute( 'data-panel' ) === String( n ) );
 			} );
 			document.querySelectorAll( '.ob-steps li' ).forEach( function ( li ) {
-				li.classList.toggle( 'is-current', li.getAttribute( 'data-step' ) === String( n ) );
-				li.classList.toggle( 'is-done', parseInt( li.getAttribute( 'data-step' ), 10 ) < n );
+				var s = parseInt( li.getAttribute( 'data-step' ), 10 );
+				li.classList.toggle( 'is-current', s === n );
+				li.classList.toggle( 'is-done', s < n );
 			} );
 			window.scrollTo( { top: form.getBoundingClientRect().top + window.scrollY - 110, behavior: 'smooth' } );
 		}
 
-		// ───── カレンダー描画 ─────
-		function renderCalendar() {
-			var monthEl = document.getElementById( 'ob-cal-month' );
-			var grid    = document.getElementById( 'ob-cal-grid' );
-			monthEl.textContent = view.y + '年 ' + view.m + '月';
-			grid.innerHTML = '';
-			WD.forEach( function ( w ) {
-				var h = document.createElement( 'div' );
-				h.className = 'ob-cal-wd';
-				h.textContent = w;
-				grid.appendChild( h );
-			} );
-			var first = new Date( view.y, view.m - 1, 1 );
-			var startWd = first.getDay();
-			var days = new Date( view.y, view.m, 0 ).getDate();
-			for ( var i = 0; i < startWd; i++ ) {
-				grid.appendChild( document.createElement( 'div' ) );
-			}
-			for ( var d = 1; d <= days; d++ ) {
-				var cell = document.createElement( 'button' );
-				cell.type = 'button';
-				cell.className = 'ob-cal-day';
-				cell.textContent = d;
-				var ds = ymd( view.y, view.m, d );
-				if ( ds < today || ds > maxD ) {
-					cell.disabled = true;
-					cell.classList.add( 'is-disabled' );
-				} else {
-					if ( ds === state.date ) { cell.classList.add( 'is-selected' ); }
-					( function ( dstr ) {
-						cell.addEventListener( 'click', function () { selectDate( dstr ); } );
-					} )( ds );
-				}
-				grid.appendChild( cell );
-			}
-			// ナビ可否（範囲外の月へは行かせない）。
-			var prevDisabled = ymd( view.y, view.m, 1 ) <= today; // 当月より前は不可（当月まで）。
-			var lastOfView   = ymd( view.y, view.m, days );
-			var nextDisabled = lastOfView >= maxD;
-			document.getElementById( 'ob-cal-prev' ).disabled = prevDisabled;
-			document.getElementById( 'ob-cal-next' ).disabled = nextDisabled;
-		}
-		document.getElementById( 'ob-cal-prev' ).addEventListener( 'click', function () {
-			view.m--; if ( view.m < 1 ) { view.m = 12; view.y--; } renderCalendar();
-		} );
-		document.getElementById( 'ob-cal-next' ).addEventListener( 'click', function () {
-			view.m++; if ( view.m > 12 ) { view.m = 1; view.y++; } renderCalendar();
-		} );
+		// ───── 週表示の描画 ─────
+		function renderWeek() {
+			var cols = document.getElementById( 'ob-week-cols' );
+			cols.innerHTML = '<p class="ob-slots-loading">読み込み中…</p>';
 
-		// ───── 日付選択 → 時間取得 ─────
-		function selectDate( ds ) {
-			state.date = ds;
-			state.time = '';
-			var p = parseYmd( ds );
-			document.getElementById( 'ob-sel-date' ).textContent = p.y + '年' + p.m + '月' + p.d + '日';
-			gotoStep( 2 );
-			loadSlots( ds );
-		}
+			// ナビ可否（範囲：今日〜maxDate）。
+			var prevYmd = ymd( new Date( weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate() - 7 ) );
+			document.getElementById( 'ob-week-prev' ).disabled = ( ymd( weekStart ) <= today );
+			document.getElementById( 'ob-week-next' ).disabled = ( ymd( weekStart ) >= maxDate );
 
-		function loadSlots( ds ) {
-			var wrap = document.getElementById( 'ob-slots' );
-			wrap.innerHTML = '<p class="ob-slots-loading">読み込み中…</p>';
-			var url = cfg.ajaxUrl + '?action=boa_booking_availability&nonce=' + encodeURIComponent( cfg.nonce ) + '&date=' + encodeURIComponent( ds );
+			var url = cfg.ajaxUrl + '?action=boa_booking_week&nonce=' + encodeURIComponent( cfg.nonce ) + '&start=' + encodeURIComponent( ymd( weekStart ) );
 			fetch( url, { credentials: 'same-origin' } )
 				.then( function ( r ) { return r.json(); } )
 				.then( function ( res ) {
-					if ( ! res || ! res.success || ! res.data ) { wrap.innerHTML = '<p class="ob-slots-empty">空き状況を取得できませんでした。</p>'; return; }
-					var avail = res.data.available || [];
-					if ( ! avail.length ) { wrap.innerHTML = '<p class="ob-slots-empty">この日に空いている時間はありません。別の日をお選びください。</p>'; return; }
-					wrap.innerHTML = '';
-					avail.forEach( function ( t ) {
-						var b = document.createElement( 'button' );
-						b.type = 'button';
-						b.className = 'ob-slot';
-						b.textContent = t;
-						b.addEventListener( 'click', function () { selectTime( t ); } );
-						wrap.appendChild( b );
+					if ( ! res || ! res.success || ! res.data ) { cols.innerHTML = '<p class="ob-slots-empty">空き状況を取得できませんでした。</p>'; return; }
+					var data = res.data;
+					var d0 = data.days[0], d6 = data.days[6];
+					document.getElementById( 'ob-week-range' ).textContent = d0.month + '/' + d0.day + ' 〜 ' + d6.month + '/' + d6.day;
+
+					cols.innerHTML = '';
+					data.days.forEach( function ( day ) {
+						var col = document.createElement( 'div' );
+						col.className = 'ob-day-col' + ( day.isToday ? ' is-today' : '' ) + ( ( day.isPast || ! day.inRange ) ? ' is-out' : '' );
+
+						var head = document.createElement( 'div' );
+						head.className = 'ob-day-head';
+						head.innerHTML = '<span class="ob-day-num">' + day.day + '</span><span class="ob-day-wd">' + day.wd + '</span>';
+						col.appendChild( head );
+
+						var list = document.createElement( 'div' );
+						list.className = 'ob-day-slots';
+						var avail = day.available || [];
+						data.slots.forEach( function ( slot ) {
+							var btn = document.createElement( 'button' );
+							btn.type = 'button';
+							btn.textContent = slot;
+							var open = day.inRange && ! day.isPast && avail.indexOf( slot ) !== -1;
+							if ( open ) {
+								btn.className = 'ob-slot' + ( ( state.date === day.date && state.time === slot ) ? ' is-selected' : '' );
+								( function ( dd, tt ) {
+									btn.addEventListener( 'click', function () { selectSlot( dd, tt ); } );
+								} )( day.date, slot );
+							} else {
+								btn.className = 'ob-slot is-off';
+								btn.disabled = true;
+							}
+							list.appendChild( btn );
+						} );
+						col.appendChild( list );
+						cols.appendChild( col );
 					} );
 				} )
-				.catch( function () { wrap.innerHTML = '<p class="ob-slots-empty">通信エラーが発生しました。</p>'; } );
+				.catch( function () { cols.innerHTML = '<p class="ob-slots-empty">通信エラーが発生しました。</p>'; } );
 		}
 
-		// ───── 時間選択 → フォーム ─────
-		function selectTime( t ) {
-			state.time = t;
-			var p = parseYmd( state.date );
-			var label = p.y + '年' + p.m + '月' + p.d + '日（' + WD[ new Date( p.y, p.m - 1, p.d ).getDay() ] + '） ' + t + '〜';
-			document.getElementById( 'ob-booked-at' ).value = state.date + ' ' + t;
+		document.getElementById( 'ob-week-prev' ).addEventListener( 'click', function () {
+			var d = new Date( weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate() - 7 );
+			if ( ymd( d ) < today ) { d = fromYmd( today ); }
+			weekStart = d; renderWeek();
+		} );
+		document.getElementById( 'ob-week-next' ).addEventListener( 'click', function () {
+			weekStart = new Date( weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate() + 7 );
+			renderWeek();
+		} );
+
+		// ───── スロット選択 → フォームへ ─────
+		function selectSlot( date, time ) {
+			state.date = date;
+			state.time = time;
+			var dt = fromYmd( date );
+			var label = dt.getFullYear() + '年' + ( dt.getMonth() + 1 ) + '月' + dt.getDate() + '日（' + WD[ dt.getDay() ] + '） ' + time + '〜';
+			document.getElementById( 'ob-booked-at' ).value = date + ' ' + time;
 			document.getElementById( 'ob-dt-label' ).textContent = label;
-			gotoStep( 3 );
+			gotoStep( 2 );
 		}
 
-		// ───── 確認へ（Step3バリデーション）─────
+		// ───── 確認へ（フォームのバリデーション）─────
 		document.getElementById( 'ob-to-confirm' ).addEventListener( 'click', function () {
 			var msg = document.getElementById( 'ob-form-msg' );
 			msg.textContent = '';
@@ -142,7 +126,7 @@
 			if ( ! name ) { errs.push( 'お名前' ); }
 			if ( ! company ) { errs.push( '会社名' ); }
 			if ( ! /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test( email ) ) { errs.push( 'メールアドレス' ); }
-			if ( ( phone.replace( /[^0-9]/g, '' ).length < 10 ) ) { errs.push( '電話番号（10桁以上）' ); }
+			if ( phone.replace( /[^0-9]/g, '' ).length < 10 ) { errs.push( '電話番号（10桁以上）' ); }
 			if ( ! purpose ) { errs.push( 'ご目的' ); }
 			if ( errs.length ) { msg.textContent = '次の項目をご確認ください：' + errs.join( '、' ); return; }
 
@@ -153,7 +137,7 @@
 			document.getElementById( 'ob-confirm' ).innerHTML = rows.map( function ( r ) {
 				return '<dt>' + r[0] + '</dt><dd>' + r[1].replace( /</g, '&lt;' ) + '</dd>';
 			} ).join( '' );
-			gotoStep( 4 );
+			gotoStep( 3 );
 		} );
 
 		// ───── 戻る ─────
@@ -181,6 +165,6 @@
 			if ( btn ) { btn.disabled = true; btn.textContent = '送信中…'; }
 		} );
 
-		renderCalendar();
+		renderWeek();
 	} );
 } )();
