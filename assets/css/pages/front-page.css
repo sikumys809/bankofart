@@ -314,7 +314,7 @@ body.reveal-ready [data-tr].on { opacity: 1; }
   padding: 0;
   box-shadow: none;
   overflow: hidden;
-  cursor: none;
+  cursor: pointer;
   transition:
     opacity 1s cubic-bezier(.2,.7,.25,1),
     transform 1s cubic-bezier(.2,.7,.25,1);
@@ -499,7 +499,7 @@ body.reveal-ready .frame.flipped { opacity: 1; transform: translateY(0); }
 }
 .car-item {
   flex: 0 0 calc((100% - 48px) / 3);
-  cursor: none;
+  cursor: pointer;
 }
 .car-item-img {
   width: 100%;
@@ -528,7 +528,7 @@ body.reveal-ready .frame.flipped { opacity: 1; transform: translateY(0); }
   border: 1px solid rgba(255,255,255,.2);
   background: transparent;
   color: var(--white);
-  cursor: none;
+  cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   font-family: var(--f-display);
   font-size: 16px; font-weight: 500;
@@ -542,7 +542,7 @@ body.reveal-ready .frame.flipped { opacity: 1; transform: translateY(0); }
   width: 24px; height: 2px;
   background: rgba(255,255,255,.2);
   border: none; padding: 0;
-  cursor: none;
+  cursor: pointer;
   transition: background .3s ease, width .3s ease;
 }
 .car-dot:hover { background: rgba(255,255,255,.5); }
@@ -587,7 +587,7 @@ body.reveal-ready .frame.flipped { opacity: 1; transform: translateY(0); }
 }
 .artist-card {
   display:block; text-decoration:none; color:inherit;
-  position:relative; cursor:none;
+  position:relative; cursor: pointer;
   padding: 0 12px;
   transition: transform .5s cubic-bezier(.2,.7,.2,1);
 }
@@ -1204,7 +1204,7 @@ body.reveal-ready .frame.flipped { opacity: 1; transform: translateY(0); }
 }
 .news-card {
   background:rgba(255,255,255,.02);
-  overflow:hidden; cursor:none;
+  overflow:hidden; cursor: pointer;
   transition:background .25s;
   border-right: 1px solid rgba(255,255,255,.05);
 }

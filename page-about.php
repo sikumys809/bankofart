@@ -65,23 +65,23 @@ $client_logos = array(
 	<!-- ════════ 1-2. 数字＆クライアントロゴ ════════ -->
 	<section class="about-second">
 		<div class="about-hero-inner">
-			<!-- 統計（アイコン付き） ※数字はモックのベタ書き。将来はカスタマイザ/設定で動的化候補。 -->
+			<!-- 統計（アイコン付き） ※数字は「外観 > カスタマイズ > サイト数値（実績）」で更新可能。 -->
 			<div class="stats rv">
 				<div class="stat-cell">
 					<div class="stat-icon"><img src="<?php echo $icon( 'BOAicon-18.png' ); ?>" alt=""></div>
-					<div class="stat-num"><span class="count-up" data-target="172">0</span><span class="unit">ヶ所</span></div>
+					<div class="stat-num"><span class="count-up" data-target="<?php echo esc_attr( bankofart_stat( 'clients' ) ); ?>">0</span><span class="unit">ヶ所</span></div>
 					<div class="stat-label">導入先</div>
 					<div class="stat-eng">CLIENTS</div>
 				</div>
 				<div class="stat-cell">
 					<div class="stat-icon"><img src="<?php echo $icon( 'BOAicon-17.png' ); ?>" alt=""></div>
-					<div class="stat-num"><span class="count-up" data-target="22">0</span><span class="unit">名</span></div>
+					<div class="stat-num"><span class="count-up" data-target="<?php echo esc_attr( bankofart_stat( 'artists' ) ); ?>">0</span><span class="unit">名</span></div>
 					<div class="stat-label">所属画家</div>
 					<div class="stat-eng">ARTISTS</div>
 				</div>
 				<div class="stat-cell">
 					<div class="stat-icon"><img src="<?php echo $icon( 'BOAicon-16.png' ); ?>" alt=""></div>
-					<div class="stat-num"><span class="count-up" data-target="1230">0</span><span class="unit">枚</span></div>
+					<div class="stat-num"><span class="count-up" data-target="<?php echo esc_attr( bankofart_stat( 'artworks' ) ); ?>">0</span><span class="unit">枚</span></div>
 					<div class="stat-label">取扱作品数</div>
 					<div class="stat-eng">ARTWORKS</div>
 				</div>
