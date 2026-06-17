@@ -172,6 +172,31 @@ function bankofart_enqueue_assets() {
 		);
 	}
 
+	// ページ別アセット：ABOUT 固定ページ（スラッグ about または ABOUT テンプレート）。
+	if ( is_page( 'about' ) || is_page_template( 'page-about.php' ) ) {
+		wp_enqueue_style(
+			'bankofart-page-about',
+			"{$theme_uri}/assets/css/pages/page-about.css",
+			array( 'bankofart-components' ),
+			$ver
+		);
+		wp_enqueue_script(
+			'bankofart-page-about',
+			"{$theme_uri}/assets/js/page-about.js",
+			array(),
+			$ver,
+			true
+		);
+		// コレクトシミュレーター（タブ式：即時償却 / 減価償却）。フッターで読み込み（DOM 要素の後）。
+		wp_enqueue_script(
+			'bankofart-collect-simulator',
+			"{$theme_uri}/assets/js/collect-simulator.js",
+			array(),
+			$ver,
+			true
+		);
+	}
+
 	// ページ別アセット：フロントページ（TOP）。
 	if ( is_front_page() ) {
 		wp_enqueue_style(
