@@ -48,11 +48,13 @@
 .ob-day-col.is-today .ob-day-head { border-bottom-color: var(--brand); }
 .ob-day-col.is-today .ob-day-num { color: var(--brand); }
 .ob-day-col.is-out .ob-day-head { opacity: .35; }
-.ob-day-slots { display: flex; flex-direction: column; gap: 7px; }
+/* 各日の時間枠：縦並び＋中央寄せ。スロットは max-width で締め、余った横幅は枠間の余白に回す。 */
+.ob-day-slots { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 
 /* スロット3状態：予約可（brand枠+brand文字）/ 不可（薄グレー）/ 選択中（brand塗り+白）。
-   各スロットは「白背景＋細枠＋角丸＋周囲に余白」で独立したボタン（カード）に見せる。 */
-.ob-slot { font-family: var(--f-jp); font-size: 14px; letter-spacing: 1px; padding: 10px 4px; text-align: center; border-radius: 5px; cursor: pointer; transition: background .2s, color .2s, border-color .2s, box-shadow .2s; color: var(--brand); background: var(--white); border: 1px solid var(--brand); }
+   各スロットは「白背景＋細枠＋角丸＋周囲に余白」で独立したボタン（カード）に見せる。
+   width:100% + max-width で、7列でも横長になりすぎない正方形〜やや横長の比率に締める。 */
+.ob-slot { width: 100%; max-width: 96px; font-family: var(--f-jp); font-size: 14px; letter-spacing: 1px; padding: 11px 6px; text-align: center; border-radius: 5px; cursor: pointer; transition: background .2s, color .2s, border-color .2s, box-shadow .2s; color: var(--brand); background: var(--white); border: 1px solid var(--brand); }
 .ob-slot:hover { background: var(--brand-soft); box-shadow: 0 2px 6px rgba(1,174,132,.18); }
 .ob-slot.is-selected { background: var(--brand); color: var(--white); border-color: var(--brand); }
 .ob-slot.is-off { color: var(--mid); background: var(--paper); border: 1px solid var(--border-soft); border-radius: 5px; opacity: .5; cursor: not-allowed; }
@@ -80,6 +82,6 @@
   .ob-day-num { display: inline; font-size: 18px; }
   .ob-day-wd { display: inline; margin-top: 0; }
   .ob-day-col.is-today .ob-day-head { border-bottom-color: var(--brand); }
-  .ob-day-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(74px, 1fr)); gap: 8px; }
-  .ob-slot { font-size: 13px; padding: 10px 4px; }
+  .ob-day-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(74px, 1fr)); align-items: stretch; gap: 8px; }
+  .ob-slot { width: auto; max-width: none; font-size: 13px; padding: 10px 4px; } /* グリッドセル幅に追従（縦積み時は横並びで詰める） */
 }
