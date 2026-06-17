@@ -178,3 +178,28 @@ function bankofart_recruit_guidelines_pdf_url() {
 	// 募集要項PDF未確定。確定後はここを差し替える（例：wp-content/uploads のPDF URL）。
 	return '#';
 }
+
+/**
+ * 資料請求の URL を返す（一元管理）。
+ *
+ * CONTACT 系ボタン（CTA / ヘッダー / フッター / about MOVIE 等）が共通で参照する。
+ * 暫定は現行運用の外部フォーム（form-mailer）。将来 内部の資料請求フォームを実装したら、
+ * このフィルター既定値を差し替える（apply_filters は header/footer と共有）。
+ *
+ * @return string 資料請求フォーム URL。
+ */
+function bankofart_document_request_url() {
+	return apply_filters( 'bankofart_document_request_url', 'https://business.form-mailer.jp/fms/1c6a81d4280183' );
+}
+
+/**
+ * オンライン説明会予約の URL を返す（一元管理）。
+ *
+ * 暫定は現行運用の外部予約（receptionist）。将来 内部の説明会予約システムを実装したら、
+ * このフィルター既定値を差し替える（apply_filters は header/footer と共有）。
+ *
+ * @return string オンライン説明会予約 URL。
+ */
+function bankofart_briefing_url() {
+	return apply_filters( 'bankofart_briefing_url', 'https://booking.receptionist.jp/5ade6c6d-ae6c-44d9-9921-000ad24af9f9/30min' );
+}

@@ -98,7 +98,7 @@ body.reveal-ready .rv.on { opacity: 1; transform: translateY(0); }
 /* 選考フロー */
 .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; position: relative; }
 .flow-step { text-align: center; padding: 28px 18px; background: var(--paper); border: 1px solid var(--border); position: relative; }
-.flow-step::after { content: '→'; position: absolute; right: -15px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--brand); z-index: 2; background: var(--white); padding: 0 4px; }
+.flow-step::after { content: '→'; position: absolute; right: -15px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--brand); z-index: 2; background: transparent; padding: 0 4px; }
 .flow-step:last-child::after { display: none; }
 .flow-step-num { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3px; color: var(--brand); margin-bottom: 12px; }
 .flow-step-h { font-family: 'Shippori Mincho B1', serif; font-size: 15px; font-weight: 700; letter-spacing: 1px; color: var(--ink); margin-bottom: 8px; }

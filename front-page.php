@@ -318,7 +318,7 @@ $front_frame_types = array( 'type-wide', 'type-tall', 'type-square', 'type-tall'
 			</div>
 
 			<div class="gallery-cta rv">
-				<a href="<?php echo esc_url( home_url( '/online-briefing/' ) ); ?>" class="gallery-reservation">RESERVATION →</a>
+				<a href="<?php echo esc_url( bankofart_briefing_url() ); ?>" class="gallery-reservation" target="_blank" rel="noopener">RESERVATION →</a>
 			</div>
 		</div>
 	</section>

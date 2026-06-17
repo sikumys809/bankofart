@@ -170,8 +170,8 @@ $client_logos = array(
 			<div class="movie-caption rv d1">BANK OF ART — OFFICIAL MOVIE</div>
 
 			<div class="movie-cta rv d2">
-				<a href="<?php echo esc_url( home_url( '/document-request/' ) ); ?>" class="btn-w">資料請求</a>
-				<a href="<?php echo esc_url( home_url( '/online-briefing/' ) ); ?>" class="btn-o">オンライン説明会</a>
+				<a href="<?php echo esc_url( bankofart_document_request_url() ); ?>" class="btn-w" target="_blank" rel="noopener">資料請求</a>
+				<a href="<?php echo esc_url( bankofart_briefing_url() ); ?>" class="btn-o" target="_blank" rel="noopener">オンライン説明会</a>
 			</div>
 		</div>
 	</section>

@@ -7,10 +7,10 @@
  *
  * 引数（$args 経由）:
  *   - guidelines_url string 募集要項リンク（既定：/recruit/ ＝ RECRUIT ページ）
- *   - apply_url      string 応募リンク（既定：bankofart_apply_url() ＝ 応募フォーム。recruit の応募ボタンと共通）
+ *   - apply_url      string 応募リンク（既定：/recruit/#apply ＝ RECRUIT ページの応募CTA）
  *
- * 「募集要項を見る」は RECRUIT ページ（/recruit/）へ、「応募する」は応募フォーム
- * （bankofart_apply_url()）へ接続。確定フォームURLは bankofart_apply_url() 1箇所の差し替えで全反映。
+ * 「募集要項を見る」「応募する」とも RECRUIT ページ（/recruit/）へ誘導する。
+ * 応募フォーム（確定後）への遷移は RECRUIT ページ内の応募ボタン（bankofart_apply_url()）に集約。
  *
  * @package bankofart
  */
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $guidelines_url = isset( $args['guidelines_url'] ) ? $args['guidelines_url'] : home_url( '/recruit/' );
-$apply_url      = isset( $args['apply_url'] ) ? $args['apply_url'] : bankofart_apply_url();
+$apply_url      = isset( $args['apply_url'] ) ? $args['apply_url'] : home_url( '/recruit/#apply' );
 ?>
 <section class="for-artists-sec">
 	<div class="match-banner for-artists rv">
