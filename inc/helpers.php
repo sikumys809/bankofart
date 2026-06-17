@@ -202,5 +202,6 @@ function bankofart_document_request_url() {
  * @return string オンライン説明会予約 URL。
  */
 function bankofart_briefing_url() {
-	return apply_filters( 'bankofart_briefing_url', 'https://booking.receptionist.jp/5ade6c6d-ae6c-44d9-9921-000ad24af9f9/30min' );
+	// 自前のオンライン説明会予約ページ（/online-briefing/）へ。差し替えはフィルターで。
+	return apply_filters( 'bankofart_briefing_url', home_url( '/online-briefing/' ) );
 }

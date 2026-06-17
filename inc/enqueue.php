@@ -258,6 +258,38 @@ function bankofart_enqueue_assets() {
 		}
 	}
 
+	// ページ別アセット：オンライン説明会予約（Calendly風ウィザード）。
+	if ( is_page( 'online-briefing' ) || is_page_template( 'page-online-briefing.php' ) ) {
+		wp_enqueue_style(
+			'bankofart-online-briefing',
+			"{$theme_uri}/assets/css/pages/online-briefing.css",
+			array( 'bankofart-components' ),
+			$ver
+		);
+		$recaptcha_site = defined( 'BANKOFART_RECAPTCHA_SITE_KEY' ) ? constant( 'BANKOFART_RECAPTCHA_SITE_KEY' ) : '';
+		if ( '' !== $recaptcha_site ) {
+			wp_enqueue_script( 'google-recaptcha', 'https://www.google.com/recaptcha/api.js?render=' . rawurlencode( $recaptcha_site ), array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		}
+		wp_enqueue_script(
+			'bankofart-online-briefing',
+			"{$theme_uri}/assets/js/online-briefing.js",
+			array(),
+			$ver,
+			true
+		);
+		wp_localize_script(
+			'bankofart-online-briefing',
+			'BOA_BOOKING',
+			array(
+				'ajaxUrl'          => admin_url( 'admin-ajax.php' ),
+				'nonce'            => wp_create_nonce( 'boa_booking' ),
+				'today'            => current_time( 'Y-m-d' ),
+				'maxDate'          => gmdate( 'Y-m-d', strtotime( current_time( 'Y-m-d' ) . ' +' . BANKOFART_BOOKING_DAYS_AHEAD . ' days' ) ),
+				'recaptchaSiteKey' => $recaptcha_site,
+			)
+		);
+	}
+
 	// ページ別アセット：MATCHING ISSUE 課題逆引き診断（スラッグ matching-issue または テンプレート）。
 	if ( is_page( 'matching-issue' ) || is_page_template( 'page-matching-issue.php' ) ) {
 		wp_enqueue_style(

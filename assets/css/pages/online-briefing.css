@@ -1,0 +1,70 @@
+/*
+ * pages/online-briefing.css
+ * オンライン説明会予約（Calendly風）。左：説明／右：日付→時間→フォーム→確認のウィザード。
+ * フォーム要素は components.css の .boa-form 系を共用。
+ */
+
+.ob-section { max-width: 1040px; margin: 0 auto; padding: 64px 24px 110px; }
+.ob-layout { display: grid; grid-template-columns: 320px 1fr; gap: 48px; align-items: start; }
+
+/* 左：説明 */
+.ob-intro { position: sticky; top: 120px; }
+.ob-title { font-family: var(--f-jp); font-size: clamp(26px, 3.4vw, 34px); font-weight: 700; letter-spacing: 2px; color: var(--ink); line-height: 1.4; margin: 6px 0 14px; }
+.ob-duration { font-family: var(--f-jp); font-size: 18px; font-weight: 700; color: var(--brand); letter-spacing: 1px; margin-bottom: 20px; }
+.ob-duration-num { font-size: 28px; }
+.ob-lead { font-family: var(--f-jp); font-size: 15px; line-height: 1.95; letter-spacing: .5px; color: var(--mid); margin-bottom: 28px; }
+.ob-meta { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; border-top: 1px solid var(--border-soft); padding-top: 20px; }
+.ob-meta dt { font-family: var(--f-deco); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--brand); }
+.ob-meta dd { font-family: var(--f-jp); font-size: 14px; color: var(--ink); margin: 0; letter-spacing: .5px; }
+
+/* 右：ウィザード */
+.ob-wizard { background: var(--white); border: 1px solid var(--border-soft); padding: 36px 36px 40px; }
+.ob-steps { list-style: none; display: flex; gap: 8px; margin: 0 0 28px; padding: 0; counter-reset: ob; }
+.ob-steps li { flex: 1; font-family: var(--f-jp); font-size: 12px; letter-spacing: 1px; color: var(--mid); text-align: center; padding: 10px 4px; border-bottom: 2px solid var(--border); position: relative; }
+.ob-steps li::before { counter-increment: ob; content: counter( ob ); display: inline-block; width: 20px; height: 20px; line-height: 20px; border-radius: 50%; background: var(--border); color: var(--white); font-family: var(--f-deco); font-size: 11px; margin-right: 6px; }
+.ob-steps li.is-current { color: var(--ink); border-bottom-color: var(--brand); font-weight: 700; }
+.ob-steps li.is-current::before, .ob-steps li.is-done::before { background: var(--brand); }
+
+.ob-step { display: none; }
+.ob-step.is-active { display: block; }
+.ob-step-h { font-family: var(--f-jp); font-size: 18px; font-weight: 700; letter-spacing: 1px; color: var(--ink); margin-bottom: 20px; }
+.ob-back { background: transparent; border: 0; color: var(--mid); font-family: var(--f-jp); font-size: 13px; letter-spacing: 1px; cursor: pointer; padding: 0 0 12px; }
+.ob-back:hover { color: var(--brand); }
+
+/* カレンダー */
+.ob-cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.ob-cal-month { font-family: var(--f-jp); font-size: 16px; font-weight: 700; letter-spacing: 1px; color: var(--ink); }
+.ob-cal-nav { width: 36px; height: 36px; border: 1px solid var(--border); background: var(--white); color: var(--ink); font-size: 18px; cursor: pointer; transition: background .2s, color .2s; }
+.ob-cal-nav:hover:not(:disabled) { background: var(--brand); color: var(--white); border-color: var(--brand); }
+.ob-cal-nav:disabled { opacity: .3; cursor: not-allowed; }
+.ob-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.ob-cal-wd { text-align: center; font-family: var(--f-deco); font-size: 11px; letter-spacing: 1px; color: var(--mid); padding: 6px 0; }
+.ob-cal-day { aspect-ratio: 1 / 1; border: 1px solid var(--border); background: var(--white); font-family: var(--f-jp); font-size: 15px; color: var(--ink); cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
+.ob-cal-day:hover:not(:disabled) { border-color: var(--brand); background: var(--brand-soft); }
+.ob-cal-day.is-selected { background: var(--brand); color: var(--white); border-color: var(--brand); }
+.ob-cal-day.is-disabled { opacity: .3; cursor: not-allowed; background: var(--paper); }
+
+/* 時間スロット */
+.ob-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+.ob-slot { font-family: var(--f-jp); font-size: 15px; letter-spacing: 1px; color: var(--ink); background: var(--white); border: 1px solid var(--border); padding: 14px 0; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
+.ob-slot:hover { background: var(--brand); color: var(--white); border-color: var(--brand); }
+.ob-slots-loading, .ob-slots-empty { grid-column: 1 / -1; font-family: var(--f-jp); font-size: 14px; color: var(--mid); padding: 20px 0; text-align: center; }
+
+/* 確認 */
+.ob-confirm { display: grid; grid-template-columns: auto 1fr; gap: 12px 20px; margin: 0 0 24px; }
+.ob-confirm dt { font-family: var(--f-deco); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--brand); }
+.ob-confirm dd { font-family: var(--f-jp); font-size: 15px; color: var(--ink); margin: 0; letter-spacing: .5px; word-break: break-all; }
+.ob-form-msg { font-family: var(--f-jp); font-size: 14px; color: #c44; margin: 8px 0; min-height: 1em; }
+
+@media (max-width: 880px) {
+  .ob-layout { grid-template-columns: 1fr; gap: 28px; }
+  .ob-intro { position: static; }
+}
+@media (max-width: 700px) {
+  .ob-section { padding: 40px 16px 80px; }
+  .ob-wizard { padding: 24px 18px 28px; }
+  .ob-steps li { font-size: 0; padding: 8px 2px; }
+  .ob-steps li::before { margin-right: 0; }
+  .ob-cal-grid { gap: 4px; }
+  .ob-cal-day { font-size: 13px; }
+}

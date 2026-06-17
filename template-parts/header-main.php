@@ -16,9 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 $bankofart_logo_base  = get_theme_file_uri( 'assets/img/logo/boa-07.png' );
 $bankofart_logo_hover = get_theme_file_uri( 'assets/img/logo/boa-06.png' );
 
-// CONTACT 系は一元管理ヘルパー経由（資料請求＝自前 /document-request/、説明会＝当面は外部URL）。
+// CONTACT 系は一元管理ヘルパー経由（資料請求＝/document-request/、説明会予約＝/online-briefing/）。
 $bankofart_url_document  = bankofart_document_request_url(); // 自前フォーム /document-request/.
-$bankofart_url_briefing  = bankofart_briefing_url();         // 説明会予約（当面は外部。後で自前化）.
+$bankofart_url_briefing  = bankofart_briefing_url();         // 自前予約 /online-briefing/.
 
 /*
  * グローバルナビ項目。英字（大文字）＋日本語の2段表示。
@@ -74,7 +74,7 @@ $bankofart_nav_items = array(
 			<button class="btn-contact" id="contactToggle" aria-haspopup="true" aria-expanded="false">CONTACT</button>
 			<div class="contact-menu">
 				<a href="<?php echo esc_url( $bankofart_url_document ); ?>" class="contact-menu-item">資料請求</a>
-				<a href="<?php echo esc_url( $bankofart_url_briefing ); ?>" class="contact-menu-item" target="_blank" rel="noopener">オンライン説明会</a>
+				<a href="<?php echo esc_url( $bankofart_url_briefing ); ?>" class="contact-menu-item">オンライン説明会</a>
 			</div>
 		</div>
 	</div>

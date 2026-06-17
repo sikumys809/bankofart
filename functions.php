@@ -45,6 +45,10 @@ $bankofart_includes = array(
 	'inc/document-request/helpers.php',      // 資料請求：トークン/レート/検証/挿入
 	'inc/document-request/form-handler.php', // 資料請求：送信処理・PDF配信
 	'inc/document-request/mail.php',         // 資料請求：メール送信
+	'inc/online-booking/setup.php',          // 説明会予約：テーブル/定数/スロット
+	'inc/online-booking/availability.php',   // 説明会予約：空きスロット（admin-ajax）
+	'inc/online-booking/form-handler.php',   // 説明会予約：予約確定（admin-post）
+	'inc/online-booking/mail.php',           // 説明会予約：メール送信
 );
 
 foreach ( $bankofart_includes as $bankofart_file ) {
