@@ -212,26 +212,18 @@ function bankofart_enqueue_assets() {
 			$ver,
 			true
 		);
-		// 結果リンク動的化用：公開 artist の「投稿タイトル => single-artist URL」辞書。
-		// モックJSの nameJa（post_title 完全一致）で引く。投稿が増えれば自動で実リンク化。
-		$bankofart_artist_urls = array();
-		$bankofart_artist_posts = get_posts(
-			array(
-				'post_type'      => 'artist',
-				'post_status'    => 'publish',
-				'posts_per_page' => -1,
-				'no_found_rows'  => true,
-			)
-		);
-		foreach ( $bankofart_artist_posts as $bankofart_artist_post ) {
-			$bankofart_artist_urls[ $bankofart_artist_post->post_title ] = get_permalink( $bankofart_artist_post->ID );
-		}
+		// 診断データ供給（Notion仕様準拠・完全動的）。
+		//   - questions：diagnosis-data.php の質問マスター（仕様2章）。
+		//   - artists  ：artist 投稿から動的取得（仕様7.2。タグ・共鳴文章を入力すれば自動で母集団に追加）。
+		// ハードコードは一切無し。スコアリング/同点処理/タグ被り補正は JS 側で実施。
 		wp_localize_script(
 			'bankofart-page-matching-purpose',
 			'BOA_MATCH',
 			array(
-				'artistUrls' => $bankofart_artist_urls,
-				'archiveUrl' => get_post_type_archive_link( 'artist' ),
+				'questions'   => bankofart_get_purpose_questions(),
+				'artists'     => bankofart_get_matching_artists(),
+				'archiveUrl'  => get_post_type_archive_link( 'artist' ),
+				'briefingUrl' => bankofart_briefing_url(),
 			)
 		);
 	}

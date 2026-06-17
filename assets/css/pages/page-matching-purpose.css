@@ -106,3 +106,12 @@
 .result-sub-pending { display: inline-block; font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--mid); }
 /* 候補0件時のフォールバック */
 .result-empty { font-family: 'Shippori Mincho B1', serif; font-size: 15px; line-height: 2; color: var(--mid); text-align: center; padding: 40px 0; letter-spacing: 1px; }
+
+/* ===== 仕様1.1：起源ストーリー抜粋・代表作3点 ===== */
+.result-main-origin { font-family: 'Shippori Mincho B1', serif; font-size: 13px; line-height: 1.95; color: var(--mid); letter-spacing: .5px; max-width: 720px; margin: 0 auto 32px; padding-top: 24px; border-top: 1px solid var(--border-soft); }
+.result-main-works { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 720px; margin: 0 auto 36px; }
+.result-work { aspect-ratio: 1 / 1; background-size: cover; background-position: center; background-color: var(--paper); border: 1px solid var(--border-soft); }
+@media (max-width: 700px) {
+  .result-main-works { gap: 10px; margin-bottom: 28px; }
+  .result-main-origin { font-size: 12px; }
+}

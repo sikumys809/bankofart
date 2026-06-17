@@ -1,250 +1,224 @@
 /*
  * page-matching-purpose.js
- * 企業理念マッチング診断（artist向け5問）。mockups/matching-purpose.html の <script>（181-400 行）から
- * 質問データ(QUESTIONS)・アーティストデータ(ARTISTS 20名)・スコアリング・画面遷移を「そのまま」移植。
- * 判定アルゴリズム・質問・データは無改変。
+ * 企業理念マッチング診断（artist向け5問）。
+ * Notion「アーティストマッチング機能 構成指示書」準拠。データは完全動的：
+ *   - window.BOA_MATCH.questions … 質問マスター（diagnosis-data.php / 仕様2章）
+ *   - window.BOA_MATCH.artists   … 診断対象アーティスト（artist投稿から動的取得 / 仕様7.2）
+ * ハードコードは一切なし。artist投稿に診断タグ＋共鳴文章を入れれば自動で母集団に追加される。
  *
- * 方針 B改：結果に出るアーティストのリンク先だけを WP 実投稿に動的接続する。
- *   - PHP（enqueue）が wp_localize_script で window.BOA_MATCH = { artistUrls:{nameJa:permalink,...}, archiveUrl } を供給
- *   - showResult() は nameJa で artistUrls を引き、あれば実 single-artist へ、無ければ「プロフィール準備中」表示
- *   - 投稿が増えれば自動で実リンク化（コード変更不要）
+ * ロジック（仕様4章）：
+ *   4.1 スコア＝各回答の選択肢タグ × アーティスト主要タグの一致ごとに選択肢ポイント加算
+ *   4.2 同点＝Q1一致タグを持つ者を優先、なお同点なら登録順（古い順 = _order）
+ *   4.3 メインとサブで主要タグが被りすぎないよう、サブはメイン軸と被る者を最大1名に制限
  * 素の JS（jQuery不使用）。
  */
 ( function () {
-'use strict';
+	'use strict';
 
-// ════════ WP 動的データ（名前→URL辞書）。未定義でも安全に動く ════════
-var BOA = ( typeof window.BOA_MATCH === 'object' && window.BOA_MATCH ) ? window.BOA_MATCH : {};
-var ARTIST_URLS = BOA.artistUrls || {};
-function resolveArtistUrl( nameJa ) {
-  return Object.prototype.hasOwnProperty.call( ARTIST_URLS, nameJa ) ? ARTIST_URLS[ nameJa ] : '';
-}
+	var BOA       = ( typeof window.BOA_MATCH === 'object' && window.BOA_MATCH ) ? window.BOA_MATCH : {};
+	var QUESTIONS = Array.isArray( BOA.questions ) ? BOA.questions : [];
+	var ARTISTS   = Array.isArray( BOA.artists ) ? BOA.artists : [];
+	var DEFAULT_GRAD = 'linear-gradient(135deg,#2a2a2a 0%,#01ae84 100%)';
+	var RESONANCE_FALLBACK = 'このアーティストの詳細プロフィールで、制作テーマと作品世界をご覧ください。あなたの企業の価値観と響き合う物語がそこにあります。';
 
-// ════════ 質問データ ════════
-var QUESTIONS = [
-  { id: 'q1', text: '御社が事業を通じて、最も大切にしているのは？', weight: 30, options: [
-    { label: '人と人とのつながりを生むこと', tags: ['つながり','コミュニティ','地域'] },
-    { label: '何かに挑み、新しい価値を生むこと', tags: ['挑戦','突破','唯一無二'] },
-    { label: '困っている人や社会課題に向き合うこと', tags: ['社会貢献','貧困','SDGs'] },
-    { label: '伝統や文化を受け継ぎ、発展させること', tags: ['伝統','継承','工芸'] },
-    { label: '美しさや心の豊かさを届けること', tags: ['癒し','心の豊かさ','救い'] }
-  ]},
-  { id: 'q2', text: '御社が事業を続けてきた中で、最も誇りに思う瞬間に近いのは？', weight: 20, options: [
-    { label: '困難を乗り越えて、再び立ち上がれた時', tags: ['再生','リカバリー','第二のキャリア'] },
-    { label: '大切にしてきた価値を、次の世代に渡せた時', tags: ['家族','継承','伝統'] },
-    { label: '国境や文化を超えて、誰かと繋がれた時', tags: ['国際','越境','多文化'] },
-    { label: '思いがけない出会いが、新しい扉を開いた時', tags: ['偶然','転機','実験'] },
-    { label: '言うべきことを、ちゃんと言えた時', tags: ['社会批評','不条理','メッセージ'] }
-  ]},
-  { id: 'q3', text: '御社が将来、どんな未来を作りたいか？', weight: 20, options: [
-    { label: '子供たちが希望を持てる社会', tags: ['子供','希望','未来'] },
-    { label: '多様な価値観が共存する社会', tags: ['多様性','越境','POP'] },
-    { label: '自然と調和した持続可能な社会', tags: ['自然','サステナビリティ','植物'] },
-    { label: '一人ひとりが自分らしく輝く社会', tags: ['自立','エンパワー','唯一無二'] },
-    { label: '過去と未来が繋がる文化的な社会', tags: ['伝統','文化','普遍性'] }
-  ]},
-  { id: 'q4', text: '御社の社風・カルチャーに近いのは？', weight: 15, options: [
-    { label: '熱量高く、勢いで突き進む', tags: ['力強さ','格闘','生命エネルギー'] },
-    { label: 'じっくり、丁寧に積み上げる', tags: ['静謐','工芸','継承'] },
-    { label: '自由でDIYな精神', tags: ['DIY','ストリート','バンドカルチャー'] },
-    { label: 'グローバル・国際志向', tags: ['国際','越境'] },
-    { label: 'アカデミック・知的探究', tags: ['知性','構造','探究'] }
-  ]},
-  { id: 'q5', text: 'オフィスや店舗に飾る作品で重視するのは？', weight: 10, options: [
-    { label: '来訪者の話題になるインパクト', tags: ['力強さ','唯一無二','挑戦'] },
-    { label: '落ち着きと安心感を与える存在感', tags: ['静謐','癒し','心の豊かさ'] },
-    { label: '社員が日々元気をもらえるエネルギー', tags: ['ポジティブ','生命エネルギー','POP'] },
-    { label: '哲学・思想を感じられる深さ', tags: ['探究','普遍性','物語'] }
-  ]}
-];
+	// 登録順（古い順）を保持＝同点タイブレーク用（仕様4.2）。
+	ARTISTS.forEach( function ( a, i ) { a._order = i; } );
 
-// ════════ アーティストマスター ════════
-var ARTISTS = [
-  { id:'azuma',   nameEn:'AZUMA JUSEI', nameJa:'東樹生', theme:'ADRENALINE ART — 身体で叩き込む絵画', tags:['挑戦','突破','唯一無二','力強さ','格闘','生命エネルギー'], message:'神戸芸術工科大学で学んだ東は、絵筆を捨て、身体に絵具を塗布して拳・頭突き・蹴りをキャンバスに叩き込む「ADRENALINE ART」を生み出しました。「表現は命をかけた戦い」と定義する彼の作品は、新しい価値を生み出そうとする御社の姿勢と深く響き合います。', photo:'', grad:'linear-gradient(135deg,#2a2a2a 0%,#01ae84 100%)', initial:'AZ', works:['linear-gradient(135deg,#3a3a3a 0%,#dc4444 100%)','linear-gradient(135deg,#1a3a3a 0%,#01ae84 100%)','linear-gradient(135deg,#4a2a2a 0%,#222222 100%)'] },
-  { id:'bond',    nameEn:'TOMINAGA BOND', nameJa:'冨永ボンド', theme:'ツナガリ（BOND）— ボンドで描く独自画法', tags:['つながり','コミュニティ','地域','DIY','偶然','唯一無二'], message:'2009年、福岡の音楽イベントで偶然ボンドで絵を描いた瞬間から、彼は「人と人・人とアートをつなぐ」ライブアートに人生を捧げてきました。佐賀県多久市の過疎地に500坪の活動拠点を構え、20,000人以上にボンドアートを体験させた彼の歩みは、コミュニティを大切にする御社のパーパスと響き合います。' },
-  { id:'chob',    nameEn:'CHOB-ONE', nameJa:'CHOB-ONE', theme:'グラフィティ × 社会批評', tags:['ストリート','社会批評','DIY','不条理','力強さ'], message:'18歳でストリートアートに快楽を覚え、20歳で「誰にも縛られない自己満足な集団」S.S.CREWを結成。B\'zから東方神起、AAAまで著名アーティストのARTWORKを手がけながら、「真実を語る少女」シリーズで現代社会への鋭い問いかけを続けています。' },
-  { id:'dots',    nameEn:'DOTSCOLLECTIVE', nameJa:'dotscollective', theme:'ROCK × ART — 札幌バンドユニット', tags:['DIY','バンドカルチャー','つながり','ストリート','POP'], message:'札幌のロックバンドNOISEMAKERのメンバーAGとHIDEが、長年のバンドマーチデザインのキャリアから生み出した別プロジェクト。「すべての点が結ばれることを願う」というコンセプトは、コミュニティと創造の自由を重んじる御社のカルチャーと共鳴します。' },
-  { id:'erika',   nameEn:'ERIKA', nameJa:'erika', theme:'世界のランドマーク — Z series', tags:['多様性','越境','若手'], message:'慶應義塾大学在学中の若手作家erikaが描く「Z」シリーズ。グランドキャニオン、厳島神社、サントリーニ、タージマハル — 世界各地のランドマークを切り取る彼女の作品は、グローバルな視野を持つ御社の空間に、開かれた感性をもたらします。' },
-  { id:'fuji',    nameEn:'FUJI RISAKO', nameJa:'藤理沙子', theme:'心を豊かにするパワー', tags:['再生','第二のキャリア','癒し','心の豊かさ','救い'], message:'工学院大学卒業後にメーカーへ就職するも、アイデンティティが失われていく感覚に苦しみ精神を崩した彼女は、「アートは心を豊かにするパワーがある」と信じ、4年勤めた会社を辞めてアーティストの道へ。「人の世界が輝いて見えるような作品」を届けたいという思いは、御社のパーパスと深く響き合います。' },
-  { id:'gen',     nameEn:'GEN', nameJa:'玄', theme:'社会と希望のアート', tags:['社会貢献','貧困','SDGs','希望','子供'], message:'20歳でヨーロッパの巨匠の絵に感動する鑑賞者を見て「自己満足な創作」を恥じ、「これからは誰かのために描きたい」と決意。ネパール・セブ島でアート街プロジェクトを主催し、長坂真護氏に住み込み修行した彼の作品は、社会課題に向き合う御社の姿勢と響き合います。' },
-  { id:'green',   nameEn:'GREEN IS BEAUTIFUL', nameJa:'GREEN IS BEAUTIFUL', theme:'POPで社会を語る', tags:['POP','ポジティブ','社会批評','家族','多様性'], message:'グラフィックデザイナーの父・油彩画家の母のもとに生まれ、社会的メッセージを「悲観的にではなくPOPアートでアウトプットする」というスタンスを貫く彼の作品は、明るく前向きに価値を発信したい御社のカルチャーと響き合います。' },
-  { id:'ito',     nameEn:'ITO SAKIHO', nameJa:'伊藤咲穂', theme:'錆和紙 — 自然と工芸の交点', tags:['自然','サステナビリティ','伝統','工芸','探究'], message:'島根で生まれ、幼少期に「葉が分解され土へ還る」現象に世界の本質を見た彼女は、地元島根の砂鉄と石見地方の楮で独自素材「錆和紙」を生み出しました。出雲大社奉納、旭化成「ReBORN」コラボなど、伝統と現代を繋ぐ彼女の作品は、御社のパーパスと深く共鳴します。' },
-  { id:'kathmi',  nameEn:'KATHMI', nameJa:'KATHMI', theme:'力強く優しく自立した女性像', tags:['自立','エンパワー','力強さ','ストリート'], message:'6人姉妹の家庭で育った彼女は、「力強く優しく自立した女性像」を一貫して描き続けています。福岡・東京・京都と渡り歩き、シンガポール一ヶ月展示、NYブロンクスでの壁画、L\'Arc～en～Ciel TETSUYAのギターアートも手がけた彼女の作品は、自立した個を尊ぶ御社の理念と響き合います。' },
-  { id:'kita',    nameEn:'KITA KAZUAKI', nameJa:'北和晃', theme:'幻想画 — 静謐と物語', tags:['物語','静謐','国際','探究'], message:'3DCGや映像出身でありながらアクリル絵具による幻想画へ転向し、フランス・ドイツの画家と文化交流を続ける彼。映像とアナログ、デジタルと幻想を往復する独自のポジションは、知的探究を重んじる御社のカルチャーと響き合います。' },
-  { id:'ookuma',  nameEn:'OKUMA SHINYA', nameJa:'大隈伸也', theme:'都市の複雑な美しさ', tags:['都市','突破','唯一無二','若手'], message:'幼少期からビルや建物がごった返す空間に惹かれ、「色々なものが入り組み、より複雑に繋がっていき、美しくなる世界」に感銘を受けた彼。村上隆主宰GEISAI#21リキテックス賞、BSフジ『ブレイク前夜』出演と注目を集める若手の作品は、都市の中で新しい価値を生む御社の空間に深い意味をもたらします。' },
-  { id:'olioli',  nameEn:'OLI OLI NOMI', nameJa:'OLI OLI のみ', theme:'WARP — 歪みの黄金比', tags:['偶然','転機','実験','ストリート','POP'], message:'日本大学生物資源学部、文化服装学院夜間部と異色の経歴を持つ彼が、2020年のコロナ禍で「世界のバランスが崩れる中、自身と世界を見つめ直し」たどり着いた手法。歪みをポジティブな新しい黄金比として提示する彼の作品は、変化を恐れない御社の姿勢と響き合います。' },
-  { id:'saki',    nameEn:'SAKI', nameJa:'saki', theme:'絵は救い、ただひとつ光のような存在', tags:['自然','植物','救い','静謐','再生','心の豊かさ'], message:'横浜で生まれた彼女は、思春期に「どん底をさまよう精神状態」を経験し、美術大学で油絵に出会い「絵は救いであり、ただひとつ光のような存在」と語ります。武蔵野美術大学卒業制作で総代を獲得し、屋久島取材から3.6m×7mの大作を生んだ彼女の植物画は、御社の空間に静かな救いをもたらします。' },
-  { id:'shimoie', nameEn:'SHIMOIE ANJU', nameJa:'下家杏樹', theme:'日本画 — 線に刻む祖父の記憶', tags:['家族','継承','伝統','工芸','静謐'], message:'名古屋手書き友禅の伝統工芸士だった祖父と過ごした幼少期、祖父の急逝、漫画をやめて本格的に絵を学ぶ決意、そしてロンドンで鈴木春信の春画展に出会い「日本画の線の美しさに祖父の着物がよぎった」瞬間。線に祖父の記憶を継承する彼女の作品は、御社のパーパスと深く響き合います。' },
-  { id:'shin',    nameEn:'SHIN LI', nameJa:'シン リー', theme:'日中の架け橋 — 伝統と若い感性', tags:['伝統','継承','国際','越境','工芸'], message:'中国大連で生まれ、絵を描く父の影響で創作の世界へ。2016年に来日し、日本の文化と歴史を学ぶ中で日本画の奥深さと繊細さに惹かれ、2022年京都芸術大学へ。中国と日本、伝統と若い感性を架け橋にする彼女の作品は、国際性と継承を重んじる御社の理念と響き合います。' },
-  { id:'tanaka',  nameEn:'TANAKA TAKUMA', nameJa:'田中拓馬', theme:'再起の物語 — NYからの帰還', tags:['再生','第二のキャリア','挑戦','越境','国際','不条理'], message:'早稲田大学法学部卒業、旧司法試験挫折、精神的に病んだ末に病院の作業療法でアートに目覚める。路上販売5年で月120万円稼ぎ、岡崎乾二郎に学び、2010年に上海へ飛び込み営業、イギリス国立アルスター美術館に作品収蔵、NY最古のSalmagundi Art Clubで個展。「運命的にアートに突入した」彼の作品は、御社の挑戦の物語と響き合います。' },
-  { id:'tiki',    nameEn:'TIKI', nameJa:'tiki', theme:'空の宝箱を持った子供たち', tags:['子供','希望','未来','SDGs','貧困','再生'], message:'18年間サッカーに人生を捧げた彼は、コロナでドイツリーグが中止になった瞬間、SNSで見たアートに衝撃を受け創作活動を開始。長坂真護氏に弟子入りし、タイのスラム街で子供たちの環境を目の当たりにして「空の宝箱を持った子供たち」を描き続けています。子供たちの未来を願う御社のパーパスと深く響き合います。' },
-  { id:'shuhei',  nameEn:'TOMINAGA SHUHEI', nameJa:'富永周平', theme:'Who is that Hat? — 三角帽子の物語', tags:['国際','越境','物語','普遍性','唯一無二'], message:'1972年ローマで生まれ、多摩美術大学を経て再びイタリアでデザインを学んだ国際派。代表シリーズ「Who is that Hat?」は、三角帽子の匿名キャラクターを通して「人は自分を劇的に生きるために毎日を演じている」という哲学を表現。グッドデザイン賞8回、5カ国展示の経歴を持つ彼の作品は、国境を超えて活動する御社の理念と響き合います。' },
-  { id:'kanou',   nameEn:'KANOU YOSHIMI', nameJa:'加納芳美', theme:'ミクストメディア — 異素材の調和', tags:['実験','童心','自然','第二のキャリア'], message:'鳥取生まれ島根育ち、漫画模写と動物飼育に夢中だった幼少期。広島市立大学彫刻専攻卒業後15年間イラストレーターとして活動した後、2016年に「改めて自分の世界観を表現したい」と絵画へ。2019年からは布やショッパーなどの日常素材を使ったミクストメディアへ移行し、異素材の調和を追求。第二のキャリアを楽しむ姿勢が御社のカルチャーと響き合います。', photo:'', grad:'linear-gradient(135deg,#3a3a3a 0%,#888 100%)', initial:'KA', works:['linear-gradient(135deg,#3a3a3a 0%,#aaa 100%)','linear-gradient(135deg,#777 0%,#444 100%)','linear-gradient(135deg,#555 0%,#333 100%)'] }
-];
+	function esc( s ) {
+		var d = document.createElement( 'div' );
+		d.textContent = ( s === null || s === undefined ) ? '' : String( s );
+		return d.innerHTML;
+	}
+	function initialOf( a ) {
+		var src = String( a.nameEn || a.name || '?' ).trim();
+		var letters = src.replace( /[^A-Za-z]/g, '' ).slice( 0, 2 ).toUpperCase();
+		return letters || src.slice( 0, 1 );
+	}
+	function photoStyleOf( a ) {
+		return a.photo ? ( 'background-image:url(' + a.photo + ');' ) : ( 'background:' + DEFAULT_GRAD + ';' );
+	}
 
-// 各アーティストにphoto/grad/initial/worksをマップで一括付与
-var ARTIST_VISUAL = {
-  'azuma':   { grad:'linear-gradient(135deg,#2a2a2a 0%,#01ae84 100%)', initial:'AZ' },
-  'bond':    { grad:'linear-gradient(135deg,#1a3a3a 0%,#88a8a8 100%)', initial:'BO' },
-  'chob':    { grad:'linear-gradient(135deg,#222 0%,#dc4444 100%)', initial:'CH' },
-  'dots':    { grad:'linear-gradient(135deg,#3a2a4a 0%,#01ae84 100%)', initial:'DO' },
-  'erika':   { grad:'linear-gradient(135deg,#4a3a3a 0%,#e8b888 100%)', initial:'ER' },
-  'fuji':    { grad:'linear-gradient(135deg,#3a3a4a 0%,#c8a8c8 100%)', initial:'FU' },
-  'gen':     { grad:'linear-gradient(135deg,#2a3a2a 0%,#88a888 100%)', initial:'GE' },
-  'green':   { grad:'linear-gradient(135deg,#1a4a3a 0%,#88c8a8 100%)', initial:'GI' },
-  'ito':     { grad:'linear-gradient(135deg,#3a3a2a 0%,#c8b888 100%)', initial:'IT' },
-  'kathmi':  { grad:'linear-gradient(135deg,#4a2a3a 0%,#c8a8b8 100%)', initial:'KA' },
-  'kita':    { grad:'linear-gradient(135deg,#2a2a3a 0%,#7878a8 100%)', initial:'KI' },
-  'ookuma':  { grad:'linear-gradient(135deg,#3a3a3a 0%,#a8a8a8 100%)', initial:'OK' },
-  'olioli':  { grad:'linear-gradient(135deg,#3a4a4a 0%,#a8c8c8 100%)', initial:'OL' },
-  'saki':    { grad:'linear-gradient(135deg,#2a3a3a 0%,#88a888 100%)', initial:'SA' },
-  'shimoie': { grad:'linear-gradient(135deg,#2a2a3a 0%,#a888a8 100%)', initial:'SH' },
-  'shin':    { grad:'linear-gradient(135deg,#3a2a2a 0%,#c88888 100%)', initial:'SL' },
-  'tanaka':  { grad:'linear-gradient(135deg,#3a3a3a 0%,#88a8a8 100%)', initial:'TA' },
-  'tiki':    { grad:'linear-gradient(135deg,#2a3a4a 0%,#88a8c8 100%)', initial:'TI' },
-  'shuhei':  { grad:'linear-gradient(135deg,#3a2a3a 0%,#a888c8 100%)', initial:'TS' },
-  'kanou':   { grad:'linear-gradient(135deg,#3a3a3a 0%,#888 100%)', initial:'KA' }
-};
-// マスターに visual を merge
-ARTISTS.forEach(function(a){
-  var v = ARTIST_VISUAL[a.id] || { grad:'linear-gradient(135deg,#333,#666)', initial:'?' };
-  a.grad = v.grad;
-  a.initial = v.initial;
-});
+	var currentQ = 0;
+	var answers = [];
 
-// ════════ 状態 ════════
-var currentQ = 0;
-var answers = [];
+	function showScreen( id ) {
+		document.querySelectorAll( '.match-screen' ).forEach( function ( s ) {
+			s.classList.toggle( 'is-active', s.id === id );
+		} );
+		window.scrollTo( { top: 0, behavior: 'smooth' } );
+	}
 
-// ════════ Screen切替 ════════
-function showScreen(id) {
-  document.querySelectorAll('.match-screen').forEach(function(s){
-    s.classList.toggle('is-active', s.id === id);
-  });
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+	// ════════ スタート ════════
+	var startBtn = document.getElementById( 'start-btn' );
+	if ( startBtn ) {
+		startBtn.addEventListener( 'click', function () {
+			if ( ! QUESTIONS.length ) { return; }
+			currentQ = 0;
+			answers = [];
+			showQuestion( 0 );
+			showScreen( 'screen-question' );
+		} );
+	}
 
-// ════════ スタート ════════
-document.getElementById('start-btn').addEventListener('click', function(){
-  currentQ = 0;
-  answers = [];
-  showQuestion(0);
-  showScreen('screen-question');
-});
+	// ════════ 質問表示 ════════
+	function showQuestion( idx ) {
+		var q = QUESTIONS[ idx ];
+		document.getElementById( 'q-progress' ).textContent = 'QUESTION ' + ( idx + 1 ) + ' / ' + QUESTIONS.length;
+		document.getElementById( 'q-progress-fill' ).style.width = ( ( idx + 1 ) / QUESTIONS.length * 100 ) + '%';
+		document.getElementById( 'q-title' ).textContent = q.question;
+		var optsEl = document.getElementById( 'q-options' );
+		optsEl.innerHTML = '';
+		q.options.forEach( function ( opt, oi ) {
+			var btn = document.createElement( 'button' );
+			btn.className = 'match-option';
+			btn.textContent = opt.label;
+			btn.addEventListener( 'click', function () { selectOption( idx, oi ); } );
+			optsEl.appendChild( btn );
+		} );
+	}
 
-// ════════ 質問表示 ════════
-function showQuestion(idx) {
-  var q = QUESTIONS[idx];
-  document.getElementById('q-progress').textContent = 'QUESTION ' + (idx + 1) + ' / ' + QUESTIONS.length;
-  document.getElementById('q-progress-fill').style.width = ((idx + 1) / QUESTIONS.length * 100) + '%';
-  document.getElementById('q-title').textContent = q.text;
-  var optsEl = document.getElementById('q-options');
-  optsEl.innerHTML = '';
-  q.options.forEach(function(opt, oi){
-    var btn = document.createElement('button');
-    btn.className = 'match-option';
-    btn.textContent = opt.label;
-    btn.addEventListener('click', function(){ selectOption(idx, oi); });
-    optsEl.appendChild(btn);
-  });
-}
+	// ════════ 選択処理 ════════
+	function selectOption( qIdx, optIdx ) {
+		var q = QUESTIONS[ qIdx ];
+		answers.push( { qIdx: qIdx, optIdx: optIdx, tags: q.options[ optIdx ].tags || [], weight: q.weight } );
+		if ( qIdx + 1 < QUESTIONS.length ) {
+			showQuestion( qIdx + 1 );
+		} else {
+			showScreen( 'screen-loading' );
+			setTimeout( function () { showResult(); }, 1400 );
+		}
+	}
 
-// ════════ 選択処理 ════════
-function selectOption(qIdx, optIdx) {
-  var q = QUESTIONS[qIdx];
-  answers.push({ qIdx: qIdx, optIdx: optIdx, tags: q.options[optIdx].tags, weight: q.weight });
-  if (qIdx + 1 < QUESTIONS.length) {
-    showQuestion(qIdx + 1);
-  } else {
-    showScreen('screen-loading');
-    setTimeout(function(){ showResult(); }, 1400);
-  }
-}
+	// ════════ スコア計算＆結果表示（仕様4章） ════════
+	function showResult() {
+		// 候補0名のフォールバック（仕様：診断対象0名）。
+		if ( ! ARTISTS.length ) {
+			document.getElementById( 'main-artist' ).innerHTML =
+				'<div class="result-empty">診断対象のアーティストを準備中です。<br>診断タグを設定したアーティストが登録され次第、結果をご提案できます。</div>';
+			document.getElementById( 'sub-artists' ).innerHTML = '';
+			var subH = document.querySelector( '.result-sub-h' );
+			if ( subH ) { subH.style.display = 'none'; }
+			showScreen( 'screen-result' );
+			return;
+		}
 
-// ════════ スコア計算＆結果表示 ════════
-function showResult() {
-  var scored = ARTISTS.map(function(a){
-    var score = 0;
-    var matchedTags = [];
-    answers.forEach(function(ans){
-      ans.tags.forEach(function(tag){
-        if (a.tags.indexOf(tag) !== -1) {
-          score += ans.weight;
-          matchedTags.push(tag);
-        }
-      });
-    });
-    // Q1で一致したタグがあれば同点ブレイカー用にフラグ
-    var q1Match = false;
-    if (answers[0]) {
-      answers[0].tags.forEach(function(tag){
-        if (a.tags.indexOf(tag) !== -1) q1Match = true;
-      });
-    }
-    return { artist: a, score: score, q1Match: q1Match, matchedTags: matchedTags };
-  });
+		// 4.1 スコア計算
+		var scored = ARTISTS.map( function ( a ) {
+			var score = 0;
+			var matched = [];
+			answers.forEach( function ( ans ) {
+				ans.tags.forEach( function ( tag ) {
+					if ( a.tags.indexOf( tag ) !== -1 ) {
+						score += ans.weight;
+						matched.push( tag );
+					}
+				} );
+			} );
+			var q1Match = false;
+			if ( answers[ 0 ] ) {
+				answers[ 0 ].tags.forEach( function ( tag ) {
+					if ( a.tags.indexOf( tag ) !== -1 ) { q1Match = true; }
+				} );
+			}
+			return { artist: a, score: score, q1Match: q1Match, matched: matched, order: a._order };
+		} );
 
-  // ソート：score desc, q1Match優先
-  scored.sort(function(a, b){
-    if (b.score !== a.score) return b.score - a.score;
-    if (b.q1Match && !a.q1Match) return 1;
-    if (a.q1Match && !b.q1Match) return -1;
-    return 0;
-  });
+		// 4.2 ソート：score 降順 → Q1一致優先 → 登録順（古い順）
+		scored.sort( function ( x, y ) {
+			if ( y.score !== x.score ) { return y.score - x.score; }
+			if ( x.q1Match !== y.q1Match ) { return x.q1Match ? -1 : 1; }
+			return x.order - y.order;
+		} );
 
-  var main = scored[0];
-  var subs = scored.slice(1, 4);
+		var main = scored[ 0 ];
+		var mainTags = main.artist.tags || [];
+		var rest = scored.slice( 1 );
 
-  // メイン表示
-  var mainPhotoStyle = main.artist.photo
-    ? 'background-image:url(' + main.artist.photo + ');'
-    : 'background:' + main.artist.grad + ';';
-  var mainPhotoInner = main.artist.photo ? '' : '<span class="result-main-photo-initial">' + main.artist.initial + '</span>';
-  // ▼ WP動的化：nameJa で実投稿URLを引き、あれば詳細リンク、無ければ「プロフィール準備中」
-  var mainUrl = resolveArtistUrl(main.artist.nameJa);
-  var mainCta = mainUrl
-    ? '<div class="result-main-cta"><a href="' + mainUrl + '">このアーティストの詳細</a></div>'
-    : '<div class="result-main-cta"><span class="result-cta-pending">プロフィール準備中</span></div>';
-  document.getElementById('main-artist').innerHTML =
-    '<div class="result-main-photo" style="' + mainPhotoStyle + '">' + mainPhotoInner + '</div>' +
-    '<div class="result-main-body">' +
-      '<div class="result-main-name-en">' + main.artist.nameEn + '</div>' +
-      '<div class="result-main-name-ja">' + main.artist.nameJa + '</div>' +
-      '<div class="result-main-theme">' + main.artist.theme + '</div>' +
-      '<div class="result-main-message">' + main.artist.message + '</div>' +
-      mainCta +
-    '</div>';
+		// 4.3 タグ被り補正：サブはメイン軸と被る者を最大1名に制限。足りなければスコア順で補充。
+		function sharesMain( s ) {
+			return ( s.artist.tags || [] ).some( function ( t ) { return mainTags.indexOf( t ) !== -1; } );
+		}
+		var subs = [];
+		var sharedUsed = 0;
+		rest.forEach( function ( s ) {
+			if ( subs.length >= 3 ) { return; }
+			if ( sharesMain( s ) ) {
+				if ( sharedUsed < 1 ) { subs.push( s ); sharedUsed++; }
+			} else {
+				subs.push( s );
+			}
+		} );
+		if ( subs.length < 3 ) {
+			rest.forEach( function ( s ) {
+				if ( subs.length >= 3 ) { return; }
+				if ( subs.indexOf( s ) === -1 ) { subs.push( s ); }
+			} );
+		}
 
-  // サブ3名表示
-  document.getElementById('sub-artists').innerHTML = subs.map(function(s){
-    var photoStyle = s.artist.photo
-      ? 'background-image:url(' + s.artist.photo + ');'
-      : 'background:' + s.artist.grad + ';';
-    var photoInner = s.artist.photo ? '' : '<span class="result-sub-photo-initial">' + s.artist.initial + '</span>';
-    // ▼ WP動的化：実投稿があれば <a> でカードをリンク化、無ければ <div>（クリック不可）＋準備中表示
-    var subUrl = resolveArtistUrl(s.artist.nameJa);
-    var openTag = subUrl ? '<a href="' + subUrl + '" class="result-sub-card">' : '<div class="result-sub-card is-pending">';
-    var closeTag = subUrl ? '</a>' : '</div>';
-    var foot = subUrl ? '' : '<div class="result-sub-pending">プロフィール準備中</div>';
-    return openTag +
-      '<div class="result-sub-photo" style="' + photoStyle + '">' + photoInner + '</div>' +
-      '<div class="result-sub-body">' +
-        '<div class="result-sub-name-en">' + s.artist.nameEn + '</div>' +
-        '<div class="result-sub-name-ja">' + s.artist.nameJa + '</div>' +
-        '<div class="result-sub-theme">' + s.artist.theme + '</div>' +
-        foot +
-      '</div>' +
-      closeTag;
-  }).join('');
+		renderMain( main.artist );
+		renderSubs( subs );
+		showScreen( 'screen-result' );
+	}
 
-  showScreen('screen-result');
-}
+	// ════════ メイン結果（仕様1.1） ════════
+	function renderMain( a ) {
+		var photoInner = a.photo ? '' : ( '<span class="result-main-photo-initial">' + esc( initialOf( a ) ) + '</span>' );
+		var resonance = a.resonance ? a.resonance : RESONANCE_FALLBACK;
 
-// ════════ もう一度診断 ════════
-window.restart = function() {
-  currentQ = 0;
-  answers = [];
-  showScreen('screen-start');
-};
+		var originHtml = a.origin ? ( '<div class="result-main-origin">' + esc( a.origin ) + '</div>' ) : '';
 
-})();
+		var worksHtml = '';
+		if ( a.works && a.works.length ) {
+			worksHtml = '<div class="result-main-works">' + a.works.slice( 0, 3 ).map( function ( url ) {
+				return '<div class="result-work" style="background-image:url(' + url + ');"></div>';
+			} ).join( '' ) + '</div>';
+		}
+
+		var ctaHtml = a.url
+			? ( '<div class="result-main-cta"><a href="' + a.url + '">このアーティストの詳細</a></div>' )
+			: '';
+
+		document.getElementById( 'main-artist' ).innerHTML =
+			'<div class="result-main-photo" style="' + photoStyleOf( a ) + '">' + photoInner + '</div>' +
+			'<div class="result-main-body">' +
+				'<div class="result-main-name-en">' + esc( a.nameEn || a.name ) + '</div>' +
+				'<div class="result-main-name-ja">' + esc( a.name ) + '</div>' +
+				( a.theme ? ( '<div class="result-main-theme">' + esc( a.theme ) + '</div>' ) : '' ) +
+				'<div class="result-main-message">' + esc( resonance ) + '</div>' +
+				originHtml +
+				worksHtml +
+				ctaHtml +
+			'</div>';
+	}
+
+	// ════════ サブ3名（実 single-artist へリンク） ════════
+	function renderSubs( subs ) {
+		var subH = document.querySelector( '.result-sub-h' );
+		if ( subH ) { subH.style.display = subs.length ? '' : 'none'; }
+
+		document.getElementById( 'sub-artists' ).innerHTML = subs.map( function ( s ) {
+			var a = s.artist;
+			var photoInner = a.photo ? '' : ( '<span class="result-sub-photo-initial">' + esc( initialOf( a ) ) + '</span>' );
+			var openTag = a.url ? ( '<a href="' + a.url + '" class="result-sub-card">' ) : '<div class="result-sub-card is-pending">';
+			var closeTag = a.url ? '</a>' : '</div>';
+			return openTag +
+				'<div class="result-sub-photo" style="' + photoStyleOf( a ) + '">' + photoInner + '</div>' +
+				'<div class="result-sub-body">' +
+					'<div class="result-sub-name-en">' + esc( a.nameEn || a.name ) + '</div>' +
+					'<div class="result-sub-name-ja">' + esc( a.name ) + '</div>' +
+					( a.theme ? ( '<div class="result-sub-theme">' + esc( a.theme ) + '</div>' ) : '' ) +
+				'</div>' +
+				closeTag;
+		} ).join( '' );
+	}
+
+	// ════════ もう一度診断 ════════
+	window.restart = function () {
+		currentQ = 0;
+		answers = [];
+		var subH = document.querySelector( '.result-sub-h' );
+		if ( subH ) { subH.style.display = ''; }
+		showScreen( 'screen-start' );
+	};
+
+} )();

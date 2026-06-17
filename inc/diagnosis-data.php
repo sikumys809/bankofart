@@ -29,166 +29,74 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return array
  */
+/**
+ * パーパス診断（アーティスト診断）の質問データ。
+ *
+ * Notion「アーティストマッチング機能 構成指示書」2章を正として定義。
+ * 各 option の tags は artist_diagnosis_tag（回答集計でアーティストの診断タグと突合）。
+ * 配点：Q1=30 / Q2=20 / Q3=20 / Q4=15 / Q5=10（満点95）。
+ *
+ * @return array
+ */
 function bankofart_get_purpose_questions() {
 	return array(
 		array(
 			'id'       => 'q1',
-			'question' => '御社が事業を通じて最も大切にしているのは？',
+			'question' => '御社が事業を通じて、最も大切にしているのは？',
 			'weight'   => 30,
 			'options'  => array(
-				array(
-					'id'    => 'q1_a',
-					'label' => '人と人とのつながりを育てること',
-					'tags'  => array( 'つながり', 'コミュニティ', '地域' ),
-				),
-				array(
-					'id'    => 'q1_b',
-					'label' => '誰もやらないことに挑戦すること',
-					'tags'  => array( '挑戦', '突破', '唯一無二' ),
-				),
-				array(
-					'id'    => 'q1_c',
-					'label' => '社会や次世代へ貢献すること',
-					'tags'  => array( '社会貢献', 'SDGs', '未来' ),
-				),
-				array(
-					'id'    => 'q1_d',
-					'label' => '受け継いだ価値を守り伝えること',
-					'tags'  => array( '伝統', '継承', '工芸' ),
-				),
-				array(
-					'id'    => 'q1_e',
-					'label' => '心の豊かさや人の幸福を大切にすること',
-					'tags'  => array( '心の豊かさ', '愛', '祈り' ),
-				),
+				array( 'id' => 'q1_a', 'label' => '人と人とのつながりを生むこと', 'tags' => array( 'つながり', 'コミュニティ', '地域' ) ),
+				array( 'id' => 'q1_b', 'label' => '何かに挑み、新しい価値を生むこと', 'tags' => array( '挑戦', '突破', '唯一無二' ) ),
+				array( 'id' => 'q1_c', 'label' => '困っている人や社会課題に向き合うこと', 'tags' => array( '社会貢献', '貧困', 'SDGs' ) ),
+				array( 'id' => 'q1_d', 'label' => '伝統や文化を受け継ぎ、発展させること', 'tags' => array( '伝統', '継承', '工芸' ) ),
+				array( 'id' => 'q1_e', 'label' => '美しさや心の豊かさを届けること', 'tags' => array( '癒し', '心の豊かさ', '救い' ) ),
 			),
 		),
 		array(
 			'id'       => 'q2',
-			'question' => '社内の空気として理想に近いのは？',
+			'question' => '御社が事業を続けてきた中で、最も誇りに思う瞬間に近いのは？',
 			'weight'   => 20,
 			'options'  => array(
-				array(
-					'id'    => 'q2_a',
-					'label' => '活気があり、エネルギーに満ちている',
-					'tags'  => array( '生命エネルギー', '格闘', 'POP' ),
-				),
-				array(
-					'id'    => 'q2_b',
-					'label' => '探究心が強く、学び続けている',
-					'tags'  => array( '探究', '勉強会', '実験' ),
-				),
-				array(
-					'id'    => 'q2_c',
-					'label' => '落ち着きと品格がある',
-					'tags'  => array( '構造', '神性', '普遍性' ),
-				),
-				array(
-					'id'    => 'q2_d',
-					'label' => '自由で型にはまらない',
-					'tags'  => array( 'オルタナリー', 'DIY', 'ストリート' ),
-				),
-				array(
-					'id'    => 'q2_e',
-					'label' => 'あたたかく、人にやさしい',
-					'tags'  => array( '心の豊かさ', '自然', '童心' ),
-				),
+				array( 'id' => 'q2_a', 'label' => '困難を乗り越えて、再び立ち上がれた時', 'tags' => array( '再生', 'リカバリー', '第二のキャリア' ) ),
+				array( 'id' => 'q2_b', 'label' => '大切にしてきた価値を、次の世代に渡せた時', 'tags' => array( '家族', '継承', '伝統' ) ),
+				array( 'id' => 'q2_c', 'label' => '国境や文化を超えて、誰かと繋がれた時', 'tags' => array( '国際', '越境', '多文化' ) ),
+				array( 'id' => 'q2_d', 'label' => '思いがけない出会いが、新しい扉を開いた時', 'tags' => array( '偶然', '転機', '実験' ) ),
+				array( 'id' => 'q2_e', 'label' => '言うべきことを、ちゃんと言えた時', 'tags' => array( '社会批評', '不条理', 'メッセージ' ) ),
 			),
 		),
 		array(
 			'id'       => 'q3',
-			'question' => 'アートに重ねたい「物語」に近いのは？',
+			'question' => '御社が将来、どんな未来を作りたいか？',
 			'weight'   => 20,
 			'options'  => array(
-				array(
-					'id'    => 'q3_a',
-					'label' => '逆境からの再生・再起',
-					'tags'  => array( '再生', '転機', '第二のキャリア' ),
-				),
-				array(
-					'id'    => 'q3_b',
-					'label' => '国境や枠を越えた広がり',
-					'tags'  => array( '国際', '越境', '多文化' ),
-				),
-				array(
-					'id'    => 'q3_c',
-					'label' => '社会への問いかけ・メッセージ',
-					'tags'  => array( '社会批評', 'メッセージ', '不条理' ),
-				),
-				array(
-					'id'    => 'q3_d',
-					'label' => '未来や次世代への希望',
-					'tags'  => array( '希望', '子供', '未来' ),
-				),
-				array(
-					'id'    => 'q3_e',
-					'label' => '偶然の出会いがもたらす変化',
-					'tags'  => array( '偶然', '実験', '挑戦' ),
-				),
+				array( 'id' => 'q3_a', 'label' => '子供たちが希望を持てる社会', 'tags' => array( '子供', '希望', '未来' ) ),
+				array( 'id' => 'q3_b', 'label' => '多様な価値観が共存する社会', 'tags' => array( '多様性', '越境', 'POP' ) ),
+				array( 'id' => 'q3_c', 'label' => '自然と調和した持続可能な社会', 'tags' => array( '自然', 'サステナビリティ', '植物' ) ),
+				array( 'id' => 'q3_d', 'label' => '一人ひとりが自分らしく輝く社会', 'tags' => array( '自立', 'エンパワー', '唯一無二' ) ),
+				array( 'id' => 'q3_e', 'label' => '過去と未来が繋がる文化的な社会', 'tags' => array( '伝統', '文化', '普遍性' ) ),
 			),
 		),
 		array(
 			'id'       => 'q4',
-			'question' => '惹かれる表現のトーンは？',
+			'question' => '御社の社風・カルチャーに近いのは？',
 			'weight'   => 15,
 			'options'  => array(
-				array(
-					'id'    => 'q4_a',
-					'label' => '鮮やかでポジティブ',
-					'tags'  => array( 'POP', 'ポジティブ', '実験' ),
-				),
-				array(
-					'id'    => 'q4_b',
-					'label' => '力強く、エネルギッシュ',
-					'tags'  => array( '生命エネルギー', '格闘', '突破' ),
-				),
-				array(
-					'id'    => 'q4_c',
-					'label' => '静かで精神的',
-					'tags'  => array( '祈り', '神性', '自然' ),
-				),
-				array(
-					'id'    => 'q4_d',
-					'label' => '都会的でクール',
-					'tags'  => array( '都市', '現代性', 'ストリート' ),
-				),
-				array(
-					'id'    => 'q4_e',
-					'label' => '素朴で温かい',
-					'tags'  => array( '童心', '植物', '愛' ),
-				),
+				array( 'id' => 'q4_a', 'label' => '熱量高く、勢いで突き進む', 'tags' => array( '力強さ', '格闘', '生命エネルギー' ) ),
+				array( 'id' => 'q4_b', 'label' => 'じっくり、丁寧に積み上げる', 'tags' => array( '静謐', '工芸', '継承' ) ),
+				array( 'id' => 'q4_c', 'label' => '自由でDIYな精神', 'tags' => array( 'DIY', 'ストリート', 'バンドカルチャー' ) ),
+				array( 'id' => 'q4_d', 'label' => 'グローバル・国際志向', 'tags' => array( '国際', '越境' ) ),
+				array( 'id' => 'q4_e', 'label' => 'アカデミック・知的探究', 'tags' => array( '知性', '構造', '探究' ) ),
 			),
 		),
 		array(
 			'id'       => 'q5',
-			'question' => '応援したいアーティスト像に近いのは？',
-			'weight'   => 15,
+			'question' => 'オフィスや店舗に飾る作品で重視するのは？',
+			'weight'   => 10,
 			'options'  => array(
-				array(
-					'id'    => 'q5_a',
-					'label' => '若く、これから伸びる人',
-					'tags'  => array( '若者', '希望', '挑戦' ),
-				),
-				array(
-					'id'    => 'q5_b',
-					'label' => '逆境を乗り越えてきた人',
-					'tags'  => array( '再生', '第二のキャリア', '転機' ),
-				),
-				array(
-					'id'    => 'q5_c',
-					'label' => '社会課題に取り組む人',
-					'tags'  => array( '社会貢献', 'SDGs', '貧困' ),
-				),
-				array(
-					'id'    => 'q5_d',
-					'label' => '伝統や技を究める人',
-					'tags'  => array( '伝統', '工芸', '錬磨' ),
-				),
-				array(
-					'id'    => 'q5_e',
-					'label' => '唯一無二の世界観を持つ人',
-					'tags'  => array( '唯一無二', 'オルタナリー', '実験' ),
-				),
+				array( 'id' => 'q5_a', 'label' => '来訪者の話題になるインパクト', 'tags' => array( '力強さ', '唯一無二', '挑戦' ) ),
+				array( 'id' => 'q5_b', 'label' => '落ち着きと安心感を与える存在感', 'tags' => array( '静謐', '癒し', '心の豊かさ' ) ),
+				array( 'id' => 'q5_c', 'label' => '社員が日々元気をもらえるエネルギー', 'tags' => array( 'ポジティブ', '生命エネルギー', 'POP' ) ),
+				array( 'id' => 'q5_d', 'label' => '哲学・思想を感じられる深さ', 'tags' => array( '探究', '普遍性', '物語' ) ),
 			),
 		),
 	);
@@ -401,4 +309,76 @@ function bankofart_get_effect_to_artist_tag_map() {
 		'癒し'       => array( '祈り', '自然', '愛' ),
 		'自然'       => array( '自然', '植物', 'サステナビリティ' ),
 	);
+}
+
+/**
+ * 診断対象アーティストをWPの artist 投稿から動的取得する。
+ *
+ * Notion 仕様 7.2：診断タグ・共鳴文章を入力すればコード変更なしで母集団に自動追加される設計。
+ * 診断タグ（artist_diagnosis_tag）が1つも無い投稿は母集団から除外（タグ無しはマッチ不能）。
+ * 並び順は公開日昇順（古い順）＝同点処理（仕様 4.2）の登録順タイブレークに使用。
+ *
+ * @return array JS（wp_localize_script）へ供給するアーティスト配列。
+ */
+function bankofart_get_matching_artists() {
+	$artists = array();
+
+	$posts = get_posts(
+		array(
+			'post_type'      => 'artist',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'orderby'        => 'date',
+			'order'          => 'ASC',
+			'no_found_rows'  => true,
+		)
+	);
+
+	$has_rwmb = function_exists( 'rwmb_meta' );
+
+	foreach ( $posts as $artist_post ) {
+		$terms = get_the_terms( $artist_post->ID, 'artist_diagnosis_tag' );
+		if ( is_wp_error( $terms ) || empty( $terms ) ) {
+			continue; // 診断タグ未入力は母集団から除外。
+		}
+		$tags = array_values( wp_list_pluck( $terms, 'name' ) );
+
+		$resonance = $has_rwmb ? (string) rwmb_meta( 'artist_resonance_message', array(), $artist_post->ID ) : '';
+		$resonance = trim( wp_strip_all_tags( $resonance ) );
+
+		$origin = $has_rwmb ? (string) rwmb_meta( 'artist_origin_story', array(), $artist_post->ID ) : '';
+		$origin = trim( wp_strip_all_tags( $origin ) );
+		if ( mb_strlen( $origin ) > 120 ) {
+			$origin = mb_substr( $origin, 0, 120 ) . '…';
+		}
+
+		$photo = bankofart_get_image( 'artist_main_photo', $artist_post->ID, 'large' );
+
+		// 代表作 最大3点（artist_to_art リレーション）。
+		$works = array();
+		foreach ( bankofart_get_connected( 'artist_to_art', 'from', $artist_post->ID ) as $art_post ) {
+			if ( count( $works ) >= 3 ) {
+				break;
+			}
+			$art_img = bankofart_get_image( 'art_main_image', $art_post->ID, 'medium' );
+			if ( ! empty( $art_img['url'] ) ) {
+				$works[] = $art_img['url'];
+			}
+		}
+
+		$artists[] = array(
+			'id'        => $artist_post->post_name,
+			'name'      => get_the_title( $artist_post->ID ),
+			'nameEn'    => $has_rwmb ? (string) rwmb_meta( 'artist_name_en', array(), $artist_post->ID ) : '',
+			'theme'     => $has_rwmb ? (string) rwmb_meta( 'artist_theme_short', array(), $artist_post->ID ) : '',
+			'tags'      => $tags,
+			'resonance' => $resonance,
+			'origin'    => $origin,
+			'url'       => get_permalink( $artist_post->ID ),
+			'photo'     => $photo['url'],
+			'works'     => $works,
+		);
+	}
+
+	return $artists;
 }
