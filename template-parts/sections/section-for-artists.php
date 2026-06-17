@@ -6,10 +6,11 @@
  * 同構造だが、白背景・インク枠で差別化。アーティスト一覧等で再利用する。
  *
  * 引数（$args 経由）:
- *   - guidelines_url string 募集要項リンク（既定：/recruit/。PDF等があれば差し替え）
- *   - apply_url      string 応募リンク（既定：/recruit/）
+ *   - guidelines_url string 募集要項リンク（既定：/recruit/ ＝ RECRUIT ページ）
+ *   - apply_url      string 応募リンク（既定：bankofart_apply_url() ＝ 応募フォーム。recruit の応募ボタンと共通）
  *
- * ※ recruit ページ / 募集要項PDF は Phase 2 で実装予定のため URL は暫定。
+ * 「募集要項を見る」は RECRUIT ページ（/recruit/）へ、「応募する」は応募フォーム
+ * （bankofart_apply_url()）へ接続。確定フォームURLは bankofart_apply_url() 1箇所の差し替えで全反映。
  *
  * @package bankofart
  */
@@ -19,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $guidelines_url = isset( $args['guidelines_url'] ) ? $args['guidelines_url'] : home_url( '/recruit/' );
-$apply_url      = isset( $args['apply_url'] ) ? $args['apply_url'] : home_url( '/recruit/' );
+$apply_url      = isset( $args['apply_url'] ) ? $args['apply_url'] : bankofart_apply_url();
 ?>
 <section class="for-artists-sec">
 	<div class="match-banner for-artists rv">

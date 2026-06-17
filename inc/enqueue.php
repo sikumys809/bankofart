@@ -197,6 +197,23 @@ function bankofart_enqueue_assets() {
 		);
 	}
 
+	// ページ別アセット：RECRUIT 固定ページ（スラッグ recruit または RECRUIT テンプレート）。
+	if ( is_page( 'recruit' ) || is_page_template( 'page-recruit.php' ) ) {
+		wp_enqueue_style(
+			'bankofart-page-recruit',
+			"{$theme_uri}/assets/css/pages/page-recruit.css",
+			array( 'bankofart-components' ),
+			$ver
+		);
+		wp_enqueue_script(
+			'bankofart-page-recruit',
+			"{$theme_uri}/assets/js/page-recruit.js",
+			array(),
+			$ver,
+			true
+		);
+	}
+
 	// ページ別アセット：フロントページ（TOP）。
 	if ( is_front_page() ) {
 		wp_enqueue_style(

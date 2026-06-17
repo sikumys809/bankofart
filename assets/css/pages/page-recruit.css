@@ -1,0 +1,174 @@
+/*
+ * pages/page-recruit.css
+ * RECRUIT（JOIN US / 画家募集）固定ページ。mockups/recruit__1_.html の <style> から
+ * recruit 固有セクションを移植。
+ *   - 共通chrome（cursor / header / drawer / preloader / footer / CTA strip）は既存CSSを活用し未移植
+ *   - モック :root の --fs-head は tokens.css の --fs-heading にマッピング（--fs-body は tokens 定義済み）
+ *   - cursor: pointer（モックの独自カーソル前提の残骸）は cursor:pointer に置換（about/front と同方針）
+ *   - .rv リビールは JS無効時に消えないよう body.reveal-ready 配下にスコープ
+ *   - 注意事項アコーディオンは <details>/<summary> のネイティブ実装（JS不要）
+ * 静的中心の1ステップ実装。
+ */
+
+/* モック :root のうち tokens.css に無い変数を補完 */
+:root {
+	--fs-head: var(--fs-heading);
+}
+
+/* リビール（JS有効時のみ隠す。無効時は常に表示。.on は IntersectionObserver で付与） */
+body.reveal-ready .rv { opacity: 0; transform: translateY(30px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
+body.reveal-ready .rv.on { opacity: 1; transform: translateY(0); }
+.rv.d1 { transition-delay: .08s; }
+.rv.d2 { transition-delay: .16s; }
+.rv.d3 { transition-delay: .24s; }
+.rv.d4 { transition-delay: .32s; }
+.rv.d5 { transition-delay: .40s; }
+
+/* ===== PAGE HERO（about__17_.html/recruit 共通の page-hero。recruit__1_.html 401-408 行） ===== */
+/* PAGE HERO */
+.page-hero{padding:184px 40px 84px;background:var(--paper);text-align:center;}
+.page-hero-title{font-family:'Cormorant SC',serif;font-size:96px;font-weight:400;letter-spacing:3px;line-height:1;color:var(--ink);margin-bottom:16px;}
+@media(max-width:700px){.page-hero-title{font-size:60px;}}
+.page-hero-ja{font-family:'Cinzel',serif;font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--brand);margin-bottom:40px;}
+.page-statement{max-width:720px;margin:0 auto;font-family:'Shippori Mincho B1',serif;font-size:var(--fs-body);line-height:2.2;color:var(--ink);letter-spacing:1px;}
+.page-statement p+p{margin-top:26px;}
+.page-statement .mid{color:var(--mid);}
+
+/* ===== RECRUIT 固有セクション（recruit__1_.html 542-678 行） ===== */
+/* ══════════════════════════════════
+   RECRUIT (JOIN US) ページ固有スタイル
+══════════════════════════════════ */
+/* ヒーロー：通常page-heroをベースに、サブメッセージを大きく */
+.recruit-hero-msg {
+  max-width: 720px;
+  margin: 32px auto 0;
+  font-family: 'Shippori Mincho B1', serif;
+  font-size: 17px;
+  line-height: 2.1;
+  letter-spacing: 1.5px;
+  color: var(--ink);
+  text-align: center;
+}
+.recruit-hero-msg strong {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  color: #01ae84;
+  margin-bottom: 18px;
+  letter-spacing: 2px;
+}
+/* セクション共通 */
+.recruit-section { padding: 96px 40px; max-width: 1080px; margin: 0 auto; }
+.recruit-section-eyebrow { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 4px; color: var(--brand); text-transform: uppercase; text-align: center; margin-bottom: 14px; }
+.recruit-section-title { font-family: 'Shippori Mincho B1', serif; font-size: 32px; font-weight: 700; letter-spacing: 3px; color: var(--ink); text-align: center; margin-bottom: 60px; line-height: 1.5; }
+
+/* 「あなたの未来がどう変わる？」カードグリッド */
+.future-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.future-card { background: var(--paper); border: 1px solid var(--border); padding: 40px 32px; transition: transform .35s, box-shadow .35s, border-color .35s; text-align: center; }
+.future-card:hover { transform: translateY(-4px); border-color: var(--brand); box-shadow: 0 14px 28px rgba(33,33,33,.06); }
+.future-card-num { font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 4px; color: var(--brand); margin-bottom: 18px; }
+.future-card-h { font-family: 'Shippori Mincho B1', serif; font-size: 22px; font-weight: 700; line-height: 1.5; letter-spacing: 1px; color: var(--ink); margin-bottom: 20px; }
+.future-card-body { font-family: 'Shippori Mincho B1', serif; font-size: 15px; line-height: 1.95; letter-spacing: .5px; color: var(--mid); }
+
+/* 登録画家 → 公認画家 比較表 */
+.tier-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.tier-card { padding: 48px 36px; border: 1px solid var(--border); position: relative; }
+.tier-card.is-pro { background: #212121; color: #fff; border-color: #212121; }
+.tier-label { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 4px; color: var(--brand); margin-bottom: 10px; }
+.tier-card.is-pro .tier-label { color: #d4af37; }
+.tier-name { font-family: 'Shippori Mincho B1', serif; font-size: 26px; font-weight: 700; letter-spacing: 2px; margin-bottom: 24px; }
+.tier-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+.tier-list li { font-family: 'Shippori Mincho B1', serif; font-size: 15px; line-height: 1.7; letter-spacing: .5px; padding-left: 22px; position: relative; }
+.tier-list li::before { content: '◆'; position: absolute; left: 0; top: 2px; font-size: 9px; color: var(--brand); }
+.tier-card.is-pro .tier-list li::before { color: #d4af37; }
+.tier-arrow { text-align: center; margin: 36px 0 24px; font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 4px; color: var(--mid); }
+.tier-arrow::after { content: ''; display: block; width: 1px; height: 24px; background: var(--border); margin: 12px auto 0; }
+
+/* 応募資格・規定 — リスト */
+.req-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+.req-block { background: #fff; padding: 36px; border: 1px solid var(--border); }
+.req-block.is-good { border-left: 3px solid var(--brand); }
+.req-block.is-bad { border-left: 3px solid #c44; }
+.req-block-h { font-family: 'Shippori Mincho B1', serif; font-size: 18px; font-weight: 700; letter-spacing: 1.5px; color: var(--ink); margin-bottom: 20px; }
+.req-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.req-list li { font-family: 'Shippori Mincho B1', serif; font-size: 14px; line-height: 1.7; letter-spacing: .5px; color: var(--mid); padding-left: 20px; position: relative; }
+.req-list.is-good li::before { content: '✓'; position: absolute; left: 0; color: var(--brand); font-weight: 700; }
+.req-list.is-bad li::before { content: '✕'; position: absolute; left: 0; color: #c44; font-weight: 700; }
+
+/* 選考フロー */
+.flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; position: relative; }
+.flow-step { text-align: center; padding: 28px 18px; background: var(--paper); border: 1px solid var(--border); position: relative; }
+.flow-step::after { content: '→'; position: absolute; right: -15px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--brand); z-index: 2; background: var(--white); padding: 0 4px; }
+.flow-step:last-child::after { display: none; }
+.flow-step-num { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3px; color: var(--brand); margin-bottom: 12px; }
+.flow-step-h { font-family: 'Shippori Mincho B1', serif; font-size: 15px; font-weight: 700; letter-spacing: 1px; color: var(--ink); margin-bottom: 8px; }
+.flow-step-body { font-family: 'Shippori Mincho B1', serif; font-size: 12px; line-height: 1.6; color: var(--mid); }
+
+/* スペック表（応募資格・スケジュール用） */
+.spec-table { width: 100%; max-width: 720px; margin: 0 auto; border-collapse: collapse; }
+.spec-table th, .spec-table td { padding: 18px 20px; text-align: left; font-family: 'Shippori Mincho B1', serif; font-size: 14px; line-height: 1.7; letter-spacing: .5px; border-bottom: 1px solid var(--border); }
+.spec-table th { width: 32%; color: var(--brand); font-weight: 700; vertical-align: top; }
+.spec-table td { color: var(--mid); }
+
+/* 大型CTA */
+.recruit-cta-big { background: #01ae84; padding: 80px 40px; text-align: center; }
+.recruit-cta-big-h { font-family: 'Shippori Mincho B1', serif; font-size: 28px; font-weight: 700; letter-spacing: 3px; color: #fff; margin-bottom: 16px; line-height: 1.5; }
+.recruit-cta-big-sub { font-family: 'Shippori Mincho B1', serif; font-size: 15px; letter-spacing: 1px; color: rgba(255,255,255,.85); margin-bottom: 36px; }
+.recruit-cta-btns { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
+.recruit-cta-btn { display: inline-block; font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 3px; padding: 18px 40px; text-decoration: none; transition: background .3s, color .3s, border-color .3s; cursor: pointer; }
+.recruit-cta-btn.is-primary { background: #fff; color: #01ae84; border: 1px solid #fff; }
+.recruit-cta-btn.is-primary:hover { background: #212121; color: #fff; border-color: #212121; }
+.recruit-cta-btn.is-secondary { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.6); }
+.recruit-cta-btn.is-secondary:hover { background: #fff; color: #01ae84; border-color: #fff; }
+
+/* 注意事項 — 折りたたみ */
+.notes-block { max-width: 880px; margin: 0 auto; }
+.notes-item { border-bottom: 1px solid var(--border); }
+.notes-item summary { padding: 22px 0; font-family: 'Shippori Mincho B1', serif; font-size: 16px; font-weight: 700; letter-spacing: 1px; color: var(--ink); cursor: pointer; list-style: none; position: relative; padding-right: 36px; }
+.notes-item summary::-webkit-details-marker { display: none; }
+.notes-item summary::after { content: '＋'; position: absolute; right: 0; top: 22px; font-family: 'Cinzel', serif; font-size: 20px; color: var(--brand); transition: transform .3s; }
+.notes-item[open] summary::after { content: '−'; }
+.notes-item-body { padding: 0 0 22px; font-family: 'Shippori Mincho B1', serif; font-size: 14px; line-height: 1.9; letter-spacing: .5px; color: var(--mid); }
+.notes-item-body p { margin: 0 0 12px; }
+.notes-item-body p:last-child { margin-bottom: 0; }
+
+/* レスポンシブ */
+@media (max-width: 980px) {
+  .future-grid { grid-template-columns: 1fr; }
+  .tier-grid { grid-template-columns: 1fr; gap: 16px; }
+  .req-grid { grid-template-columns: 1fr; gap: 20px; }
+  .flow { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .flow-step:nth-child(2)::after, .flow-step:nth-child(4)::after { display: none; }
+}
+@media (max-width: 700px) {
+  .recruit-section { padding: 64px 20px; }
+  .recruit-section-title { font-size: 24px; margin-bottom: 40px; }
+  .recruit-hero-msg { font-size: 14px; line-height: 2; margin-top: 24px; }
+  .recruit-hero-msg strong { font-size: 18px; }
+  .future-card { padding: 32px 24px; }
+  .future-card-h { font-size: 18px; }
+  .tier-card { padding: 36px 24px; }
+  .tier-name { font-size: 22px; }
+  .req-block { padding: 28px 22px; }
+  .flow { grid-template-columns: 1fr; gap: 12px; }
+  .flow-step::after { display: none !important; }
+  .recruit-cta-big { padding: 56px 20px; }
+  .recruit-cta-big-h { font-size: 22px; }
+  .recruit-cta-btn { padding: 16px 28px; font-size: 13px; }
+  .spec-table th, .spec-table td { padding: 14px 12px; font-size: 13px; }
+  .spec-table th { width: 38%; }
+}
+
+
+/* 応募資格セクション：詳しい募集要項ボタン */
+.recruit-guidelines-btn { display: inline-block; font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--ink); background: transparent; border: 1px solid var(--ink); padding: 16px 36px; text-decoration: none; transition: background .3s, color .3s; cursor: pointer; }
+.recruit-guidelines-btn:hover { background: var(--ink); color: #fff; }
+
+
+.future-card-icon { display: block; width: 96px; height: 96px; object-fit: contain; margin: 0 auto 28px; }
+.future-apply-btn { display: inline-block; font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; color: #fff; background: #01ae84; border: 1px solid #01ae84; padding: 18px 48px; text-decoration: none; transition: background .3s, border-color .3s; cursor: pointer; }
+.future-apply-btn:hover { background: #018c6a; border-color: #018c6a; }
+@media(max-width:700px){
+  .future-card-icon { width: 80px; height: 80px; margin: 0 auto 22px; }
+  .future-apply-btn { padding: 16px 36px; font-size: 13px; }
+}

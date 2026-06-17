@@ -151,3 +151,30 @@ function bankofart_get_first_term_name( $post_id, $taxonomy ) {
 	}
 	return $terms[0]->name;
 }
+
+/**
+ * 画家応募フォームの URL を返す（一元管理）。
+ *
+ * recruit ページの「応募フォームへ」ボタンと、archive 等の FOR ARTISTS バナーの
+ * 「応募する」ボタンが共通でこれを参照する。確定フォーム（Tally 等）URL が出たら
+ * この1関数の戻り値を差し替えるだけで全箇所に反映される。
+ *
+ * @return string 応募フォーム URL（未確定のため現状はプレースホルダ '#'）。
+ */
+function bankofart_apply_url() {
+	// 応募フォームURL未確定（Tally 等）。確定後はここを差し替える。
+	return '#';
+}
+
+/**
+ * 募集要項PDF の URL を返す（一元管理）。
+ *
+ * recruit ページの「詳しい募集要項はこちら」ボタンが参照する。
+ * PDF を配置/確定したら、この1関数の戻り値を差し替える。
+ *
+ * @return string 募集要項PDF URL（未確定のため現状はプレースホルダ '#'）。
+ */
+function bankofart_recruit_guidelines_pdf_url() {
+	// 募集要項PDF未確定。確定後はここを差し替える（例：wp-content/uploads のPDF URL）。
+	return '#';
+}
