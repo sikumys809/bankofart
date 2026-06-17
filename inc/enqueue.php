@@ -197,6 +197,45 @@ function bankofart_enqueue_assets() {
 		);
 	}
 
+	// ページ別アセット：MATCHING 企業理念診断（スラッグ matching-purpose または MATCHING テンプレート）。
+	if ( is_page( 'matching-purpose' ) || is_page_template( 'page-matching-purpose.php' ) ) {
+		wp_enqueue_style(
+			'bankofart-page-matching-purpose',
+			"{$theme_uri}/assets/css/pages/page-matching-purpose.css",
+			array( 'bankofart-components' ),
+			$ver
+		);
+		wp_enqueue_script(
+			'bankofart-page-matching-purpose',
+			"{$theme_uri}/assets/js/page-matching-purpose.js",
+			array(),
+			$ver,
+			true
+		);
+		// 結果リンク動的化用：公開 artist の「投稿タイトル => single-artist URL」辞書。
+		// モックJSの nameJa（post_title 完全一致）で引く。投稿が増えれば自動で実リンク化。
+		$bankofart_artist_urls = array();
+		$bankofart_artist_posts = get_posts(
+			array(
+				'post_type'      => 'artist',
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'no_found_rows'  => true,
+			)
+		);
+		foreach ( $bankofart_artist_posts as $bankofart_artist_post ) {
+			$bankofart_artist_urls[ $bankofart_artist_post->post_title ] = get_permalink( $bankofart_artist_post->ID );
+		}
+		wp_localize_script(
+			'bankofart-page-matching-purpose',
+			'BOA_MATCH',
+			array(
+				'artistUrls' => $bankofart_artist_urls,
+				'archiveUrl' => get_post_type_archive_link( 'artist' ),
+			)
+		);
+	}
+
 	// ページ別アセット：RECRUIT 固定ページ（スラッグ recruit または RECRUIT テンプレート）。
 	if ( is_page( 'recruit' ) || is_page_template( 'page-recruit.php' ) ) {
 		wp_enqueue_style(

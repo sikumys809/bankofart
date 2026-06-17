@@ -47,7 +47,7 @@ $artists_q = new WP_Query(
 	)
 );
 
-// マッチング診断ページ（Phase 2-E で実装予定。リンク先URLは仮設定）。
+// マッチング診断ページ（Phase 2-E 実装済み・page-matching-purpose.php / スラッグ matching-purpose）。
 $matching_url = home_url( '/matching-purpose/' );
 ?>
 
