@@ -19,14 +19,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'BANKOFART_BOOKING_DB_VERSION', '1.0.0' );
 
 /**
- * 管理者通知メールの宛先（複数可・仮。運営確定後に差し替え）。
+ * 管理者通知メールの宛先（共通の連絡先メールを参照）。
+ * 宛先の変更は inc/helpers.php の BANKOFART_CONTACT_EMAIL で一元管理。
  */
 if ( ! defined( 'BANKOFART_BOOKING_ADMIN_EMAILS' ) ) {
 	define(
 		'BANKOFART_BOOKING_ADMIN_EMAILS',
 		array(
-			'info@bankof-art.com', // 仮（後で確定）.
-			'eiichi@sikumys.com',  // 仮（後で確定）.
+			defined( 'BANKOFART_CONTACT_EMAIL' ) ? BANKOFART_CONTACT_EMAIL : 'info@bankof-art.com',
 		)
 	);
 }

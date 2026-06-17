@@ -68,11 +68,7 @@ function bankofart_send_doc_request_user_mail( $insert_id, $token ) {
 	);
 	$body    = implode( "\n", $lines );
 
-	$headers = array(
-		'Content-Type: text/plain; charset=UTF-8',
-		'From: BANK of ART <no-reply@bankof-art.com>',
-		'Reply-To: info@bankof-art.com',
-	);
+	$headers = bankofart_mail_headers();
 
 	return wp_mail( $req->email, $subject, $body, $headers );
 }
@@ -126,7 +122,7 @@ function bankofart_send_doc_request_admin_mail( $insert_id ) {
 	);
 	$body    = implode( "\n", $lines );
 
-	$headers = array( 'Content-Type: text/plain; charset=UTF-8' );
+	$headers = bankofart_mail_headers();
 
 	return wp_mail( $to, $subject, $body, $headers );
 }

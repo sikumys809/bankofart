@@ -12,6 +12,32 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/* =========================================================
+ * 連絡先メール（全フォーム共通・一元管理）
+ * 資料請求／オンライン説明会予約／リセール待機リストの
+ * 管理者通知宛先・送信元(From)・Reply-To はすべてこの定数を参照する。
+ * 変更は BANKOFART_CONTACT_EMAIL の1箇所のみでよい。
+ * ======================================================= */
+if ( ! defined( 'BANKOFART_CONTACT_EMAIL' ) ) {
+	define( 'BANKOFART_CONTACT_EMAIL', 'info@bankof-art.com' );
+}
+if ( ! defined( 'BANKOFART_CONTACT_FROM_NAME' ) ) {
+	define( 'BANKOFART_CONTACT_FROM_NAME', 'BANK of ART' );
+}
+
+/**
+ * フォーム送信メール共通ヘッダー（Content-Type / From / Reply-To）。
+ *
+ * @return string[] wp_mail() 用ヘッダー配列。
+ */
+function bankofart_mail_headers() {
+	return array(
+		'Content-Type: text/plain; charset=UTF-8',
+		'From: ' . BANKOFART_CONTACT_FROM_NAME . ' <' . BANKOFART_CONTACT_EMAIL . '>',
+		'Reply-To: ' . BANKOFART_CONTACT_EMAIL,
+	);
+}
+
 /**
  * セクション可視性の二段階チェック。
  *
@@ -169,14 +195,13 @@ function bankofart_apply_url() {
 /**
  * 募集要項PDF の URL を返す（一元管理）。
  *
- * recruit ページの「詳しい募集要項はこちら」ボタンが参照する。
- * PDF を配置/確定したら、この1関数の戻り値を差し替える。
+ * recruit ページの「詳しい募集要項はこちら」と、FOR ARTISTS バナーの
+ * 「募集要項を見る」ボタンが共通でこれを参照する。差し替えはこの1関数のみ。
  *
- * @return string 募集要項PDF URL（未確定のため現状はプレースホルダ '#'）。
+ * @return string 募集要項PDF URL。
  */
 function bankofart_recruit_guidelines_pdf_url() {
-	// 募集要項PDF未確定。確定後はここを差し替える（例：wp-content/uploads のPDF URL）。
-	return '#';
+	return get_theme_file_uri( 'assets/docs/boa-artist-application-guidelines.pdf' );
 }
 
 /**

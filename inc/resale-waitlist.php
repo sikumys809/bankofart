@@ -177,9 +177,11 @@ add_action( 'admin_post_boa_resale_waitlist', 'bankofart_handle_resale_waitlist'
  * @return void
  */
 function bankofart_resale_send_mails( $data ) {
-	$admin_email = apply_filters( 'bankofart_resale_admin_email', get_option( 'admin_email' ) );
-	$site_name   = get_bloginfo( 'name' );
-	$now         = current_time( 'Y-m-d H:i' );
+	$default_admin = defined( 'BANKOFART_CONTACT_EMAIL' ) ? BANKOFART_CONTACT_EMAIL : get_option( 'admin_email' );
+	$admin_email   = apply_filters( 'bankofart_resale_admin_email', $default_admin );
+	$headers       = function_exists( 'bankofart_mail_headers' ) ? bankofart_mail_headers() : array( 'Content-Type: text/plain; charset=UTF-8' );
+	$site_name     = get_bloginfo( 'name' );
+	$now           = current_time( 'Y-m-d H:i' );
 
 	// (A) 管理者宛。
 	$admin_subject = sprintf( '【リセール待機登録】%s %s / %s様', $data['artwork_number'], $data['artwork_title'], $data['name'] );
@@ -201,7 +203,7 @@ function bankofart_resale_send_mails( $data ) {
 			'※ WP管理画面「リセール待機リスト」からも確認できます。',
 		)
 	);
-	wp_mail( $admin_email, $admin_subject, $admin_body );
+	wp_mail( $admin_email, $admin_subject, $admin_body, $headers );
 
 	// (B) 登録者宛 自動返信（※「購入確約ではない・対面契約」の注意書きを必ず含む）。
 	$reply_subject = '【バンク・オブ・アート】リセール待機リストご登録ありがとうございます';
@@ -228,7 +230,7 @@ function bankofart_resale_send_mails( $data ) {
 	);
 	// 空行（artwork_number 無し時の空要素）を除去。
 	$reply_body = preg_replace( "/\n{3,}/", "\n\n", $reply_body );
-	wp_mail( $data['email'], $reply_subject, $reply_body );
+	wp_mail( $data['email'], $reply_subject, $reply_body, $headers );
 }
 
 /* =========================================================

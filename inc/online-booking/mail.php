@@ -100,11 +100,7 @@ function bankofart_send_booking_user_mail( $booking_id ) {
 		'──────────────────────────',
 	);
 
-	$headers = array(
-		'Content-Type: text/plain; charset=UTF-8',
-		'From: BANK of ART <no-reply@bankof-art.com>',
-		'Reply-To: info@bankof-art.com',
-	);
+	$headers = bankofart_mail_headers();
 
 	return wp_mail( $req->email, $subject, implode( "\n", $lines ), $headers );
 }
@@ -147,7 +143,7 @@ function bankofart_send_booking_admin_mail( $booking_id ) {
 		'※Googleカレンダー連携はフェーズ2で実装予定。当面は手動登録してください。',
 	);
 
-	$headers = array( 'Content-Type: text/plain; charset=UTF-8' );
+	$headers = bankofart_mail_headers();
 
 	return wp_mail( $to, $subject, implode( "\n", $lines ), $headers );
 }

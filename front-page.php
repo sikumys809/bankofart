@@ -295,17 +295,13 @@ $front_frame_types = array( 'type-wide', 'type-tall', 'type-square', 'type-tall'
 			<div class="carousel-wrap">
 				<div class="carousel-track" id="carTrack">
 					<?php
-					// 仮スライド（実際のギャラリー写真は後日差し替え）。
-					$gallery_placeholders = array(
-						'linear-gradient(135deg,#2a2a2a 0%,#01ae84 100%)',
-						'linear-gradient(135deg,#0a0a0a 0%,#444 100%)',
-						'linear-gradient(135deg,#01ae84 0%,#018c6a 100%)',
-						'linear-gradient(135deg,#3a3a3a 0%,#7a7a7a 100%)',
-					);
-					foreach ( $gallery_placeholders as $bg ) :
+					// ギャラリー写真（assets/images/gallery/）。
+					$gallery_images = array( 'gallery1.jpeg', 'gallery2.jpeg', 'gallery3.jpeg', 'gallery4.jpeg' );
+					foreach ( $gallery_images as $bankofart_gallery_img ) :
+						$bankofart_gallery_url = get_theme_file_uri( 'assets/images/gallery/' . $bankofart_gallery_img );
 						?>
 						<div class="car-item">
-							<div class="car-item-img"><div class="car-item-img-bg" style="background:<?php echo esc_attr( $bg ); ?>;"></div></div>
+							<div class="car-item-img"><div class="car-item-img-bg" style="background-image:url('<?php echo esc_url( $bankofart_gallery_url ); ?>');"></div></div>
 						</div>
 					<?php endforeach; ?>
 				</div>
