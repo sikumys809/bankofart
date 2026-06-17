@@ -1,0 +1,29 @@
+/*
+ * pages/document-request.css
+ * 資料請求フォーム固有スタイル（ヒーロー・資料表紙サムネ・完了チェック）。
+ * フォーム本体は components.css の .boa-form 系を共用。
+ */
+
+/* ヒーロー */
+.dr-hero { background: var(--paper); padding: 48px 24px 8px; }
+.dr-hero-inner { max-width: 920px; margin: 0 auto; display: flex; gap: 48px; align-items: center; justify-content: center; flex-wrap: wrap; }
+.dr-hero-text { flex: 1 1 360px; }
+.dr-hero-eyebrow { font-family: var(--f-deco); font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--brand); margin-bottom: 14px; }
+.dr-hero-title { font-family: var(--f-display); font-size: clamp(40px, 6vw, 64px); font-weight: 400; letter-spacing: 3px; text-transform: uppercase; color: var(--ink); line-height: 1; margin-bottom: 22px; }
+.dr-hero-lead { font-family: var(--f-jp); font-size: var(--fs-body); line-height: 1.95; letter-spacing: 1px; color: var(--mid); }
+
+/* 資料表紙サムネ（A4縦比） */
+.dr-hero-cover { flex: 0 0 220px; }
+.dr-hero-cover img { width: 220px; height: auto; box-shadow: 0 14px 40px rgba(33,33,33,.18); display: block; }
+.dr-cover-placeholder { width: 220px; aspect-ratio: 210 / 297; background: linear-gradient(135deg, var(--dark) 0%, var(--brand) 100%); color: var(--white); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; box-shadow: 0 14px 40px rgba(33,33,33,.18); text-align: center; padding: 24px; }
+.dr-cover-en { font-family: var(--f-display); font-size: 26px; letter-spacing: 3px; line-height: 1.3; text-transform: uppercase; }
+.dr-cover-ja { font-family: var(--f-jp); font-size: 13px; letter-spacing: 2px; color: rgba(255,255,255,.85); }
+
+/* 完了チェック */
+.boa-complete-check { width: 64px; height: 64px; margin: 0 auto 20px; border-radius: 50%; background: var(--brand); color: var(--white); font-size: 34px; line-height: 64px; text-align: center; }
+
+@media (max-width: 700px) {
+  .dr-hero { padding: 32px 16px 0; }
+  .dr-hero-inner { gap: 28px; }
+  .dr-hero-cover, .dr-hero-cover img, .dr-cover-placeholder { width: 160px; }
+}

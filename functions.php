@@ -41,6 +41,10 @@ $bankofart_includes = array(
 	'inc/resale-waitlist.php',  // リセール待機リスト（テーブル/フォーム送信/管理画面）
 	'inc/diagnosis-data.php',   // マッチング診断データ（PHP配列）
 	'inc/helpers.php',          // テンプレート用ヘルパー（セクション可視性判定等）
+	'inc/document-request/setup.php',        // 資料請求：テーブル/定数
+	'inc/document-request/helpers.php',      // 資料請求：トークン/レート/検証/挿入
+	'inc/document-request/form-handler.php', // 資料請求：送信処理・PDF配信
+	'inc/document-request/mail.php',         // 資料請求：メール送信
 );
 
 foreach ( $bankofart_includes as $bankofart_file ) {
@@ -69,3 +73,15 @@ foreach ( $bankofart_includes as $bankofart_file ) {
 }
 
 unset( $bankofart_includes, $bankofart_file, $bankofart_path );
+
+// 資料請求：管理画面・CSV出力は管理画面でのみ読み込む。
+if ( is_admin() ) {
+	$bankofart_admin_only = array( 'inc/document-request/admin.php', 'inc/document-request/csv-export.php' );
+	foreach ( $bankofart_admin_only as $bankofart_admin_file ) {
+		$bankofart_admin_path = get_theme_file_path( $bankofart_admin_file );
+		if ( is_readable( $bankofart_admin_path ) ) {
+			require_once $bankofart_admin_path;
+		}
+	}
+	unset( $bankofart_admin_only, $bankofart_admin_file, $bankofart_admin_path );
+}

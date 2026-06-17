@@ -865,3 +865,14 @@
   .boa-form-section { padding: 48px 18px 80px; }
   .boa-target { flex-direction: column; gap: 6px; }
 }
+
+/* .boa-form 拡張：select / radio / ハニーポット / セクション区切り（資料請求・説明会予約で利用） */
+.boa-select { width: 100%; font-family: var(--f-jp); font-size: var(--fs-body); line-height: 1.7; color: var(--ink); background: var(--white); border: 1px solid var(--border); border-radius: 0; padding: 14px 40px 14px 16px; letter-spacing: .5px; transition: border-color .2s; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%2301ae84' d='M6 8L0 0h12z'/></svg>"); background-repeat: no-repeat; background-position: right 16px center; cursor: pointer; }
+.boa-select:focus { outline: none; border-color: var(--brand); }
+.boa-radio-group { display: flex; flex-direction: column; gap: 12px; }
+.boa-radio { display: flex; align-items: flex-start; gap: 12px; font-family: var(--f-jp); font-size: var(--fs-body); line-height: 1.7; letter-spacing: .5px; color: var(--ink); cursor: pointer; padding: 14px 18px; border: 1px solid var(--border); background: var(--white); transition: border-color .2s, background .2s; }
+.boa-radio:hover { border-color: var(--brand); background: var(--brand-soft); }
+.boa-radio input[type="radio"] { width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; accent-color: var(--brand); }
+.boa-honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.boa-section-divider { border: 0; border-top: 1px solid var(--border-soft); margin: 36px 0; }
+.boa-form-subhead { font-family: var(--f-deco); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--brand); margin: 0 0 20px; }

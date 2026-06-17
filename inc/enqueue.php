@@ -228,6 +228,36 @@ function bankofart_enqueue_assets() {
 		);
 	}
 
+	// ページ別アセット：資料請求フォーム＋完了画面。
+	if ( is_page_template( 'page-document-request.php' ) || is_page_template( 'page-document-request-complete.php' ) || is_page( 'document-request' ) ) {
+		wp_enqueue_style(
+			'bankofart-document-request',
+			"{$theme_uri}/assets/css/pages/document-request.css",
+			array( 'bankofart-components' ),
+			$ver
+		);
+		// フォームページのみ JS（バリデーション/二重送信防止/reCAPTCHA）。
+		if ( is_page_template( 'page-document-request.php' ) || is_page( 'document-request' ) ) {
+			$recaptcha_site = defined( 'BANKOFART_RECAPTCHA_SITE_KEY' ) ? constant( 'BANKOFART_RECAPTCHA_SITE_KEY' ) : '';
+			if ( '' !== $recaptcha_site ) {
+				// reCAPTCHA v3 本体（キー設定時のみ）。
+				wp_enqueue_script( 'google-recaptcha', 'https://www.google.com/recaptcha/api.js?render=' . rawurlencode( $recaptcha_site ), array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+			}
+			wp_enqueue_script(
+				'bankofart-document-request',
+				"{$theme_uri}/assets/js/document-request.js",
+				array(),
+				$ver,
+				true
+			);
+			wp_localize_script(
+				'bankofart-document-request',
+				'BOA_DR',
+				array( 'recaptchaSiteKey' => $recaptcha_site )
+			);
+		}
+	}
+
 	// ページ別アセット：MATCHING ISSUE 課題逆引き診断（スラッグ matching-issue または テンプレート）。
 	if ( is_page( 'matching-issue' ) || is_page_template( 'page-matching-issue.php' ) ) {
 		wp_enqueue_style(

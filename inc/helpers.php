@@ -189,7 +189,8 @@ function bankofart_recruit_guidelines_pdf_url() {
  * @return string 資料請求フォーム URL。
  */
 function bankofart_document_request_url() {
-	return apply_filters( 'bankofart_document_request_url', 'https://business.form-mailer.jp/fms/1c6a81d4280183' );
+	// 自前の資料請求フォームページ（/document-request/）へ。確定後の差し替えはフィルターで。
+	return apply_filters( 'bankofart_document_request_url', home_url( '/document-request/' ) );
 }
 
 /**
