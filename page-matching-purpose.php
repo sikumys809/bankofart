@@ -26,7 +26,7 @@ get_header();
 $briefing_url = bankofart_briefing_url(); // 結果画面「問い合わせる」。
 ?>
 
-<main id="main" class="matching-purpose-page">
+<main id="main" class="site-main matching-purpose-page">
 
 	<!-- ━━━━━━ Screen 1: スタート ━━━━━━ -->
 	<section class="match-screen is-active" id="screen-start">
