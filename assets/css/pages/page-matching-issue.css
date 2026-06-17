@@ -58,6 +58,17 @@
 .result-sub-name-ja { font-family: 'Shippori Mincho B1', serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--brand); margin-bottom: 12px; }
 .result-sub-theme { font-family: 'Shippori Mincho B1', serif; font-size: 11px; line-height: 1.6; color: var(--mid); margin-bottom: 14px; min-height: 36px; }
 
+/* おすすめのART（おすすめ画家の最新作・1点ずつ） */
+.result-art-h { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 4px; color: var(--brand); text-transform: uppercase; text-align: center; margin-bottom: 6px; }
+.result-art-sub { font-family: 'Shippori Mincho B1', serif; font-size: 13px; text-align: center; color: var(--mid); margin-bottom: 24px; letter-spacing: 1px; }
+.result-art-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 60px; }
+.result-art-card { background: #fff; padding: 0; border: 1px solid var(--border-soft); transition: border-color .25s, transform .25s; overflow: hidden; display: block; text-decoration: none; }
+.result-art-card:hover { border-color: var(--brand); transform: translateY(-4px); }
+.result-art-photo { width: 100%; aspect-ratio: 4 / 3; background-size: cover; background-position: center; background-color: var(--paper); }
+.result-art-body { padding: 18px 18px 22px; }
+.result-art-title { font-family: 'Shippori Mincho B1', serif; font-size: 14px; font-weight: 700; line-height: 1.5; color: var(--ink); margin-bottom: 6px; }
+.result-art-artist { font-family: 'Shippori Mincho B1', serif; font-size: 11px; letter-spacing: 1px; color: var(--brand); }
+
 /* コレクター記事（同じ課題で導入した企業の声） */
 .result-collector-h { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 4px; color: var(--brand); text-transform: uppercase; text-align: center; margin-bottom: 6px; }
 .result-collector-sub { font-family: 'Shippori Mincho B1', serif; font-size: 13px; text-align: center; color: var(--mid); margin-bottom: 24px; letter-spacing: 1px; }
@@ -98,6 +109,7 @@
   .result-sub-list { grid-template-columns: 1fr; gap: 14px; }
   .result-sub-card { padding: 24px 18px; }
   .result-sub-theme { min-height: auto; }
+  .result-art-list { grid-template-columns: 1fr; gap: 14px; }
   .result-collector-list { grid-template-columns: 1fr; gap: 12px; }
   .result-collector-body { padding: 20px 22px 24px; }
   .result-collector-photo-initial { font-size: 22px; }

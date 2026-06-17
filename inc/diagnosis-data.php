@@ -276,15 +276,39 @@ function bankofart_get_matching_artists() {
 
 		$photo = bankofart_get_image( 'artist_main_photo', $artist_post->ID, 'large' );
 
-		// 代表作 最大3点（artist_to_art リレーション）。
-		$works = array();
+		// 紐づく作品（artist_to_art リレーション・公開のみ・新しい順）。
+		$art_posts = array();
 		foreach ( bankofart_get_connected( 'artist_to_art', 'from', $artist_post->ID ) as $art_post ) {
-			if ( count( $works ) >= 3 ) {
-				break;
+			if ( 'publish' === get_post_status( $art_post->ID ) ) {
+				$art_posts[] = $art_post;
 			}
+		}
+		usort(
+			$art_posts,
+			function ( $a, $b ) {
+				return strcmp( $b->post_date, $a->post_date ); // 新しい順.
+			}
+		);
+
+		// 代表作サムネ 最大3点（画像URLのみ）。
+		$works = array();
+		// 最新作1点（タイトル・リンク付き。診断結果の「おすすめのART」用）。
+		$latest_art = null;
+		foreach ( $art_posts as $art_post ) {
 			$art_img = bankofart_get_image( 'art_main_image', $art_post->ID, 'medium' );
-			if ( ! empty( $art_img['url'] ) ) {
+			if ( empty( $art_img['url'] ) ) {
+				continue;
+			}
+			if ( count( $works ) < 3 ) {
 				$works[] = $art_img['url'];
+			}
+			if ( null === $latest_art ) {
+				$latest_art = array(
+					'title'  => get_the_title( $art_post->ID ),
+					'url'    => get_permalink( $art_post->ID ),
+					'img'    => $art_img['url'],
+					'artist' => get_the_title( $artist_post->ID ),
+				);
 			}
 		}
 
@@ -299,6 +323,7 @@ function bankofart_get_matching_artists() {
 			'url'       => get_permalink( $artist_post->ID ),
 			'photo'     => $photo['url'],
 			'works'     => $works,
+			'latestArt' => $latest_art,
 		);
 	}
 

@@ -123,8 +123,10 @@
 		} );
 		var mainType = scoredTypes[ 0 ].type;
 
+		var recommended = recommendArtists( mainType );
 		renderType( mainType );
-		renderArtists( recommendArtists( mainType ) );
+		renderArtists( recommended );
+		renderWorks( recommended );
 		renderCollectors( relatedCollectors( mainType ) );
 		showScreen( 'screen-result' );
 	}
@@ -190,6 +192,34 @@
 		} ).join( '' );
 	}
 
+	// おすすめ画家の最新作を1点ずつ（最大3点）。作品が無ければブロック非表示。
+	function renderWorks( artistList ) {
+		var block = document.getElementById( 'art-block' );
+		var works = artistList
+			.map( function ( a ) { return a.latestArt ? { art: a.latestArt, artistUrl: a.url } : null; } )
+			.filter( Boolean )
+			.slice( 0, 3 );
+		if ( ! works.length ) {
+			if ( block ) { block.style.display = 'none'; }
+			document.getElementById( 'recommended-works' ).innerHTML = '';
+			return;
+		}
+		if ( block ) { block.style.display = ''; }
+		document.getElementById( 'recommended-works' ).innerHTML = works.map( function ( w ) {
+			var art = w.art;
+			var photo = art.img ? ( 'background-image:url(' + art.img + ');' ) : ( 'background:' + DEFAULT_GRAD + ';' );
+			var openTag = art.url ? ( '<a href="' + art.url + '" class="result-art-card">' ) : '<div class="result-art-card">';
+			var closeTag = art.url ? '</a>' : '</div>';
+			return openTag +
+				'<div class="result-art-photo" style="' + photo + '"></div>' +
+				'<div class="result-art-body">' +
+					'<div class="result-art-title">' + esc( art.title ) + '</div>' +
+					'<div class="result-art-artist">' + esc( art.artist ) + '</div>' +
+				'</div>' +
+				closeTag;
+		} ).join( '' );
+	}
+
 	function renderCollectors( list ) {
 		// 仕様5.3＋オープン課題10：該当0件はブロックごと非表示。
 		var block = document.getElementById( 'collector-block' );
@@ -217,8 +247,10 @@
 
 	window.restart = function () {
 		answers = [];
-		var block = document.getElementById( 'collector-block' );
-		if ( block ) { block.style.display = ''; }
+		[ 'collector-block', 'art-block' ].forEach( function ( id ) {
+			var b = document.getElementById( id );
+			if ( b ) { b.style.display = ''; }
+		} );
 		var subH = document.querySelector( '.result-sub-h' );
 		if ( subH ) { subH.style.display = ''; }
 		showScreen( 'screen-start' );
