@@ -290,6 +290,37 @@ function bankofart_enqueue_assets() {
 		);
 	}
 
+	// ページ別アセット：公認画家申請フォーム（テンプレート割り当てページ）。
+	if ( is_page_template( 'page-artist-application.php' ) ) {
+		wp_enqueue_style(
+			'bankofart-artist-application',
+			"{$theme_uri}/assets/css/pages/artist-application.css",
+			array( 'bankofart-components' ),
+			$ver
+		);
+		$recaptcha_site = defined( 'BANKOFART_RECAPTCHA_SITE_KEY' ) ? constant( 'BANKOFART_RECAPTCHA_SITE_KEY' ) : '';
+		if ( '' !== $recaptcha_site ) {
+			wp_enqueue_script( 'google-recaptcha', 'https://www.google.com/recaptcha/api.js?render=' . rawurlencode( $recaptcha_site ), array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		}
+		wp_enqueue_script(
+			'bankofart-artist-application',
+			"{$theme_uri}/assets/js/artist-application.js",
+			array(),
+			$ver,
+			true
+		);
+		wp_localize_script(
+			'bankofart-artist-application',
+			'BOA_AA',
+			array(
+				'recaptchaSiteKey' => $recaptcha_site,
+				'maxImageMB'       => (int) ( BANKOFART_ARTIST_APP_MAX_IMAGE_BYTES / 1024 / 1024 ),
+				'maxTotalMB'       => (int) ( BANKOFART_ARTIST_APP_MAX_TOTAL_BYTES / 1024 / 1024 ),
+				'maxWorkImages'    => (int) BANKOFART_ARTIST_APP_MAX_WORK_IMAGES,
+			)
+		);
+	}
+
 	// ページ別アセット：MATCHING ISSUE 課題逆引き診断（スラッグ matching-issue または テンプレート）。
 	if ( is_page( 'matching-issue' ) || is_page_template( 'page-matching-issue.php' ) ) {
 		wp_enqueue_style(
