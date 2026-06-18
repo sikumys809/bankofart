@@ -24,9 +24,9 @@ $hero_bg_file  = get_theme_file_path( 'assets/images/hero_test.jpg' );
 $hero_bg_url   = get_theme_file_uri( 'assets/images/hero_test.jpg' );
 $hero_bg_style = file_exists( $hero_bg_file ) ? ' style="background-image:url(\'' . esc_url( $hero_bg_url ) . '\');"' : '';
 
-// ロゴ（hero）。boa-12=回転する円マーク / boa-07=白ワードマーク（モックの boa-17 が無いため代替）。
+// ロゴ（hero）。boa-12=回転する円マーク / boa-17=白ワードマーク。
 $logo_circle = get_theme_file_uri( 'assets/img/logo/boa-12.png' );
-$logo_text   = get_theme_file_uri( 'assets/img/logo/boa-07.png' );
+$logo_text   = get_theme_file_uri( 'assets/img/logo/boa-17.png' );
 
 // アーカイブリンク。
 $artist_archive    = get_post_type_archive_link( 'artist' );
