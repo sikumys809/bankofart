@@ -140,10 +140,10 @@
 .aw-other-sec .art-meta span + span::before { color: rgba(255,255,255,.25); }
 
 /* ═══ BACK LINK ═══ */
-.aw-back { background: var(--ink); padding: 0 40px 100px; text-align: center; }
+.aw-back { background: var(--paper); padding: 0 40px 100px; text-align: center; }
 .aw-back-inner { max-width: 1280px; margin: 0 auto; }
-.aw-back a { font-family: var(--f-deco); font-size: 14px; font-weight: var(--fw-medium); letter-spacing: var(--ls-3); text-transform: uppercase; color: var(--white); border: 1px solid rgba(255,255,255,.5); padding: 18px 44px; display: inline-flex; align-items: center; gap: 12px; transition: all .25s; }
-.aw-back a:hover { background: var(--white); color: var(--ink); }
+.aw-back a { font-family: var(--f-deco); font-size: 14px; font-weight: var(--fw-medium); letter-spacing: var(--ls-3); text-transform: uppercase; color: var(--ink); border: 1px solid var(--border); padding: 18px 44px; display: inline-flex; align-items: center; gap: 12px; transition: all .25s; }
+.aw-back a:hover { background: var(--ink); color: var(--white); border-color: var(--ink); }
 .aw-back a::before { content: ''; width: 8px; height: 8px; border-left: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: rotate(45deg); }
 
 /* ═══ REVEAL（JS有効時のみ隠す）═══ */
