@@ -51,9 +51,15 @@ $chk = function ( $key, $opt ) use ( $err_values ) {
 
 $privacy_url     = home_url( '/privacy-policy/' );
 $recaptcha_key   = defined( 'BANKOFART_RECAPTCHA_SITE_KEY' ) ? constant( 'BANKOFART_RECAPTCHA_SITE_KEY' ) : '';
-// 資料表紙画像（未確定。assets/img/doc-cover.jpg を置けば表示、無ければプレースホルダ）。
-$cover_path = get_theme_file_path( 'assets/img/doc-cover.jpg' );
-$cover_url  = file_exists( $cover_path ) ? get_theme_file_uri( 'assets/img/doc-cover.jpg' ) : '';
+// 資料表紙画像。assets/img/doc-cover.{jpg,jpeg,png,webp} を置けば自動表示、無ければプレースホルダ。
+// （BOA表紙3.pdf の1ページ目を画像化したものを doc-cover.* として配置する想定）
+$cover_url = '';
+foreach ( array( 'jpg', 'jpeg', 'png', 'webp' ) as $bankofart_cover_ext ) {
+	if ( file_exists( get_theme_file_path( 'assets/img/doc-cover.' . $bankofart_cover_ext ) ) ) {
+		$cover_url = get_theme_file_uri( 'assets/img/doc-cover.' . $bankofart_cover_ext );
+		break;
+	}
+}
 ?>
 
 <main id="main" class="site-main boa-form-page document-request-page">
