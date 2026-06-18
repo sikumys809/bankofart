@@ -51,6 +51,8 @@ $bankofart_includes = array(
 	'inc/online-booking/mail.php',           // 説明会予約：メール送信
 	'inc/artist-application/setup.php',      // 公認画家申請：定数/選択肢/共通ヘルパー
 	'inc/artist-application/form-handler.php', // 公認画家申請：送信処理（GAS連携＋バックアップメール）
+	'inc/artist-entry/setup.php',            // 画家応募（選考用）：定数/選択肢/共通ヘルパー
+	'inc/artist-entry/form-handler.php',     // 画家応募（選考用）：送信処理（GAS連携＋バックアップメール）
 );
 
 foreach ( $bankofart_includes as $bankofart_file ) {

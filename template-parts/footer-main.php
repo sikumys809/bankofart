@@ -17,7 +17,8 @@ $bankofart_logo_foot = get_theme_file_uri( 'assets/img/logo/boa-07.png' );
 // CONTACT 系は一元管理ヘルパー経由（header / CTA / about MOVIE と同一URL）。
 $bankofart_url_document = bankofart_document_request_url();
 $bankofart_url_briefing = bankofart_briefing_url();
-$bankofart_url_apply    = apply_filters( 'bankofart_artist_apply_url', 'https://tally.so/r/MeMEV0' );
+// 応募フォーム：旧 Tally（https://tally.so/r/MeMEV0）→ 自前の画家応募フォーム /artist-entry/ に差し替え。
+$bankofart_url_apply    = apply_filters( 'bankofart_artist_apply_url', bankofart_apply_url() );
 
 // SNS リンク。
 $bankofart_socials = array(

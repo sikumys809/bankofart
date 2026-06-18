@@ -321,6 +321,35 @@ function bankofart_enqueue_assets() {
 		);
 	}
 
+	// ページ別アセット：画家応募フォーム（artist-application.css を共用）。
+	if ( is_page_template( 'page-artist-entry.php' ) ) {
+		wp_enqueue_style(
+			'bankofart-artist-application',
+			"{$theme_uri}/assets/css/pages/artist-application.css",
+			array( 'bankofart-components' ),
+			$ver
+		);
+		$recaptcha_site = defined( 'BANKOFART_RECAPTCHA_SITE_KEY' ) ? constant( 'BANKOFART_RECAPTCHA_SITE_KEY' ) : '';
+		if ( '' !== $recaptcha_site ) {
+			wp_enqueue_script( 'google-recaptcha', 'https://www.google.com/recaptcha/api.js?render=' . rawurlencode( $recaptcha_site ), array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		}
+		wp_enqueue_script(
+			'bankofart-artist-entry',
+			"{$theme_uri}/assets/js/artist-entry.js",
+			array(),
+			$ver,
+			true
+		);
+		wp_localize_script(
+			'bankofart-artist-entry',
+			'BOA_AE',
+			array(
+				'recaptchaSiteKey' => $recaptcha_site,
+				'maxPdfMB'         => (int) ( BANKOFART_ARTIST_ENTRY_MAX_PDF_BYTES / 1024 / 1024 ),
+			)
+		);
+	}
+
 	// ページ別アセット：MATCHING ISSUE 課題逆引き診断（スラッグ matching-issue または テンプレート）。
 	if ( is_page( 'matching-issue' ) || is_page_template( 'page-matching-issue.php' ) ) {
 		wp_enqueue_style(

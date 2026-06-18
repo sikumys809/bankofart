@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $guidelines_url = isset( $args['guidelines_url'] ) ? $args['guidelines_url'] : bankofart_recruit_guidelines_pdf_url();
-$apply_url      = isset( $args['apply_url'] ) ? $args['apply_url'] : home_url( '/recruit/#apply' );
+$apply_url      = isset( $args['apply_url'] ) ? $args['apply_url'] : bankofart_apply_url(); // 画家応募フォーム /artist-entry/.
 ?>
 <section class="for-artists-sec">
 	<div class="match-banner for-artists rv">

@@ -182,14 +182,13 @@ function bankofart_get_first_term_name( $post_id, $taxonomy ) {
  * 画家応募フォームの URL を返す（一元管理）。
  *
  * recruit ページの「応募フォームへ」ボタンと、archive 等の FOR ARTISTS バナーの
- * 「応募する」ボタンが共通でこれを参照する。確定フォーム（Tally 等）URL が出たら
- * この1関数の戻り値を差し替えるだけで全箇所に反映される。
+ * 「応募する」ボタンが共通でこれを参照する。差し替えはこの1関数のみ。
+ * 旧：外部 Tally（https://tally.so/r/MeMEV0）→ 自前の画家応募フォーム /artist-entry/ に置き換え。
  *
- * @return string 応募フォーム URL（未確定のため現状はプレースホルダ '#'）。
+ * @return string 応募フォーム URL（自前ページ /artist-entry/）。
  */
 function bankofart_apply_url() {
-	// 応募フォームURL未確定（Tally 等）。確定後はここを差し替える。
-	return '#';
+	return home_url( '/artist-entry/' );
 }
 
 /**
