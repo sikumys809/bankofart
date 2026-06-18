@@ -384,30 +384,46 @@ function bankofart_artist_app_post_to_gas( $text, $images ) {
 		)
 	);
 
+	/*
+	 * GAS Web App は POST を受けて doPost を実行後、結果を script.googleusercontent.com の
+	 * echo へ 302 で返す。WP_Http が POST のまま自動追従すると Google が 400/411 を返すため、
+	 * redirection=0 で追従を止め（doPost はこの POST で実行済み）、Location を GET で取得して
+	 * 結果 JSON（{"ok":true}）を読む。
+	 */
 	$res = wp_remote_post(
 		BANKOFART_ARTIST_APP_GAS_URL,
 		array(
 			'timeout'     => 45,
-			'redirection' => 5, // GAS は googleusercontent へ302するため follow。
+			'redirection' => 0,
 			'body'        => $body,
 		)
 	);
-
 	if ( is_wp_error( $res ) ) {
 		return false;
 	}
+
 	$code = (int) wp_remote_retrieve_response_code( $res );
+	$resp_body = (string) wp_remote_retrieve_body( $res );
+
+	// 302 の場合は Location（echo URL）を GET して結果 JSON を取得する。
+	if ( $code >= 300 && $code < 400 ) {
+		$location = wp_remote_retrieve_header( $res, 'location' );
+		if ( ! empty( $location ) ) {
+			$res2 = wp_remote_get( $location, array( 'timeout' => 45 ) );
+			if ( ! is_wp_error( $res2 ) ) {
+				$code      = (int) wp_remote_retrieve_response_code( $res2 );
+				$resp_body = (string) wp_remote_retrieve_body( $res2 );
+			}
+		}
+	}
+
 	if ( $code < 200 || $code >= 300 ) {
 		return false;
 	}
-	// GAS はデプロイ未設定/doPost欠如でも HTTP 200 のエラーHTMLを返すため本文で判定する。
-	$resp_body = (string) wp_remote_retrieve_body( $res );
-	if ( false !== strpos( $resp_body, 'スクリプト関数が見つかりません' )
-		|| false !== strpos( $resp_body, '<title>エラー</title>' )
-		|| false !== strpos( $resp_body, 'errorMessage' ) ) {
-		return false;
-	}
-	return true;
+
+	// 成功判定は厳密に {"ok":true}。GAS のエラーHTML（HTTP 200）は失敗扱い。
+	$data = json_decode( $resp_body, true );
+	return ( is_array( $data ) && ! empty( $data['ok'] ) );
 }
 
 /**

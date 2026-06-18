@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * 値の差し替えは wp-config.php 等で同名定数を先に define すれば上書き可能。
  */
 if ( ! defined( 'BANKOFART_ARTIST_APP_GAS_URL' ) ) {
-	define( 'BANKOFART_ARTIST_APP_GAS_URL', 'https://script.google.com/macros/s/AKfycbyX_OHk9g2twa199F0zNmrzm6DAsrKv_2G5n58TiMd-HivhJli_tPWc2Lp5qosRE9ZK/exec' );
+	define( 'BANKOFART_ARTIST_APP_GAS_URL', 'https://script.google.com/macros/s/AKfycbzaBVzgYmX2c5N83jiztvge0iTjnz_3ChCWp2Ya7FjYm9xu9JY1q2WK8VTNGovwQdDX/exec' );
 }
 if ( ! defined( 'BANKOFART_ARTIST_APP_GAS_SECRET' ) ) {
 	define( 'BANKOFART_ARTIST_APP_GAS_SECRET', 'boa-artist-2026-k7m9qx3p' );
