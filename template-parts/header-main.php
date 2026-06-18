@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // ロゴ画像（assets/img/logo/ に配置予定）。base が通常、hover がホバー時。
-$bankofart_logo_base  = get_theme_file_uri( 'assets/img/logo/boa-07.png' );
+$bankofart_logo_base  = get_theme_file_uri( 'assets/img/logo/boa-17.png' );
 $bankofart_logo_hover = get_theme_file_uri( 'assets/img/logo/boa-06.png' );
 
 // CONTACT 系は一元管理ヘルパー経由（資料請求＝/document-request/、説明会予約＝/online-briefing/）。

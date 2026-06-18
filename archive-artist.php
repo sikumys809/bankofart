@@ -135,8 +135,8 @@ $matching_url = home_url( '/matching-purpose/' );
 		<?php endif; ?>
 	</section>
 
-	<!-- 若手画家募集（FOR ARTISTS）バナー -->
-	<?php get_template_part( 'template-parts/sections/section-for-artists' ); ?>
+	<!-- 若手画家募集（FOR ARTISTS）バナー。応募導線は recruit 経由（募集要項確認→recruit内の応募ボタンで /artist-entry/ へ） -->
+	<?php get_template_part( 'template-parts/sections/section-for-artists', null, array( 'apply_url' => home_url( '/recruit/' ) ) ); ?>
 
 	<!-- CONTACT -->
 	<?php get_template_part( 'template-parts/sections/section-cta' ); ?>
