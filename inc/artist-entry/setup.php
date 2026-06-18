@@ -44,31 +44,29 @@ function bankofart_artist_entry_allowed_mime() {
 }
 
 /**
- * 直近1ヶ月の制作ペース（select 4択）。
- * ※ Tally（tally.so/r/MeMEV0）の選択肢を確認できなかったため妥当な4択を仮置き。確定後に差し替え。
+ * 直近1ヶ月の制作ペース（select 4択）。Tally（tally.so/r/MeMEV0）準拠。
  *
  * @return string[]
  */
 function bankofart_artist_entry_pace_options() {
 	return array(
-		'ほぼ毎日制作している',
-		'週に数回制作している',
-		'月に数回制作している',
-		'まとまった制作はできていない',
+		'1点以下',
+		'～3点',
+		'3～7点',
+		'10点以上',
 	);
 }
 
 /**
- * 現在の主な収入源（select 4択）。
- * ※ Tally の選択肢を確認できなかったため妥当な4択を仮置き。確定後に差し替え。
+ * 現在の主な収入源（select 4択）。Tally（tally.so/r/MeMEV0）準拠。
  *
  * @return string[]
  */
 function bankofart_artist_entry_income_options() {
 	return array(
-		'作品制作・販売（画業）',
-		'アルバイト・パート',
-		'会社員・正社員（別業種）',
+		'絵で生計を立てている',
+		'別の職業がある',
+		'学生',
 		'その他',
 	);
 }

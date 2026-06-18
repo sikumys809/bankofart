@@ -148,6 +148,9 @@ function bankofart_artist_entry_validate( $post ) {
 		'base'        => '制作拠点',
 		'why_paint'   => 'なぜ絵を描くか',
 		'origin'      => '画家としての起源',
+		'future'      => 'どんな画家になりたいか',
+		'pace'        => '直近1ヶ月の制作ペース',
+		'income'      => '現在の主な収入源',
 	);
 	foreach ( $req as $k => $label ) {
 		if ( '' === trim( (string) ( isset( $post[ $k ] ) ? $post[ $k ] : '' ) ) ) {
@@ -191,10 +194,12 @@ function bankofart_artist_entry_process_pdf( &$pdf, &$errors ) {
 	$pdf = null;
 
 	if ( empty( $_FILES['portfolio_file'] ) || ! isset( $_FILES['portfolio_file']['error'] ) ) {
-		return; // 任意（添付なし）。
+		$errors['portfolio_file'] = 'ポートフォリオPDFを添付してください。';
+		return;
 	}
 	$err = (int) $_FILES['portfolio_file']['error'];
 	if ( UPLOAD_ERR_NO_FILE === $err ) {
+		$errors['portfolio_file'] = 'ポートフォリオPDFを添付してください。';
 		return;
 	}
 	if ( UPLOAD_ERR_INI_SIZE === $err || UPLOAD_ERR_FORM_SIZE === $err ) {

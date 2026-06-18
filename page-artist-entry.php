@@ -186,8 +186,8 @@ $self_url       = get_permalink();
 					<textarea id="origin" name="origin" class="boa-textarea" rows="5" maxlength="3000" required><?php echo esc_textarea( $val( 'origin' ) ); ?></textarea>
 				</div>
 				<div class="boa-field">
-					<label class="boa-label" for="future">どんな画家になりたいか <span class="boa-optional">任意</span></label>
-					<textarea id="future" name="future" class="boa-textarea" rows="4" maxlength="2000"><?php echo esc_textarea( $val( 'future' ) ); ?></textarea>
+					<label class="boa-label" for="future">どんな画家になりたいか <span class="boa-required">必須</span></label>
+					<textarea id="future" name="future" class="boa-textarea" rows="4" maxlength="2000" required><?php echo esc_textarea( $val( 'future' ) ); ?></textarea>
 				</div>
 				<div class="boa-field">
 					<label class="boa-label" for="boa_relation">BANK OF ART とどう関わりたいか <span class="boa-optional">任意</span></label>
@@ -204,8 +204,8 @@ $self_url       = get_permalink();
 
 				<div class="boa-field-row">
 					<div class="boa-field">
-						<label class="boa-label" for="pace">直近1ヶ月の制作ペース <span class="boa-optional">任意</span></label>
-						<select id="pace" name="pace" class="boa-select">
+						<label class="boa-label" for="pace">直近1ヶ月の制作ペース <span class="boa-required">必須</span></label>
+						<select id="pace" name="pace" class="boa-select" required>
 							<option value="">選択してください</option>
 							<?php foreach ( bankofart_artist_entry_pace_options() as $opt ) : ?>
 								<option value="<?php echo esc_attr( $opt ); ?>"<?php echo $sel( 'pace', $opt ); // phpcs:ignore WordPress.Security.EscapeOutput ?>><?php echo esc_html( $opt ); ?></option>
@@ -213,8 +213,8 @@ $self_url       = get_permalink();
 						</select>
 					</div>
 					<div class="boa-field">
-						<label class="boa-label" for="income">現在の主な収入源 <span class="boa-optional">任意</span></label>
-						<select id="income" name="income" class="boa-select">
+						<label class="boa-label" for="income">現在の主な収入源 <span class="boa-required">必須</span></label>
+						<select id="income" name="income" class="boa-select" required>
 							<option value="">選択してください</option>
 							<?php foreach ( bankofart_artist_entry_income_options() as $opt ) : ?>
 								<option value="<?php echo esc_attr( $opt ); ?>"<?php echo $sel( 'income', $opt ); // phpcs:ignore WordPress.Security.EscapeOutput ?>><?php echo esc_html( $opt ); ?></option>
@@ -236,8 +236,8 @@ $self_url       = get_permalink();
 				</div>
 				<p class="boa-help">PDF形式・<?php echo (int) ( BANKOFART_ARTIST_ENTRY_MAX_PDF_BYTES / 1024 / 1024 ); ?>MB 以内。作品をまとめた1ファイルをご提出ください。</p>
 				<div class="boa-field">
-					<label class="boa-label" for="portfolio_file">ポートフォリオPDF</label>
-					<input type="file" id="portfolio_file" name="portfolio_file" class="aa-file" accept="application/pdf,.pdf">
+					<label class="boa-label" for="portfolio_file">ポートフォリオPDF <span class="boa-required">必須</span></label>
+					<input type="file" id="portfolio_file" name="portfolio_file" class="aa-file" accept="application/pdf,.pdf" required>
 				</div>
 			</div>
 
