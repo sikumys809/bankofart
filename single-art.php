@@ -57,23 +57,6 @@ while ( have_posts() ) :
 	$genre_label = $tax_join( $art_id, 'art_genre' );
 	$tech_label  = $tax_join( $art_id, 'art_technique' );
 
-	// ---- メインカラー（タクソノミー + ターム メタ） ----
-	$color_terms = get_the_terms( $art_id, 'art_main_color' );
-	$color_term  = ( ! is_wp_error( $color_terms ) && $color_terms ) ? $color_terms[0] : null;
-	$color_hex   = '';
-	$color_eff_t = '';
-	$color_eff_d = '';
-	$color_pl_t  = '';
-	$color_pl_d  = '';
-	if ( $color_term ) {
-		$color_hex   = get_term_meta( $color_term->term_id, 'color_hex', true );
-		$color_eff_t = get_term_meta( $color_term->term_id, 'color_effect_title', true );
-		$color_eff_d = get_term_meta( $color_term->term_id, 'color_effect_description', true );
-		$color_pl_t  = get_term_meta( $color_term->term_id, 'recommended_place_title', true );
-		$color_pl_d  = get_term_meta( $color_term->term_id, 'recommended_place_description', true );
-	}
-	$show_color = ( $color_term && ( $color_eff_t || $color_eff_d || $color_pl_t || $color_pl_d ) );
-
 	// ---- アーティスト（artist_to_art 逆引き） ----
 	$artists   = bankofart_get_connected( 'artist_to_art', 'to', $art_id );
 	$artist    = ! empty( $artists ) ? $artists[0] : null;
@@ -235,46 +218,17 @@ while ( have_posts() ) :
 					<a href="<?php echo esc_url( $briefing_url ); ?>" class="aw-cta-outline"><?php echo esc_html__( 'オンライン説明会', 'bankofart' ); ?></a>
 				</div>
 			<?php else : ?>
-				<!-- AVAILABLE：通常の問い合わせ導線（外部URL。後で自前ページに差し替え予定） -->
+				<!-- AVAILABLE：通常の問い合わせ導線（自前ページ・同一サイト内のため target=_blank なし） -->
 				<p class="aw-note"><?php echo esc_html__( '作品の販売は対面契約のみとなります。価格・在庫状況・即時償却の詳細は、資料請求またはオンライン説明会にてご案内いたします。', 'bankofart' ); ?></p>
 				<div class="aw-cta-btns">
-					<a href="<?php echo esc_url( $document_url ); ?>" class="aw-cta-primary" target="_blank" rel="noopener"><?php echo esc_html__( 'この作品を購入したい方はこちら', 'bankofart' ); ?></a>
-					<a href="<?php echo esc_url( $briefing_url ); ?>" class="aw-cta-outline" target="_blank" rel="noopener"><?php echo esc_html__( 'オンライン説明会', 'bankofart' ); ?></a>
+					<a href="<?php echo esc_url( $briefing_url ); ?>" class="aw-cta-primary"><?php echo esc_html__( 'この作品を購入したい方はこちら', 'bankofart' ); ?></a>
+					<a href="<?php echo esc_url( $document_url ); ?>" class="aw-cta-outline"><?php echo esc_html__( '資料請求', 'bankofart' ); ?></a>
 				</div>
 			<?php endif; ?>
 		</div>
 	</section>
 
-	<!-- ════════ MAIN COLOR ════════ -->
-	<?php if ( $show_color ) : ?>
-		<section class="aw-color-sec">
-			<div class="aw-color-inner">
-				<div class="aw-color-swatch" style="background-color:<?php echo esc_attr( $color_hex ? $color_hex : 'var(--warm-gray)' ); ?>;" aria-hidden="true"></div>
-				<div class="aw-color-body rv">
-					<div class="aw-color-label">Main Color</div>
-					<h2 class="aw-color-name"><?php echo esc_html( $color_term->name ); ?></h2>
-
-					<?php if ( ! empty( $color_eff_t ) ) : ?>
-						<h3 class="aw-color-effect-title"><?php echo esc_html( $color_eff_t ); ?></h3>
-					<?php endif; ?>
-					<?php if ( ! empty( $color_eff_d ) ) : ?>
-						<p class="aw-color-effect-desc"><?php echo esc_html( $color_eff_d ); ?></p>
-					<?php endif; ?>
-
-					<?php if ( ! empty( $color_pl_t ) || ! empty( $color_pl_d ) ) : ?>
-						<div class="aw-color-place">
-							<?php if ( ! empty( $color_pl_t ) ) : ?>
-								<div class="aw-color-place-title"><?php echo esc_html( $color_pl_t ); ?></div>
-							<?php endif; ?>
-							<?php if ( ! empty( $color_pl_d ) ) : ?>
-								<p class="aw-color-place-desc"><?php echo esc_html( $color_pl_d ); ?></p>
-							<?php endif; ?>
-						</div>
-					<?php endif; ?>
-				</div>
-			</div>
-		</section>
-	<?php endif; ?>
+	<!-- MAIN COLOR セクションは撤廃（カラー解説はアーカイブページに集約） -->
 
 	<!-- ════════ ABOUT THE WORK ════════ -->
 	<?php if ( $show_about ) : ?>
