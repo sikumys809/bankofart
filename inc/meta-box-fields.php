@@ -656,6 +656,27 @@ function bankofart_register_meta_boxes( $meta_boxes ) {
 				'desc' => '公式サイト',
 			),
 			array(
+				'id'   => 'collector_external_url',
+				'name' => '旧サイト記事URL（参照用）',
+				'type' => 'url',
+				'tab'  => 'basic',
+				'desc' => '旧サイトの該当記事URL。参照用（表示は任意）。',
+			),
+			array(
+				'id'   => 'collector_video_url',
+				'name' => '動画URL',
+				'type' => 'url',
+				'tab'  => 'basic',
+				'desc' => 'YouTube等（任意）。',
+			),
+			array(
+				'id'   => 'collector_introduced_artwork_text',
+				'name' => 'コレクト作品名（テキスト）',
+				'type' => 'text',
+				'tab'  => 'basic',
+				'desc' => 'art リレーション未投入時の暫定テキスト。',
+			),
+			array(
 				'id'   => 'collector_industry_text',
 				'name' => '業界（表示用テキスト）',
 				'type' => 'text',
@@ -782,6 +803,34 @@ function bankofart_register_meta_boxes( $meta_boxes ) {
 			bankofart_section_switch( 'collector_show_cta', 'CTA（資料請求・説明会）セクション' ),
 		),
 	);
+
+	/* =========================================================
+	 * COLLECTOR（移行管理／非公開・管理者のみ）
+	 * legacy_post_id / identify_status は公開ページに出力しない管理用メモ。
+	 * ======================================================= */
+	if ( $can_manage ) {
+		$meta_boxes[] = array(
+			'title'      => 'コレクター 管理情報（非公開）',
+			'id'         => 'bankofart_collector_private',
+			'post_types' => array( 'collector' ),
+			'context'    => 'side',
+			'priority'   => 'low',
+			'fields'     => array(
+				array(
+					'id'   => 'collector_legacy_post_id',
+					'name' => '旧サイト投稿ID',
+					'type' => 'text',
+					'desc' => '移行管理用（重複投入防止のキー）',
+				),
+				array(
+					'id'   => 'collector_identify_status',
+					'name' => '同定ステータス（メモ）',
+					'type' => 'text',
+					'desc' => '管理用メモ。公開ページには出力しない。',
+				),
+			),
+		);
+	}
 
 	/* =========================================================
 	 * NEWS — 3タブ

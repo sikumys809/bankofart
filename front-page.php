@@ -332,8 +332,12 @@ $front_top_size_map = array(
 						if ( '' === trim( $c_name ) ) {
 							$c_name = get_the_title( $c_id );
 						}
-						$c_logo  = bankofart_get_image( 'collector_logo', $c_id, 'medium' );
-						$c_bg    = ! empty( $c_logo['url'] ) ? ' style="background-image:url(\'' . esc_url( $c_logo['url'] ) . '\');"' : '';
+						// メイン画像（オフィスメイン写真）を優先。未設定時のみ企業ロゴにフォールバック。
+						$c_img   = bankofart_get_image( 'collector_main_office_image', $c_id, 'medium' );
+						if ( empty( $c_img['url'] ) ) {
+							$c_img = bankofart_get_image( 'collector_logo', $c_id, 'medium' );
+						}
+						$c_bg    = ! empty( $c_img['url'] ) ? ' style="background-image:url(\'' . esc_url( $c_img['url'] ) . '\');"' : '';
 						?>
 						<a href="<?php echo esc_url( get_permalink( $c_id ) ); ?>" class="collector-card rv">
 							<div class="collector-card-img"<?php echo $c_bg; // phpcs:ignore WordPress.Security.EscapeOutput -- URLは esc_url 済み ?>></div>
