@@ -39,6 +39,15 @@
 .sj-section-body { font-family: var(--f-jp); font-size: var(--fs-body); letter-spacing: var(--ls-1); line-height: 2.15; color: var(--ink); }
 .sj-section-body p + p { margin-top: 24px; }
 .sj-section-body a { color: var(--brand-deep); text-decoration: underline; }
+/* 本文に挿入したメイン画像は本文幅いっぱいに大きく表示（中央）。
+   src は large/full に差し替え済み（bankofart_enlarge_content_images）なので鮮明。 */
+.sj-section-body img { display: block; width: 100%; height: auto; margin: 36px auto; }
+.sj-section-body figure { margin: 36px auto; }
+.sj-section-body figure img { margin: 0 auto; }
+.sj-section-body figcaption { margin-top: 10px; font-family: var(--f-jp); font-size: 13px; letter-spacing: var(--ls-1); color: var(--mid); text-align: center; }
+/* 回り込みで小さく置きたい場合（任意）：左右寄せは原寸で float。 */
+.sj-section-body img.alignleft  { float: left;  width: auto; max-width: 46%; margin: 6px 28px 18px 0; }
+.sj-section-body img.alignright { float: right; width: auto; max-width: 46%; margin: 6px 0 18px 28px; }
 .sj-section-figs { margin-top: 28px; display: grid; grid-template-columns: 1fr; gap: 20px; }
 .sj-section-figs .sj-section-fig { display: block; width: 100%; height: auto; }
 .sj-section-figs:has(.sj-section-fig:nth-child(2)) { grid-template-columns: repeat(2, 1fr); }
