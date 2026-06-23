@@ -230,6 +230,16 @@ function bankofart_enqueue_assets() {
 		);
 	}
 
+	// ページ別アセット：プライバシーポリシー（固定ページ slug: privacy-policy）。
+	if ( is_page( 'privacy-policy' ) ) {
+		wp_enqueue_style(
+			'bankofart-privacy-policy',
+			"{$theme_uri}/assets/css/pages/privacy-policy.css",
+			array( 'bankofart-base' ),
+			$ver
+		);
+	}
+
 	// ページ別アセット：資料請求フォーム＋完了画面。
 	if ( is_page_template( 'page-document-request.php' ) || is_page_template( 'page-document-request-complete.php' ) || is_page( 'document-request' ) ) {
 		wp_enqueue_style(
