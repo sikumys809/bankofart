@@ -24,7 +24,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function bankofart_enqueue_assets() {
 	$theme_uri = get_theme_file_uri();
-	$ver       = defined( 'BANKOFART_VERSION' ) ? BANKOFART_VERSION : wp_get_theme()->get( 'Version' );
+	// CSS/JS の版番号。テーマ版＋assets配下の最終更新時刻を混ぜ、ファイルを編集すると
+	// URL（?ver=）が変わってブラウザキャッシュが必ず破棄されるようにする（編集が即反映）。
+	$ver = bankofart_assets_version();
 
 	/*
 	 * Google Fonts
@@ -452,3 +454,51 @@ function bankofart_fonts_preconnect( $html, $handle ) {
 	return $html;
 }
 add_filter( 'style_loader_tag', 'bankofart_fonts_preconnect', 10, 2 );
+
+/**
+ * アセット版番号を生成する。
+ *
+ * テーマ版に assets/css・assets/js 配下の「最終更新時刻」を付与して返す。
+ * これにより CSS/JS を編集すると enqueue の ?ver= が変化し、ブラウザ／中間キャッシュが
+ * 確実に破棄されて変更が即座に反映される（開発中の「編集が反映されない」事故を防ぐ）。
+ *
+ * 走査対象は css/js のみ（画像は対象外）で件数が少なく軽量。リクエスト内で静的キャッシュ。
+ * 本番でファイル更新が止まったら、固定版番号へ切り替えても良い。
+ *
+ * @return string 版番号（例: 1.0.0.1718000000）。
+ */
+function bankofart_assets_version() {
+	static $cached = null;
+	if ( null !== $cached ) {
+		return $cached;
+	}
+
+	$base   = defined( 'BANKOFART_VERSION' ) ? BANKOFART_VERSION : wp_get_theme()->get( 'Version' );
+	$latest = 0;
+
+	foreach ( array( 'assets/css', 'assets/js' ) as $dir ) {
+		$path = get_theme_file_path( $dir );
+		if ( ! is_dir( $path ) ) {
+			continue;
+		}
+		try {
+			$iterator = new RecursiveIteratorIterator(
+				new RecursiveDirectoryIterator( $path, FilesystemIterator::SKIP_DOTS )
+			);
+			foreach ( $iterator as $file ) {
+				if ( $file->isFile() ) {
+					$mtime = $file->getMTime();
+					if ( $mtime > $latest ) {
+						$latest = $mtime;
+					}
+				}
+			}
+		} catch ( Exception $e ) {
+			// 走査に失敗してもテーマ版で動作継続。
+			$latest = 0;
+		}
+	}
+
+	$cached = $latest ? ( $base . '.' . $latest ) : (string) $base;
+	return $cached;
+}
