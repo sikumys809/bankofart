@@ -197,9 +197,19 @@ function bankofart_apply_url() {
  * recruit ページの「詳しい募集要項はこちら」と、FOR ARTISTS バナーの
  * 「募集要項を見る」ボタンが共通でこれを参照する。差し替えはこの1関数のみ。
  *
+ * カスタマイザー（外観 › カスタマイズ › 募集（RECRUIT））でアップロードした
+ * PDF を優先。未設定ならテーマ同梱の assets/docs/ のPDFにフォールバック。
+ *
  * @return string 募集要項PDF URL。
  */
 function bankofart_recruit_guidelines_pdf_url() {
+	$attachment_id = absint( get_theme_mod( 'bankofart_guidelines_pdf', 0 ) );
+	if ( $attachment_id ) {
+		$url = wp_get_attachment_url( $attachment_id );
+		if ( $url ) {
+			return $url;
+		}
+	}
 	return get_theme_file_uri( 'assets/docs/boa-artist-application-guidelines.pdf' );
 }
 

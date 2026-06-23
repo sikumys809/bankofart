@@ -94,5 +94,48 @@ function bankofart_customize_register( $wp_customize ) {
 			)
 		);
 	}
+
+	/*
+	 * 募集（RECRUIT）：画家募集要項PDF。
+	 * 管理画面からPDFをアップロード／選択して差し替え可能（添付IDを保存）。
+	 * recruit ページ「詳しい募集要項はこちら」/ FOR ARTISTS バナーが参照。
+	 */
+	$wp_customize->add_section(
+		'bankofart_recruit',
+		array(
+			'title'       => __( '募集（RECRUIT）', 'bankofart' ),
+			'priority'    => 31,
+			'description' => __( '画家募集要項のPDFをアップロードしてください。未設定の場合はテーマ同梱PDFが使われます。', 'bankofart' ),
+		)
+	);
+	$wp_customize->add_setting(
+		'bankofart_guidelines_pdf',
+		array(
+			'default'           => 0,
+			'type'              => 'theme_mod',
+			'sanitize_callback' => 'absint',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		new WP_Customize_Media_Control(
+			$wp_customize,
+			'bankofart_guidelines_pdf',
+			array(
+				'label'       => __( '画家募集要項PDF', 'bankofart' ),
+				'description' => __( 'PDFファイルをアップロードまたはメディアから選択。', 'bankofart' ),
+				'section'     => 'bankofart_recruit',
+				'mime_type'   => 'application/pdf',
+				'button_labels' => array(
+					'select'       => __( 'PDFを選択', 'bankofart' ),
+					'change'       => __( 'PDFを変更', 'bankofart' ),
+					'remove'       => __( '削除', 'bankofart' ),
+					'placeholder'  => __( 'PDF未選択', 'bankofart' ),
+					'frame_title'  => __( '募集要項PDFを選択', 'bankofart' ),
+					'frame_button' => __( 'このPDFを使用', 'bankofart' ),
+				),
+			)
+		)
+	);
 }
 add_action( 'customize_register', 'bankofart_customize_register' );
