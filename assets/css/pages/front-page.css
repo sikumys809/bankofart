@@ -597,6 +597,8 @@ body.reveal-ready .frame.flipped { opacity: 1; transform: translateY(0); }
 
 .artist-portrait {
   width: 100%;
+  /* デザイン優先の縦長フレーム。cover の上書き（.apN ショートハンド）は解消済みなので
+     この比率でも左上ズレは起きない。横長・正方形画像は左右が切り取られて拡大される。 */
   aspect-ratio: 3/4.4;
   position: relative;
   overflow: hidden;
@@ -604,12 +606,17 @@ body.reveal-ready .frame.flipped { opacity: 1; transform: translateY(0); }
 }
 .artist-port-img {
   position:absolute; inset:0;
-  filter: grayscale(1) contrast(1.1) brightness(.85);
+  /* cover + やや上寄せ。縦長枠では被写体（顔）が上に来やすいので中央より少し上を基準にする。 */
+  background-size: cover;
+  background-position: center 30%;
+  background-repeat: no-repeat;
+  /* グレースケールは廃止し最初からフルカラー。軽い調整のみ残す。 */
+  filter: contrast(1.03) saturate(1.02);
   transition: transform .8s cubic-bezier(.2,.7,.2,1), filter .5s ease;
 }
 .artist-card:hover .artist-port-img {
   transform:scale(1.06);
-  filter: grayscale(0) contrast(1.05) brightness(1);
+  filter: contrast(1.05) saturate(1.05);
 }
 /* ホバーで上から金色のラインが下りる */
 .artist-portrait::after {
@@ -645,11 +652,14 @@ body.reveal-ready .frame.flipped { opacity: 1; transform: translateY(0); }
   transform: translateX(0);
 }
 
-.ap1 { background: radial-gradient(ellipse at 50% 35%, #888 0%, #444 50%, #1a1a1a 100%); }
-.ap2 { background: radial-gradient(ellipse at 45% 30%, #989898 0%, #505050 45%, #1c1c1c 100%); }
-.ap3 { background: radial-gradient(ellipse at 55% 40%, #808080 0%, #404040 50%, #151515 100%); }
-.ap4 { background: radial-gradient(ellipse at 50% 32%, #888 0%, #484848 45%, #181818 100%); }
-.ap5 { background: radial-gradient(ellipse at 48% 38%, #787878 0%, #3a3a3a 45%, #131313 100%); }
+/* 写真未設定時のフォールバック背景。background ショートハンドだと
+   .artist-port-img の background-size:cover / position を打ち消してしまうため、
+   background-image だけを指定する（写真がある時はインラインの url() が優先される）。 */
+.ap1 { background-image: radial-gradient(ellipse at 50% 35%, #888 0%, #444 50%, #1a1a1a 100%); }
+.ap2 { background-image: radial-gradient(ellipse at 45% 30%, #989898 0%, #505050 45%, #1c1c1c 100%); }
+.ap3 { background-image: radial-gradient(ellipse at 55% 40%, #808080 0%, #404040 50%, #151515 100%); }
+.ap4 { background-image: radial-gradient(ellipse at 50% 32%, #888 0%, #484848 45%, #181818 100%); }
+.ap5 { background-image: radial-gradient(ellipse at 48% 38%, #787878 0%, #3a3a3a 45%, #131313 100%); }
 
 .artist-portrait::before {
   content:''; position:absolute; inset:0;
