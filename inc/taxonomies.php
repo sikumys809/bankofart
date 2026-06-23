@@ -93,7 +93,7 @@ function bankofart_get_taxonomy_config() {
 		'collector_industry' => array(
 			'label'     => '業界',
 			'post_type' => 'collector',
-			'terms'     => array( '士業', '不動産・建設', '金融・保険', '医療・福祉', 'IT・通信', '製造・メーカー', '卸・商社', '小売・サービス', '教育・人材', '広告・メディア', 'エンタメ・文化', '物流・運輸', '公共・その他' ),
+			'terms'     => array( '士業', '不動産・建設', '金融・保険', '医療・福祉', 'IT・通信', '製造・メーカー', '卸・商社', '小売・サービス', '教育・人材', '広告・メディア', 'エンタメ・文化', '物流・運輸', '公共・その他', 'その他' ),
 		),
 		'collector_placement' => array(
 			'label'     => '設置場所',

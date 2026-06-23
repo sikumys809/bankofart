@@ -21,8 +21,6 @@ while ( have_posts() ) :
 
 	// ---- 基本 ----
 	$title         = get_the_title();
-	$industry_text = rwmb_meta( 'collector_industry_text' );
-	$office_loc    = rwmb_meta( 'collector_office_location_detail' );
 	$impl_raw      = rwmb_meta( 'collector_implementation_date' );
 	$change        = rwmb_meta( 'collector_change_summary' );
 
@@ -145,14 +143,14 @@ while ( have_posts() ) :
 		}
 	}
 	$profile_rows = array();
-	$industry_disp = $industry_text ? $industry_text : $industry_term;
+	$industry_disp = $industry_term; // 業界は「業種」タクソノミーに一本化。
 	if ( ! empty( $industry_disp ) ) {
 		$profile_rows[] = array( '業界', $industry_disp );
 	}
 	if ( ! empty( $issue_label ) ) {
 		$profile_rows[] = array( '企業課題', $issue_label );
 	}
-	$place_disp = $place_label ? $place_label : $office_loc;
+	$place_disp = $place_label; // 設置場所は「設置場所」タクソノミーに一本化。
 	if ( ! empty( $place_disp ) ) {
 		$profile_rows[] = array( '設置場所', $place_disp );
 	}
@@ -317,8 +315,7 @@ while ( have_posts() ) :
 					$rc_id       = $rc->ID;
 					$rc_img      = bankofart_get_image( 'collector_main_office_image', $rc_id, 'large' );
 					$rc_issue    = bankofart_get_first_term_name( $rc_id, 'collector_issue' );
-					$rc_ind      = rwmb_meta( 'collector_industry_text', '', $rc_id );
-					$rc_ind      = $rc_ind ? $rc_ind : bankofart_get_first_term_name( $rc_id, 'collector_industry' );
+					$rc_ind      = bankofart_get_first_term_name( $rc_id, 'collector_industry' );
 					$rc_effect   = rwmb_meta( 'collector_change_summary', '', $rc_id );
 					?>
 					<a href="<?php echo esc_url( get_permalink( $rc_id ) ); ?>" class="cs-related-card rv">

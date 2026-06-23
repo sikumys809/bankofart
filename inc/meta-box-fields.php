@@ -676,20 +676,10 @@ function bankofart_register_meta_boxes( $meta_boxes ) {
 				'tab'  => 'basic',
 				'desc' => 'art リレーション未投入時の暫定テキスト。',
 			),
-			array(
-				'id'   => 'collector_industry_text',
-				'name' => '業界（表示用テキスト）',
-				'type' => 'text',
-				'tab'  => 'basic',
-				'desc' => 'タクソノミーより細かく',
-			),
-			array(
-				'id'   => 'collector_office_location_detail',
-				'name' => '設置場所（自由記述）',
-				'type' => 'text',
-				'tab'  => 'basic',
-				'desc' => 'タクソノミーの補足',
-			),
+			// 「業界（表示用テキスト）」「設置場所（自由記述）」は廃止。
+			// 業界は下の「業種」タクソノミー（13種＋その他）に一本化、設置場所も
+			// 「設置場所」タクソノミー（複数選択）に一本化した。既存の自由テキスト値は
+			// DB上に残るが（後日CSVで業種へ移行）、編集UI・表示参照からは外している。
 			array(
 				'id'         => 'collector_implementation_date',
 				'name'       => '導入時期',
@@ -705,7 +695,7 @@ function bankofart_register_meta_boxes( $meta_boxes ) {
 				'tab'  => 'basic',
 				'desc' => 'カード表示用',
 			),
-			bankofart_taxonomy_picker( 'collector_industry_picker', '業種', 'collector_industry', 'basic', false, '13業種から選択' ),
+			bankofart_taxonomy_picker( 'collector_industry_picker', '業種', 'collector_industry', 'basic', false, '14業種から選択（13種＋その他）' ),
 			bankofart_taxonomy_picker( 'collector_issue_picker', '課題', 'collector_issue', 'basic', true, '複数選択可・診断と連動' ),
 			bankofart_taxonomy_picker( 'collector_placement_picker', '設置場所', 'collector_placement', 'basic', true, '複数選択可' ),
 			// --- 画像 ---
