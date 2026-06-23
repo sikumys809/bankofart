@@ -29,11 +29,14 @@ $logo_circle = get_theme_file_uri( 'assets/img/logo/boa-12.png' );
 $logo_text   = get_theme_file_uri( 'assets/img/logo/boa-17.png' );
 
 // MESSAGE（FOUNDER）ポートレート。ファイルがあれば背景に cover 表示、無ければCSSのグラデ。
-$founder_mizuno_bg = file_exists( get_theme_file_path( 'assets/img/founder/mizuno.png' ) )
-	? ' style="background-image:url(\'' . esc_url( get_theme_file_uri( 'assets/img/founder/mizuno.png' ) ) . '\');background-size:cover;background-position:center 20%;"'
+// 画像更新時に確実に反映されるよう URL へ filemtime ベースの ?ver= を付与（キャッシュ破棄）。
+$founder_mizuno_path = get_theme_file_path( 'assets/img/founder/mizuno.png' );
+$founder_mizuno_bg   = file_exists( $founder_mizuno_path )
+	? ' style="background-image:url(\'' . esc_url( get_theme_file_uri( 'assets/img/founder/mizuno.png' ) . '?ver=' . filemtime( $founder_mizuno_path ) ) . '\');background-size:cover;background-position:center 20%;"'
 	: '';
-$founder_okada_bg = file_exists( get_theme_file_path( 'assets/img/founder/okada.jpeg' ) )
-	? ' style="background-image:url(\'' . esc_url( get_theme_file_uri( 'assets/img/founder/okada.jpeg' ) ) . '\');background-size:cover;background-position:center 20%;"'
+$founder_okada_path = get_theme_file_path( 'assets/img/founder/okada.jpeg' );
+$founder_okada_bg   = file_exists( $founder_okada_path )
+	? ' style="background-image:url(\'' . esc_url( get_theme_file_uri( 'assets/img/founder/okada.jpeg' ) . '?ver=' . filemtime( $founder_okada_path ) ) . '\');background-size:cover;background-position:center 20%;"'
 	: '';
 
 // アーカイブリンク。
