@@ -27,6 +27,13 @@ while ( have_posts() ) :
 	$ext_url  = rwmb_meta( 'news_external_url' );
 	$ext_lbl  = rwmb_meta( 'news_external_label' );
 
+	// 外部リンクが YouTube の場合は埋め込み再生用URLを生成（ABOUT/Artist の動画と同じ作法）。
+	// 通常の動画URL・短縮URL・shorts に対応。YouTube 以外は通常の外部リンク扱い。
+	$video_embed = '';
+	if ( ! empty( $ext_url ) && preg_match( '~(?:youtu\.be/|youtube\.com/(?:watch\?v=|embed/|v/|shorts/))([\w-]{11})~', $ext_url, $m ) ) {
+		$video_embed = 'https://www.youtube.com/embed/' . $m[1];
+	}
+
 	// アイキャッチ：news_main_image（Meta Box）優先、無ければ投稿サムネイル。
 	$eyecatch = bankofart_get_image( 'news_main_image', $nid, 'large' );
 	if ( empty( $eyecatch['url'] ) && has_post_thumbnail( $nid ) ) {
@@ -97,7 +104,14 @@ while ( have_posts() ) :
 		<h1 class="sn-hero-title rv d1"><?php echo esc_html( $title ); ?></h1>
 	</header>
 
-	<?php if ( ! empty( $eyecatch['url'] ) ) : ?>
+	<?php if ( ! empty( $video_embed ) ) : ?>
+		<!-- 外部リンクが YouTube の場合：single ページ上で直接再生（ABOUT の動画と同様の表示）。 -->
+		<div class="sn-video rv">
+			<div class="sn-video-frame">
+				<iframe src="<?php echo esc_url( $video_embed ); ?>" title="<?php echo esc_attr( $title ); ?>" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			</div>
+		</div>
+	<?php elseif ( ! empty( $eyecatch['url'] ) ) : ?>
 		<div class="sn-eyecatch rv">
 			<img src="<?php echo esc_url( $eyecatch['url'] ); ?>" alt="<?php echo esc_attr( ! empty( $eyecatch['alt'] ) ? $eyecatch['alt'] : $title ); ?>" loading="lazy">
 		</div>
@@ -127,7 +141,7 @@ while ( have_posts() ) :
 					<?php endif; ?>
 
 					<?php if ( '' !== trim( wp_strip_all_tags( (string) $body ) ) ) : ?>
-						<div class="sn-section-body"><?php echo wp_kses_post( $body ); ?></div>
+						<div class="sn-section-body"><?php echo wp_kses_post( bankofart_enlarge_content_images( $body ) ); ?></div>
 					<?php endif; ?>
 
 					<?php if ( ! empty( $img_ids ) ) : ?>
@@ -155,7 +169,7 @@ while ( have_posts() ) :
 			<?php endforeach; ?>
 		<?php endif; ?>
 
-		<?php if ( ! empty( $ext_url ) ) : ?>
+		<?php if ( empty( $video_embed ) && ! empty( $ext_url ) ) : ?>
 			<div class="sn-external rv">
 				<a href="<?php echo esc_url( $ext_url ); ?>" class="sn-external-btn" target="_blank" rel="noopener">
 					<?php echo esc_html( ! empty( $ext_lbl ) ? $ext_lbl : '元記事を読む' ); ?>

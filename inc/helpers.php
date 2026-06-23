@@ -229,3 +229,49 @@ function bankofart_briefing_url() {
 	// 自前のオンライン説明会予約ページ（/online-briefing/）へ。差し替えはフィルターで。
 	return apply_filters( 'bankofart_briefing_url', home_url( '/online-briefing/' ) );
 }
+
+/**
+ * 本文（wysiwyg）に挿入された画像を「大きく・鮮明に」表示できるよう整える。
+ *
+ * クラシックエディタで「中サイズ」等を選んで挿入すると、src が縮小版（例 -300x216）に
+ * 固定され width/height 属性も付くため小さく表示される。本関数は：
+ *   - class の wp-image-{ID} から添付IDを取得し、src を large（無ければ full）に差し替え
+ *   - 古い srcset / sizes / width / height 属性を除去（表示幅は CSS 側に委ねる）
+ * これにより本文のメイン画像が本文幅いっぱいに大きく、かつ縮小版でない鮮明な画像で出る。
+ * 添付IDが取れない場合は src のサイズ接尾辞（-WxH）を除去して原寸に寄せる。
+ *
+ * @param string $html 本文HTML。
+ * @return string 変換後HTML。
+ */
+function bankofart_enlarge_content_images( $html ) {
+	if ( '' === (string) $html || false === strpos( $html, '<img' ) ) {
+		return $html;
+	}
+	return preg_replace_callback(
+		'~<img\b[^>]*>~i',
+		static function ( $m ) {
+			$tag     = $m[0];
+			$new_src = '';
+			if ( preg_match( '~wp-image-(\d+)~', $tag, $idm ) ) {
+				$id      = (int) $idm[1];
+				$new_src = wp_get_attachment_image_url( $id, 'large' );
+				if ( ! $new_src ) {
+					$new_src = wp_get_attachment_image_url( $id, 'full' );
+				}
+			}
+			if ( $new_src ) {
+				$tag = preg_replace( '~\ssrc=("|\')[^"\']*\1~i', ' src="' . esc_url( $new_src ) . '"', $tag );
+			} else {
+				// 添付ID不明：サイズ接尾辞を除去して原寸URLに寄せる（-scaled 等はそのまま）。
+				$tag = preg_replace( '~(src=("|\')[^"\']*?)-\d+x\d+(\.(?:jpe?g|png|webp|gif)\2)~i', '$1$3', $tag );
+			}
+			// 縮小前提の属性を除去（表示サイズは CSS に委ねる）。
+			$tag = preg_replace( '~\ssrcset=("|\')[^"\']*\1~i', '', $tag );
+			$tag = preg_replace( '~\ssizes=("|\')[^"\']*\1~i', '', $tag );
+			$tag = preg_replace( '~\swidth=("|\')\d+\1~i', '', $tag );
+			$tag = preg_replace( '~\sheight=("|\')\d+\1~i', '', $tag );
+			return $tag;
+		},
+		$html
+	);
+}

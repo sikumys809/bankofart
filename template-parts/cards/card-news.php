@@ -28,15 +28,16 @@ $title     = get_the_title( $news_id );
 $summary   = rwmb_meta( 'news_summary', '', $news_id );
 $category  = bankofart_get_first_term_name( $news_id, 'news_category' );
 $image     = bankofart_get_image( 'news_main_image', $news_id, 'medium' );
-$date      = get_the_modified_date( 'Y.m.d', $news_id ); // 更新日.
+$date      = get_the_date( 'Y.m.d', $news_id ); // 公開日（WP標準の「公開日時」で設定。昔の記事は過去日に設定可）。
 
 // 「メディア掲載」はダーク系バッジ（mockup: news-cat.media）。
 $cat_mod = ( 'メディア掲載' === $category ) ? ' media' : '';
 
-// NEWS は外部記事リンク方式：external_url があればそのURLへ（別タブ）、無ければ内部パーマリンク。
-$external    = rwmb_meta( 'news_external_url', '', $news_id );
-$href        = ! empty( $external ) ? $external : $permalink;
-$target_attr = ! empty( $external ) ? ' target="_blank" rel="noopener"' : '';
+// NEWS カードは常に内部の single ページへ遷移する。
+// 外部リンク（元記事 / YouTube）は single 側で「元記事を読む」ボタン、または
+// YouTube の場合は動画埋め込みとして扱う（カードから直接外部へ飛ばさない）。
+$href        = $permalink;
+$target_attr = '';
 
 // 一覧フィルター用にカテゴリ slug を data 属性に持たせる。
 $cat_terms = get_the_terms( $news_id, 'news_category' );
