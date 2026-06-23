@@ -28,6 +28,14 @@ $hero_bg_style = file_exists( $hero_bg_file ) ? ' style="background-image:url(\'
 $logo_circle = get_theme_file_uri( 'assets/img/logo/boa-12.png' );
 $logo_text   = get_theme_file_uri( 'assets/img/logo/boa-17.png' );
 
+// MESSAGE（FOUNDER）ポートレート。ファイルがあれば背景に cover 表示、無ければCSSのグラデ。
+$founder_mizuno_bg = file_exists( get_theme_file_path( 'assets/img/founder/mizuno.png' ) )
+	? ' style="background-image:url(\'' . esc_url( get_theme_file_uri( 'assets/img/founder/mizuno.png' ) ) . '\');background-size:cover;background-position:center 20%;"'
+	: '';
+$founder_okada_bg = file_exists( get_theme_file_path( 'assets/img/founder/okada.jpeg' ) )
+	? ' style="background-image:url(\'' . esc_url( get_theme_file_uri( 'assets/img/founder/okada.jpeg' ) ) . '\');background-size:cover;background-position:center 20%;"'
+	: '';
+
 // アーカイブリンク。
 $artist_archive    = get_post_type_archive_link( 'artist' );
 $art_archive       = get_post_type_archive_link( 'art' );
@@ -454,14 +462,14 @@ $front_top_size_map = array(
 				</div>
 				<div class="founder-portraits rv d2">
 					<div class="founder-card">
-						<div class="founder-portrait fp1"></div>
+						<div class="founder-portrait fp1"<?php echo $founder_mizuno_bg; // phpcs:ignore WordPress.Security.EscapeOutput -- URLは esc_url 済み ?>></div>
 						<div class="founder-info">
 							<div class="founder-name-ja">水野 永吉</div>
 							<div class="founder-univ">慶應義塾大学 卒</div>
 						</div>
 					</div>
 					<div class="founder-card">
-						<div class="founder-portrait fp2"></div>
+						<div class="founder-portrait fp2"<?php echo $founder_okada_bg; // phpcs:ignore WordPress.Security.EscapeOutput -- URLは esc_url 済み ?>></div>
 						<div class="founder-info">
 							<div class="founder-name-ja">岡田 美波</div>
 							<div class="founder-univ">成蹊大学 卒</div>
