@@ -39,36 +39,90 @@ $news_archive      = get_post_type_archive_link( 'news' );
  * 出力には get_posts()（配列）を使い、メインクエリのグローバルを汚さない。
  * 各フィールドは post_id を明示して rwmb_meta / ヘルパーで取得する。
  */
-// ARTIST：公認画家のみ、最新5名（menu_order → 公開日降順）。
+/*
+ * ARTIST：TOP表示ONのアーティストをレール（最大5名）に流し込む。
+ * 「TOPページに表示する（artist_top_featured）」が ON の投稿を取得し、
+ * 「TOP表示順（artist_top_order）」昇順で並べ、先頭5名だけ使う。
+ *
+ * ART と同様、順序未設定が orderby の INNER JOIN で除外されないよう、絞り込みのみ
+ * クエリで行い、ソート＆5名打ち切りは usort + array_slice で安全に処理する。
+ * featured は未設定/OFF（'0'）なら対象外（= meta value '1' の一致のみ取得）。
+ */
 $front_artists = get_posts(
 	array(
 		'post_type'      => 'artist',
 		'post_status'    => 'publish',
-		'posts_per_page' => 5,
-		'orderby'        => array(
-			'menu_order' => 'ASC',
-			'date'       => 'DESC',
-		),
-		'tax_query'      => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- TOP抜粋。件数は5件に限定。
+		'posts_per_page' => -1,
+		'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- TOP抜粋。featured のみで件数僅少。
 			array(
-				'taxonomy' => 'artist_status',
-				'field'    => 'name',
-				'terms'    => '公認画家',
+				'key'     => 'artist_top_featured',
+				'value'   => '1',
+				'compare' => '=',
 			),
 		),
 	)
 );
 
-// ART：作品の最新7点（コラージュ＝上段3＋下段4）。ステータス問わず公開日降順。
+// artist_top_order 昇順で並べ替え（未設定は末尾、同値は公開日降順）。
+usort(
+	$front_artists,
+	static function ( $a, $b ) {
+		$oa = rwmb_meta( 'artist_top_order', '', $a->ID );
+		$ob = rwmb_meta( 'artist_top_order', '', $b->ID );
+		$oa = is_numeric( $oa ) ? (float) $oa : INF;
+		$ob = is_numeric( $ob ) ? (float) $ob : INF;
+		if ( $oa === $ob ) {
+			return strcmp( $b->post_date, $a->post_date ); // 同順位は新しい順。
+		}
+		return ( $oa < $ob ) ? -1 : 1;
+	}
+);
+
+// レールは最大5名（モック：5カラム）。超過分は先頭5名で打ち切り。少なければあるだけ。
+$front_artists = array_slice( $front_artists, 0, 5 );
+
+/*
+ * ART：TOP表示ONの作品をコラージュ（上段3＋下段4＝最大7点）に流し込む。
+ * 「TOPページに表示する（art_top_featured）」が ON の作品を取得し、
+ * 「TOP表示順（art_top_order）」昇順で並べ、先頭7点だけ使う。
+ *
+ * 並び替えは PHP 側で行う。art_top_order を orderby の meta_key に使うと
+ * 順序未設定の作品が INNER JOIN で除外されてしまうため、ここでは絞り込みだけ
+ * クエリで行い、ソート＆7点打ち切りは usort + array_slice で安全に処理する。
+ * featured 件数は実運用でも数点程度のため -1 取得でも軽い。
+ */
 $front_arts = get_posts(
 	array(
 		'post_type'      => 'art',
 		'post_status'    => 'publish',
-		'posts_per_page' => 7,
-		'orderby'        => 'date',
-		'order'          => 'DESC',
+		'posts_per_page' => -1,
+		'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- TOP抜粋。featured のみで件数僅少。
+			array(
+				'key'     => 'art_top_featured',
+				'value'   => '1',
+				'compare' => '=',
+			),
+		),
 	)
 );
+
+// art_top_order 昇順で並べ替え（未設定は末尾、同値は公開日降順）。
+usort(
+	$front_arts,
+	static function ( $a, $b ) {
+		$oa = rwmb_meta( 'art_top_order', '', $a->ID );
+		$ob = rwmb_meta( 'art_top_order', '', $b->ID );
+		$oa = is_numeric( $oa ) ? (float) $oa : INF;
+		$ob = is_numeric( $ob ) ? (float) $ob : INF;
+		if ( $oa === $ob ) {
+			return strcmp( $b->post_date, $a->post_date ); // 同順位は新しい順。
+		}
+		return ( $oa < $ob ) ? -1 : 1;
+	}
+);
+
+// コラージュは最大7点（上段3＋下段4）。超過分は打ち切り（将来：2段以上に拡張余地）。
+$front_arts = array_slice( $front_arts, 0, 7 );
 
 // COLLECTOR：画家応援企業の最新12社（ロゴグリッド）。
 $front_collectors = get_posts(
@@ -94,8 +148,16 @@ $front_news = get_posts(
 	)
 );
 
-// ART コラージュのフレーム比率（モック準拠：上段 wide/tall/square、下段 tall/square/tall/wide）。
+// ART コラージュのフレーム比率。各作品の art_top_size を最優先で反映し、
+// 未設定の作品はこのモック既定の並び（上段 wide/tall/square、下段 tall/square/tall/wide）に
+// 位置でフォールバックする。
 $front_frame_types = array( 'type-wide', 'type-tall', 'type-square', 'type-tall', 'type-square', 'type-tall', 'type-wide' );
+// art_top_size の値 → frame の type-クラス対応。
+$front_top_size_map = array(
+	'wide'   => 'type-wide',
+	'tall'   => 'type-tall',
+	'square' => 'type-square',
+);
 ?>
 
 <main id="main" class="front-page">
@@ -165,7 +227,7 @@ $front_frame_types = array( 'type-wide', 'type-tall', 'type-square', 'type-tall'
 								</a>
 							<?php endforeach; ?>
 						<?php else : ?>
-							<p class="front-empty">公認アーティストを準備中です。</p>
+							<p class="front-empty">アーティストを準備中です。</p>
 						<?php endif; ?>
 					</div>
 					<div class="guest-more rv d2">
@@ -201,7 +263,15 @@ $front_frame_types = array( 'type-wide', 'type-tall', 'type-square', 'type-tall'
 						<?php
 						foreach ( $row as $art ) :
 							$art_id2     = $art->ID;
-							$type        = isset( $front_frame_types[ $order ] ) ? $front_frame_types[ $order ] : 'type-square';
+							// 表示サイズは作品の art_top_size を優先。未設定は位置でモック既定にフォールバック。
+							$art_top_size = (string) rwmb_meta( 'art_top_size', '', $art_id2 );
+							if ( isset( $front_top_size_map[ $art_top_size ] ) ) {
+								$type = $front_top_size_map[ $art_top_size ];
+							} elseif ( isset( $front_frame_types[ $order ] ) ) {
+								$type = $front_frame_types[ $order ];
+							} else {
+								$type = 'type-square';
+							}
 							$art_num     = (string) rwmb_meta( 'art_number', '', $art_id2 );
 							$art_img     = bankofart_get_image( 'art_main_image', $art_id2, 'large' );
 							$art_en      = (string) rwmb_meta( 'art_title_en', '', $art_id2 );

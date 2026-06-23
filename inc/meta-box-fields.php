@@ -135,6 +135,10 @@ function bankofart_register_meta_boxes( $meta_boxes ) {
 				'label' => 'セクション表示設定',
 				'icon'  => 'dashicons-visibility',
 			),
+			'top_display'     => array(
+				'label' => 'TOP表示設定',
+				'icon'  => 'dashicons-admin-home',
+			),
 		),
 		'fields'     => array(
 			// --- 基本情報 ---
@@ -326,6 +330,28 @@ function bankofart_register_meta_boxes( $meta_boxes ) {
 			bankofart_section_switch( 'artist_show_articles', 'ARTICLE（このアーティストの記事）セクション' ),
 			bankofart_section_switch( 'artist_show_matching', 'Artist Matching バナー' ),
 			bankofart_section_switch( 'artist_show_cta', 'CTA（資料請求・説明会）セクション' ),
+			// --- TOP表示設定（front-page の ARTIST レール流し込み用）---
+			array(
+				'id'        => 'artist_top_featured',
+				'name'      => 'TOPページに表示する',
+				'type'      => 'switch',
+				'tab'       => 'top_display',
+				'std'       => 0,
+				'style'     => 'rounded',
+				'on_label'  => '表示',
+				'off_label' => '非表示',
+				'desc'      => 'ONにしたアーティストが TOP の ARTIST レールに表示される（最大5名）。未設定/OFFは表示されない。',
+			),
+			array(
+				'id'   => 'artist_top_order',
+				'name' => 'TOP表示順',
+				'type' => 'number',
+				'tab'  => 'top_display',
+				'min'  => 0,
+				'step' => 1,
+				'std'  => 0,
+				'desc' => '小さい順に左から並ぶ（1, 2, 3…）。未設定は末尾。',
+			),
 		),
 	);
 
@@ -366,6 +392,10 @@ function bankofart_register_meta_boxes( $meta_boxes ) {
 			'section_display' => array(
 				'label' => 'セクション表示設定',
 				'icon'  => 'dashicons-visibility',
+			),
+			'top_display'     => array(
+				'label' => 'TOP表示設定',
+				'icon'  => 'dashicons-admin-home',
 			),
 		),
 		'fields'      => array(
@@ -520,6 +550,42 @@ function bankofart_register_meta_boxes( $meta_boxes ) {
 			bankofart_section_switch( 'art_show_collected_by', 'Collected by（所有企業）セクション ※OWNED時のみ' ),
 			bankofart_section_switch( 'art_show_ownership_history', 'Ownership History（所有歴）セクション' ),
 			bankofart_section_switch( 'art_show_cta', 'CTA（資料請求・説明会）セクション' ),
+			// --- TOP表示設定（front-page の ART コラージュ流し込み用）---
+			array(
+				'id'        => 'art_top_featured',
+				'name'      => 'TOPページに表示する',
+				'type'      => 'switch',
+				'tab'       => 'top_display',
+				'std'       => 0,
+				'style'     => 'rounded',
+				'on_label'  => '表示',
+				'off_label' => '非表示',
+				'desc'      => 'ONにした作品が TOP の ART コラージュに表示される（最大7点）。',
+			),
+			array(
+				'id'   => 'art_top_order',
+				'name' => 'TOP表示順',
+				'type' => 'number',
+				'tab'  => 'top_display',
+				'min'  => 0,
+				'step' => 1,
+				'std'  => 0,
+				'desc' => '小さい順に並ぶ（1, 2, 3…）。未設定は末尾。コラージュは上段3点→下段4点の順に埋まる。',
+			),
+			array(
+				'id'          => 'art_top_size',
+				'name'        => 'TOP表示サイズ',
+				'type'        => 'select',
+				'tab'         => 'top_display',
+				'options'     => array(
+					'wide'   => '横長（wide）',
+					'tall'   => '縦長（tall）',
+					'square' => '正方形（square）',
+				),
+				'std'         => 'square',
+				'placeholder' => false,
+				'desc'        => 'コラージュ内での枠の形。未設定はモック既定の並び（横長→縦長→正方形…）にフォールバック。',
+			),
 		),
 	);
 
