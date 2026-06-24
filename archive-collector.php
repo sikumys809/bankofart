@@ -87,28 +87,39 @@ $matching_url = home_url( '/matching-issue/' );
 			<div class="section-head-ja rv d1">画家応援企業の声</div>
 		</div>
 
-		<div class="filter-inner rv">
-			<span class="filter-label">Issue</span>
-			<div class="filter-tags">
-				<button type="button" class="filter-tag is-active" data-axis="issue" data-filter="all">すべて</button>
-				<?php foreach ( $issue_terms as $term ) : ?>
-					<button type="button" class="filter-tag" data-axis="issue" data-filter="<?php echo esc_attr( $term->term_id ); ?>"><?php echo esc_html( $term->name ); ?></button>
-				<?php endforeach; ?>
-			</div>
-
-			<?php if ( ! empty( $industry_terms ) ) : ?>
-				<div class="filter-select-group">
-					<label class="filter-label" for="industryFilter">業種</label>
-					<select class="filter-select" id="industryFilter" data-axis="industry" aria-label="<?php echo esc_attr__( '業種で絞り込む', 'bankofart' ); ?>">
-						<option value="all"><?php echo esc_html__( 'すべて', 'bankofart' ); ?></option>
-						<?php foreach ( $industry_terms as $term ) : ?>
-							<option value="<?php echo esc_attr( $term->term_id ); ?>"><?php echo esc_html( $term->name ); ?></option>
+		<div class="filter-section rv">
+			<!-- モバイル用フィルタートグル（PCでは CSS で非表示） -->
+			<button type="button" class="filter-toggle" id="filterToggle" aria-expanded="false" aria-controls="collectorFilterInner">
+				<span>詳細から探す</span>
+				<span class="filter-toggle-icon" aria-hidden="true"></span>
+			</button>
+			<div class="filter-inner" id="collectorFilterInner">
+				<div class="filter-row">
+					<span class="filter-label">Issue</span>
+					<div class="filter-tags">
+						<button type="button" class="filter-tag is-active" data-axis="issue" data-filter="all">すべて</button>
+						<?php foreach ( $issue_terms as $term ) : ?>
+							<button type="button" class="filter-tag" data-axis="issue" data-filter="<?php echo esc_attr( $term->term_id ); ?>"><?php echo esc_html( $term->name ); ?></button>
 						<?php endforeach; ?>
-					</select>
+					</div>
 				</div>
-			<?php endif; ?>
 
-			<span class="filter-count"><span class="boa-num"><?php echo (int) $collectors_q->post_count; ?></span>COLLECTORS</span>
+				<?php if ( ! empty( $industry_terms ) ) : ?>
+					<div class="filter-row">
+						<span class="filter-label">業種</span>
+						<div class="filter-tags">
+							<button type="button" class="filter-tag is-active" data-axis="industry" data-filter="all">すべて</button>
+							<?php foreach ( $industry_terms as $term ) : ?>
+								<button type="button" class="filter-tag" data-axis="industry" data-filter="<?php echo esc_attr( $term->term_id ); ?>"><?php echo esc_html( $term->name ); ?></button>
+							<?php endforeach; ?>
+						</div>
+					</div>
+				<?php endif; ?>
+
+				<div class="filter-result">
+					<span class="filter-count"><span class="boa-num"><?php echo (int) $collectors_q->post_count; ?></span>COLLECTORS</span>
+				</div>
+			</div>
 		</div>
 
 		<?php if ( $collectors_q->have_posts() ) : ?>

@@ -1,17 +1,21 @@
 /*
  * archive-collector-filter.js
  * COLLECTOR アーカイブの 2軸 AND 絞り込み ＋ モバイル限定ロードモア。
+ * UI は ART アーカイブと同じ「詳細から探す」パネル方式（Issue・業種とも .filter-tag チップ）。
  *
  * 絞り込み（PC・モバイル共通）:
- *   - Issue（課題）   … .filter-tag[data-axis="issue"] のチップ（既存UI）
- *   - 業種（industry）… #industryFilter の <select>（プルダウン）
+ *   - Issue（課題）   … .filter-tag[data-axis="issue"]
+ *   - 業種（industry）… .filter-tag[data-axis="industry"]
  *   - .collector-card[data-issue][data-industry]（スペース区切りのタームID）を AND 判定
  *   - .filter-count（COLLECTORS数）を「絞り込み後の総数」に更新（ロードモアで隠れている分も含む）
+ *   - どちらの軸も「すべて」でその軸は無効化
  *
- * ロードモア（@media max-width:760px 相当・JSで判定）:
- *   - 絞り込み結果のうち最初の 5 件のみ表示し、「もっと見る」で 5 件ずつ追加表示
- *   - PC（>760px）ではロードモアUIを隠して全件表示
- *   - 軸を変えるとロードモアのカウントは 5 件にリセット
+ * トグル（@media max-width:760px 相当・CSS）:
+ *   - #filterToggle で #collectorFilterInner を開閉（.is-open）
+ *
+ * ロードモア（モバイル・JSで判定）:
+ *   - 絞り込み結果の先頭 5 件のみ表示 →「もっと見る」で 5 件ずつ追加
+ *   - PC（>760px）は全件表示＋ロードモアUI非表示。軸変更で 5 件にリセット
  *
  * 素の JS（jQuery不使用）。
  */
@@ -22,12 +26,22 @@
 
 	document.addEventListener( 'DOMContentLoaded', function () {
 		var cards    = Array.prototype.slice.call( document.querySelectorAll( '.collector-grid .collector-card' ) );
-		var tags     = document.querySelectorAll( '.filter-tag[data-axis="issue"]' );
-		var select   = document.getElementById( 'industryFilter' );
+		var tags     = document.querySelectorAll( '.filter-tag[data-axis]' );
 		var countEl  = document.querySelector( '.filter-count .boa-num' );
 		var moreWrap = document.getElementById( 'collectorLoadMore' );
 		var moreBtn  = document.getElementById( 'collectorLoadMoreBtn' );
+		var toggle   = document.getElementById( 'filterToggle' );
+		var inner    = document.getElementById( 'collectorFilterInner' );
 		var mq       = window.matchMedia( '(max-width: 760px)' );
+
+		// トグルは絞り込み対象が無くても動かす。
+		if ( toggle && inner ) {
+			toggle.addEventListener( 'click', function () {
+				var open = inner.classList.toggle( 'is-open' );
+				toggle.classList.toggle( 'is-open', open );
+				toggle.setAttribute( 'aria-expanded', open ? 'true' : 'false' );
+			} );
+		}
 
 		if ( ! cards.length ) {
 			return;
@@ -57,7 +71,6 @@
 			var matched  = getMatched();
 			var isMobile = mq.matches;
 
-			// いったん全件隠す。
 			cards.forEach( function ( card ) {
 				card.style.display = 'none';
 			} );
@@ -80,7 +93,6 @@
 				}
 			}
 
-			// 件数は絞り込み後の総数（隠れている分も含む）。
 			if ( countEl ) {
 				countEl.textContent = String( matched.length );
 			}
@@ -92,25 +104,18 @@
 			render();
 		};
 
-		// Issue チップ。
+		// Issue / 業種 チップ（軸ごとに is-active を付け替え）。
 		tags.forEach( function ( tag ) {
 			tag.addEventListener( 'click', function () {
-				document.querySelectorAll( '.filter-tag[data-axis="issue"]' ).forEach( function ( x ) {
+				var axis = tag.getAttribute( 'data-axis' );
+				document.querySelectorAll( '.filter-tag[data-axis="' + axis + '"]' ).forEach( function ( x ) {
 					x.classList.remove( 'is-active' );
 				} );
 				tag.classList.add( 'is-active' );
-				state.issue = tag.getAttribute( 'data-filter' ) || 'all';
+				state[ axis ] = tag.getAttribute( 'data-filter' ) || 'all';
 				changeFilter();
 			} );
 		} );
-
-		// 業種プルダウン。
-		if ( select ) {
-			select.addEventListener( 'change', function () {
-				state.industry = select.value || 'all';
-				changeFilter();
-			} );
-		}
 
 		// もっと見る（モバイル）。
 		if ( moreBtn ) {
