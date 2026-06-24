@@ -224,11 +224,16 @@ function bankofart_sd_visual_artwork( $post_id ) {
 		}
 	}
 
-	// 技法（art_technique）→ artMedium / artform。
+	// 技法（art_technique）→ artMedium（画材・技法）。
 	$technique = bankofart_sd_terms( $post_id, 'art_technique' );
 	if ( '' !== $technique ) {
 		$node['artMedium'] = $technique;
-		$node['artform']   = $technique;
+	}
+
+	// 形態（art_form：平面/立体/半立体）→ artform。
+	$form = bankofart_sd_terms( $post_id, 'art_form' );
+	if ( '' !== $form ) {
+		$node['artform'] = $form;
 	}
 
 	// ジャンル（art_genre）→ genre。
