@@ -57,9 +57,9 @@ $matching_url = home_url( '/matching-purpose/' );
 		<h1 class="page-hero-title rv">ARTIST</h1>
 		<p class="page-hero-ja rv d1">所属画家</p>
 		<div class="page-statement rv d2">
-			<p><?php echo esc_html__( '「画家は絶滅危惧種」とも言われる時代。それでも、描くことをやめない人たちがいる。', 'bankofart' ); ?></p>
-			<p class="mid"><?php echo esc_html__( 'なぜ彼らは絵を描くのか。なぜ“画家として生きる”ことを選ぶのか。', 'bankofart' ); ?></p>
-			<p><?php echo esc_html__( 'それぞれが歩んできた人生と、描く理由がある。作品の奥にある、彼らだけの物語。', 'bankofart' ); ?></p>
+			<p><?php echo esc_html__( '「画家は絶滅危惧種」とも言われる時代。', 'bankofart' ); ?><br><?php echo esc_html__( 'それでも、描くことをやめない人たちがいる。', 'bankofart' ); ?></p>
+			<p class="mid"><?php echo esc_html__( 'なぜ彼らは絵を描くのか。', 'bankofart' ); ?><br><?php echo esc_html__( 'なぜ“画家として生きる”ことを選ぶのか。', 'bankofart' ); ?></p>
+			<p><?php echo esc_html__( 'それぞれが歩んできた人生と、描く理由がある。', 'bankofart' ); ?><br><?php echo esc_html__( '作品の奥にある、彼らだけの物語。', 'bankofart' ); ?></p>
 		</div>
 	</section>
 

@@ -1108,6 +1108,10 @@ body.reveal-ready .frame.flipped { opacity: 1; transform: translateY(0); }
   color: var(--ink);
   margin-bottom: 24px;
 }
+/* PC（≥981px）ではキャッチを1行に収める。タブレット/モバイルは自然折り返し。 */
+@media (min-width: 981px) {
+  .founder-quote { white-space: nowrap; }
+}
 .founder-quote-sub {
   font-family: var(--f-jp);
   font-size: clamp(16px, 1.2vw, 18px);
