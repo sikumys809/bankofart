@@ -71,7 +71,7 @@ $matching_url = home_url( '/matching-issue/' );
 			<div class="match-banner-left">
 				<span class="match-banner-label">Issue Matching</span>
 				<h2 class="match-banner-title">企業課題 <span class="accent">×</span> アート</h2>
-				<p class="match-banner-sub">その課題、アートで解決するかも。</p>
+				<p class="match-banner-sub">その課題、<br class="br-sp">アートで解決するかも。</p>
 				<p class="match-banner-body"><span class="boa-num">3</span>つの質問にお答えいただくだけで、御社の課題に合ったアートをご提案します。</p>
 			</div>
 			<div class="match-banner-right">

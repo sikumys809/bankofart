@@ -491,7 +491,7 @@ $client_logos = array(
 			</div>
 
 			<p class="reasons-tagline rv">
-				節税<span class="x">×</span>画家支援<span class="x">×</span>空間演出
+				節税<span class="x">×</span>画家支援<br class="br-sp"><span class="x">×</span>空間演出
 			</p>
 
 			<div class="reasons-cards rv d1">

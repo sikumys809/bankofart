@@ -69,8 +69,8 @@ $matching_url = home_url( '/matching-purpose/' );
 			<div class="match-banner-left">
 				<span class="match-banner-label">Artist Matching</span>
 				<h2 class="match-banner-title">企業理念 × アーティスト</h2>
-				<p class="match-banner-sub">価値観で繋がる、アートとの出会い。</p>
-				<p class="match-banner-body"><span class="boa-num">5</span>つの質問にお答えいただくだけで、御社のパーパスに最も共鳴するアーティストをご提案します。</p>
+				<p class="match-banner-sub">価値観で繋がる、<br class="br-sp">アートとの出会い。</p>
+				<p class="match-banner-body"><span class="boa-num">5</span>つの質問にお答えいただくだけで、<br class="br-sp">御社のパーパスに最も共鳴するアーティストをご提案します。</p>
 			</div>
 			<div class="match-banner-right">
 				<a href="<?php echo esc_url( $matching_url ); ?>" class="match-banner-btn">診断スタート</a>

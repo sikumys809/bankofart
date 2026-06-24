@@ -31,7 +31,7 @@ $cat_terms = is_wp_error( $cat_terms ) ? array() : $cat_terms;
 		<h1 class="page-hero-title rv">NEWS</h1>
 		<p class="page-hero-ja rv d1">最新記事</p>
 		<div class="page-statement rv d2">
-			<p><?php echo esc_html__( 'バンク・オブ・アートの最新情報をお届けします。', 'bankofart' ); ?></p>
+			<p><?php echo esc_html__( 'バンク・オブ・アートの', 'bankofart' ); ?><br class="br-sp"><?php echo esc_html__( '最新情報をお届けします。', 'bankofart' ); ?></p>
 		</div>
 	</section>
 

@@ -460,7 +460,7 @@ $front_top_size_map = array(
 
 			<div class="founder-layout">
 				<div class="founder-message rv d1">
-					<p class="founder-quote">「画家という生き方を、当たり前に。」</p>
+					<p class="founder-quote">「画家という生き方を、<br class="br-sp">当たり前に。」</p>
 					<p class="founder-quote-sub">誰にも見つかっていない才能に最初のスポンサーを。</p>
 				</div>
 				<div class="founder-portraits rv d2">

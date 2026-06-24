@@ -207,6 +207,13 @@ select:focus {
 	}
 }
 
+/* モバイル専用の改行。PCでは出さず、760px以下でのみ改行として効かせる。
+ * 各テンプレの該当ステートメントに <br class="br-sp"> を挿入して使う。 */
+.br-sp { display: none; }
+@media (max-width: 760px) {
+	.br-sp { display: inline; }
+}
+
 /* モバイル（375px完全対応） */
 @media (max-width: 480px) {
 	.container {

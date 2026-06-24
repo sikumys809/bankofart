@@ -40,7 +40,7 @@ $artist_archive = get_post_type_archive_link( 'artist' );     // 「先輩アー
 			<strong>描いて、生きていける世界へ。</strong>
 			その世界は、私たちだけではつくれません。<br>
 			描き続けるあなたの挑戦が必要です。<br>
-			Bank of Artは、創作に情熱を注ぐ画家を募集しています。
+			Bank of Artは、創作に情熱を注ぐ画家を<br class="br-sp">募集しています。
 		</div>
 	</section>
 
