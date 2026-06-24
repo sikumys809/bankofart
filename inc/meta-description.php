@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @var string[]
  */
-const BANKOFART_META_DESC_POST_TYPES = array( 'artist', 'art', 'collector' );
+const BANKOFART_META_DESC_POST_TYPES = array( 'artist', 'art', 'collector', 'journal', 'news' );
 
 /**
  * description の最大文字数（全角換算）。超過分は切り詰めて「…」を付す。
@@ -93,6 +93,12 @@ function bankofart_generate_meta_description( $post_id ) {
 			break;
 		case 'collector':
 			$raw = bankofart_build_collector_description( $post_id );
+			break;
+		case 'journal':
+			$raw = bankofart_build_journal_description( $post_id );
+			break;
+		case 'news':
+			$raw = bankofart_build_news_description( $post_id );
 			break;
 		default:
 			$raw = '';
@@ -214,6 +220,72 @@ function bankofart_build_collector_description( $post_id ) {
 	}
 
 	return sprintf( '%s様のアート導入事例。節税対策×画家支援のBANK of ART。', $name );
+}
+
+/**
+ * JOURNAL：
+ *   第一優先＝要約（journal_summary）。空なら本文セクション（journal_sections）の冒頭。
+ *
+ * @param int $post_id 投稿ID。
+ * @return string
+ */
+function bankofart_build_journal_description( $post_id ) {
+	$summary = trim( (string) get_post_meta( $post_id, 'journal_summary', true ) );
+	if ( '' !== $summary ) {
+		return $summary;
+	}
+
+	return bankofart_first_section_body( $post_id, 'journal_sections' );
+}
+
+/**
+ * NEWS：
+ *   第一優先＝要約（news_summary）。空なら本文セクション（news_sections）の冒頭。
+ *
+ * @param int $post_id 投稿ID。
+ * @return string
+ */
+function bankofart_build_news_description( $post_id ) {
+	$summary = trim( (string) get_post_meta( $post_id, 'news_summary', true ) );
+	if ( '' !== $summary ) {
+		return $summary;
+	}
+
+	return bankofart_first_section_body( $post_id, 'news_sections' );
+}
+
+/**
+ * 本文セクション（Meta Box clone group）の最初の本文（section_body）を取得する。
+ *
+ * news_sections / journal_sections は section_heading / section_body /
+ * section_images を持つグループの繰り返し。最初に本文が入っているセクションの
+ * section_body を返す（タグ除去・切り詰めは呼び出し側の normalize で行う）。
+ *
+ * @param int    $post_id   投稿ID。
+ * @param string $group_key グループフィールドID（'news_sections' 等）。
+ * @return string 見つからなければ空文字。
+ */
+function bankofart_first_section_body( $post_id, $group_key ) {
+	$sections = function_exists( 'rwmb_meta' )
+		? rwmb_meta( $group_key, '', $post_id )
+		: get_post_meta( $post_id, $group_key, true );
+
+	if ( empty( $sections ) || ! is_array( $sections ) ) {
+		return '';
+	}
+
+	foreach ( $sections as $section ) {
+		if ( ! is_array( $section ) || ! isset( $section['section_body'] ) ) {
+			continue;
+		}
+		$body = (string) $section['section_body'];
+		// タグ・空白を除いて中身があるセクションを採用。
+		if ( '' !== trim( wp_strip_all_tags( $body ) ) ) {
+			return $body;
+		}
+	}
+
+	return '';
 }
 
 /**
