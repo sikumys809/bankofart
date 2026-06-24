@@ -813,6 +813,13 @@ function bankofart_register_meta_boxes( $meta_boxes ) {
 					'desc' => '移行管理用（重複投入防止のキー）',
 				),
 				array(
+					'id'   => 'collector_article_published_date',
+					'name' => '旧サイト記事公開日',
+					'type' => 'text',
+					'desc' => 'YYYY-MM-DD。旧サイト記事の公開日（移行時に自動取得）。'
+						. '※「記事の公開日」であり「実際のアート導入日」ではない。導入時期は別フィールド（collector_implementation_date）で管理する。',
+				),
+				array(
 					'id'   => 'collector_identify_status',
 					'name' => '同定ステータス（メモ）',
 					'type' => 'text',
