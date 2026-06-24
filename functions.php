@@ -36,6 +36,7 @@ $bankofart_includes = array(
 	'inc/taxonomies.php',       // カスタムタクソノミー登録
 	'inc/meta-box-fields.php',  // Meta Box フィールド定義（要 Meta Box AIO）
 	'inc/section-display-guard.php', // セクション表示スイッチの未設定→'1'補完（再発防止）
+	'inc/auto-featured-image.php',   // メイン画像→アイキャッチ自動設定（保存時／OGP個別化）
 	'inc/term-meta-fields.php', // MB Term Meta（art_main_color のカラー情報）
 	'inc/relationships.php',    // MB Relationships 定義（要 Meta Box AIO）
 	'inc/customizer.php',       // WP カスタマイザー（サイト数値等）
