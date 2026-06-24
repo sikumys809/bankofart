@@ -24,6 +24,17 @@ $issue_terms = get_terms(
 );
 $issue_terms = is_wp_error( $issue_terms ) ? array() : $issue_terms;
 
+// 業種（collector_industry）のターム（プルダウン用）。投稿0件のタームは除外して
+// 実在する業種だけを選択肢に出す。
+$industry_terms = get_terms(
+	array(
+		'taxonomy'   => 'collector_industry',
+		'hide_empty' => true,
+		'orderby'    => 'name',
+	)
+);
+$industry_terms = is_wp_error( $industry_terms ) ? array() : $industry_terms;
+
 // 企業を全件取得。
 $collectors_q = new WP_Query(
 	array(
@@ -79,11 +90,24 @@ $matching_url = home_url( '/matching-issue/' );
 		<div class="filter-inner rv">
 			<span class="filter-label">Issue</span>
 			<div class="filter-tags">
-				<button type="button" class="filter-tag is-active" data-filter="all">すべて</button>
+				<button type="button" class="filter-tag is-active" data-axis="issue" data-filter="all">すべて</button>
 				<?php foreach ( $issue_terms as $term ) : ?>
-					<button type="button" class="filter-tag" data-filter="<?php echo esc_attr( $term->term_id ); ?>"><?php echo esc_html( $term->name ); ?></button>
+					<button type="button" class="filter-tag" data-axis="issue" data-filter="<?php echo esc_attr( $term->term_id ); ?>"><?php echo esc_html( $term->name ); ?></button>
 				<?php endforeach; ?>
 			</div>
+
+			<?php if ( ! empty( $industry_terms ) ) : ?>
+				<div class="filter-select-group">
+					<label class="filter-label" for="industryFilter">業種</label>
+					<select class="filter-select" id="industryFilter" data-axis="industry" aria-label="<?php echo esc_attr__( '業種で絞り込む', 'bankofart' ); ?>">
+						<option value="all"><?php echo esc_html__( 'すべて', 'bankofart' ); ?></option>
+						<?php foreach ( $industry_terms as $term ) : ?>
+							<option value="<?php echo esc_attr( $term->term_id ); ?>"><?php echo esc_html( $term->name ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				</div>
+			<?php endif; ?>
+
 			<span class="filter-count"><span class="boa-num"><?php echo (int) $collectors_q->post_count; ?></span>COLLECTORS</span>
 		</div>
 
@@ -100,6 +124,11 @@ $matching_url = home_url( '/matching-issue/' );
 				endwhile;
 				wp_reset_postdata();
 				?>
+			</div>
+
+			<!-- もっと見る（モバイル限定。PC は全件表示で JS が非表示にする） -->
+			<div class="collector-loadmore" id="collectorLoadMore">
+				<button type="button" class="collector-loadmore-btn" id="collectorLoadMoreBtn"><?php echo esc_html__( 'もっと見る', 'bankofart' ); ?></button>
 			</div>
 		<?php else : ?>
 			<div class="news-empty">

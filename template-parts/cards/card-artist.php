@@ -11,7 +11,6 @@
  *   - show_status bool   写真上のタグバッジ（診断タグ）を表示するか（既定 true）
  *                        ※mockupのバッジは artist_diagnosis_tag を表示する
  *   - show_theme  bool   制作テーマを表示するか（既定 true）
- *   - number      string 一覧での通し番号（例 '01'）。指定時のみ No. バッジ表示
  *
  * @package bankofart
  */
@@ -24,7 +23,6 @@ $artist_id   = isset( $args['artist_id'] ) ? (int) $args['artist_id'] : get_the_
 $context     = isset( $args['context'] ) ? $args['context'] : 'archive';
 $show_status = isset( $args['show_status'] ) ? (bool) $args['show_status'] : true;
 $show_theme  = isset( $args['show_theme'] ) ? (bool) $args['show_theme'] : true;
-$number      = isset( $args['number'] ) ? (string) $args['number'] : '';
 
 if ( ! $artist_id ) {
 	return;
@@ -54,10 +52,6 @@ $data_genre   = ( ! is_wp_error( $genre_terms ) && $genre_terms ) ? implode( ' '
 ?>
 <a class="artist-card artist-card--<?php echo esc_attr( $context ); ?>" href="<?php echo esc_url( $permalink ); ?>" data-status="<?php echo esc_attr( $data_status ); ?>" data-genre="<?php echo esc_attr( $data_genre ); ?>">
 	<div class="artist-photo">
-		<?php if ( '' !== $number ) : ?>
-			<span class="artist-number">No.<span class="boa-num"><?php echo esc_html( $number ); ?></span></span>
-		<?php endif; ?>
-
 		<span class="artist-photo-inner"<?php if ( ! empty( $image['url'] ) ) : ?> style="background-image:url('<?php echo esc_url( $image['url'] ); ?>');" role="img" aria-label="<?php echo esc_attr( $image['alt'] ? $image['alt'] : $title ); ?>"<?php endif; ?>></span>
 
 		<?php if ( $show_status && ! empty( $tag_label ) ) : ?>

@@ -97,20 +97,6 @@
 	opacity: 1;
 }
 
-.artist-number {
-	position: absolute;
-	top: 16px;
-	left: 16px;
-	font-family: var(--f-jp);
-	font-size: var(--fs-body);
-	letter-spacing: var(--ls-1);
-	color: rgba(245, 240, 234, .95);
-	background: rgba(33, 33, 33, .4);
-	padding: 4px 12px;
-	backdrop-filter: blur(8px);
-	z-index: 2;
-}
-
 .artist-tag-badge {
 	position: absolute;
 	bottom: 16px;
@@ -229,6 +215,15 @@
 	padding: 6px 12px;
 	z-index: 2;
 	backdrop-filter: blur(6px);
+	/* 通常時は非表示。PC はカードホバーでフェードイン（下の :hover）。 */
+	opacity: 0;
+	transition: opacity .4s;
+	pointer-events: none;
+}
+
+/* PC：カードにホバーしたときだけステータスバッジを表示。 */
+.art-card:hover .art-status {
+	opacity: 1;
 }
 
 .art-status.is-available {
@@ -768,12 +763,20 @@
 		padding-right: 8px;
 	}
 
-	.news-thumb {
+	/* NEWS/JOURNAL：モバイルはサムネをワイドに大きく見せる（PCの 200x130 は不変）。
+	   ベースが .news-item .news-thumb（2クラス）なので同等の詳細度で上書きする。 */
+	.news-item .news-thumb {
 		width: 100%;
-		height: 180px;
+		height: auto;
+		aspect-ratio: 3 / 2;
 	}
 
 	.news-arrow {
+		display: none;
+	}
+
+	/* ART カード：ホバーの無いモバイルでは絵を遮らないようステータスバッジを出さない。 */
+	.art-status {
 		display: none;
 	}
 

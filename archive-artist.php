@@ -111,17 +111,14 @@ $matching_url = home_url( '/matching-purpose/' );
 		<?php if ( $artists_q->have_posts() ) : ?>
 			<div class="artist-grid" id="artistGrid">
 				<?php
-				$i = 0;
 				while ( $artists_q->have_posts() ) :
 					$artists_q->the_post();
-					++$i;
 					get_template_part(
 						'template-parts/cards/card-artist',
 						null,
 						array(
 							'artist_id' => get_the_ID(),
 							'context'   => 'archive',
-							'number'    => sprintf( '%02d', $i ),
 						)
 					);
 				endwhile;

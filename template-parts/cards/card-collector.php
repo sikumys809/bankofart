@@ -44,11 +44,14 @@ if ( ! empty( $impl_raw ) ) {
 // メタ行（業界 / 課題 / 設置場所 / 導入時期）の空要素を除外。
 $meta = array_filter( array( $industry, $issue, $placement, $impl_label ) );
 
-// 一覧フィルター用：課題（collector_issue）のタームIDを data 属性に（複数前提・スペース区切り）。
-$issue_terms = get_the_terms( $collector_id, 'collector_issue' );
-$data_issue  = ( ! is_wp_error( $issue_terms ) && $issue_terms ) ? implode( ' ', wp_list_pluck( $issue_terms, 'term_id' ) ) : '';
+// 一覧フィルター用：課題（collector_issue）・業種（collector_industry）のタームIDを
+// data 属性に（複数前提・スペース区切り。業種は単一選択だが同形式で持たせる）。
+$issue_terms    = get_the_terms( $collector_id, 'collector_issue' );
+$industry_terms = get_the_terms( $collector_id, 'collector_industry' );
+$data_issue     = ( ! is_wp_error( $issue_terms ) && $issue_terms ) ? implode( ' ', wp_list_pluck( $issue_terms, 'term_id' ) ) : '';
+$data_industry  = ( ! is_wp_error( $industry_terms ) && $industry_terms ) ? implode( ' ', wp_list_pluck( $industry_terms, 'term_id' ) ) : '';
 ?>
-<a class="collector-card collector-card--<?php echo esc_attr( $context ); ?>" href="<?php echo esc_url( $permalink ); ?>" data-issue="<?php echo esc_attr( $data_issue ); ?>">
+<a class="collector-card collector-card--<?php echo esc_attr( $context ); ?>" href="<?php echo esc_url( $permalink ); ?>" data-issue="<?php echo esc_attr( $data_issue ); ?>" data-industry="<?php echo esc_attr( $data_industry ); ?>">
 	<div class="collector-image">
 		<?php if ( ! empty( $issue ) ) : ?>
 			<span class="collector-issue-tag"><?php echo esc_html( $issue ); ?></span>
