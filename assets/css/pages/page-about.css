@@ -179,7 +179,8 @@ body.reveal-ready .rv.on { opacity: 1; transform: translateY(0); }
 }
 .about-hero-lead {
   font-family: 'Shippori Mincho B1', serif;
-  font-size: 16px;
+  /* PC=18px（--fs-body）／モバイル=16px（base.css の 760px 一元化で自動）。 */
+  font-size: var(--fs-body);
   font-weight: 500;
   line-height: 1.95;
   letter-spacing: 1px;
@@ -1038,7 +1039,7 @@ body.reveal-ready .rv.on { opacity: 1; transform: translateY(0); }
   .resale-bars-diff { display: none; }
 }
 @media (max-width: 700px) {
-  :root { --fs-body: 15px; --fs-head: 24px; }
+  :root { --fs-body: 16px; --fs-head: 24px; }
   body { line-height: 1.75; }
   /* スマホ：本文の行間を詰める */
   .lead, .about-hero-lead, .cycle-node-text, .dep-intro, .dep-side-text, .reason-text { line-height: 1.7; }
