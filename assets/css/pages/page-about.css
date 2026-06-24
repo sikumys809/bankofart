@@ -1039,7 +1039,7 @@ body.reveal-ready .rv.on { opacity: 1; transform: translateY(0); }
   .resale-bars-diff { display: none; }
 }
 @media (max-width: 700px) {
-  :root { --fs-body: 16px; --fs-head: 24px; }
+  :root { --fs-body: 15px; --fs-head: 24px; }
   body { line-height: 1.75; }
   /* スマホ：本文の行間を詰める */
   .lead, .about-hero-lead, .cycle-node-text, .dep-intro, .dep-side-text, .reason-text { line-height: 1.7; }
@@ -1057,7 +1057,12 @@ body.reveal-ready .rv.on { opacity: 1; transform: translateY(0); }
   .about-hero, .section { max-width: 100%; overflow-x: hidden; }
   .about-hero-inner { padding-left: 20px; padding-right: 20px; }
   .about-hero-sub { font-size: 30px; }
-  .about-hero-sub, .about-hero-lead { max-width: 100%; word-break: normal; overflow-wrap: anywhere; }
+  .about-hero-sub { max-width: 100%; word-break: normal; overflow-wrap: anywhere; }
+  /* リード文：PC用の手動改行(.br-pc)を解除し、1文として自然に折り返す。
+     text-wrap:balance で各行を均等化し、行末の孤立文字（「能。」等）を防ぐ。
+     字間も詰めて1行に収まる文字数を確保（最大3pxルール内）。 */
+  .about-hero-lead { max-width: 100%; word-break: normal; overflow-wrap: normal; letter-spacing: .2px; text-wrap: balance; }
+  .about-hero-lead .br-pc { display: none; }
   .resale-card { padding-left: 24px; padding-right: 24px; }
   .resale-bars { padding-left: 6px; padding-right: 6px; }
   .cta-btns { flex-direction: column; width: 100%; }

@@ -1307,7 +1307,7 @@ body.reveal-ready .frame.flipped { opacity: 1; transform: translateY(0); }
   .collector-logos-label { display: none; }
 }
 @media (max-width: 700px) {
-  :root { --space-section: 80px; --space-section-sm: 60px; --fs-body: 16px; --fs-head: 24px; }
+  :root { --space-section: 80px; --space-section-sm: 60px; --fs-body: 15px; --fs-head: 24px; }
   body { line-height: 1.75; }
   .btn-contact { padding: 10px 18px; letter-spacing: 2px; white-space: nowrap; }
   .hero-content { padding: 80px 24px 60px; }
