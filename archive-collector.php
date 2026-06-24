@@ -106,7 +106,7 @@ $matching_url = home_url( '/matching-issue/' );
 
 				<?php if ( ! empty( $industry_terms ) ) : ?>
 					<div class="filter-row">
-						<span class="filter-label">業種</span>
+						<span class="filter-label">Industry</span>
 						<div class="filter-tags">
 							<button type="button" class="filter-tag is-active" data-axis="industry" data-filter="all">すべて</button>
 							<?php foreach ( $industry_terms as $term ) : ?>
