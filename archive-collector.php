@@ -61,7 +61,7 @@ $matching_url = home_url( '/matching-issue/' );
 		<div class="page-statement rv d2">
 			<p><?php echo esc_html__( '「アートを迎える」という選択には、それぞれの想いや物語がある。', 'bankofart' ); ?></p>
 			<p class="mid"><?php echo esc_html__( 'なぜ若手画家を応援しようと思ったのか。', 'bankofart' ); ?><br><?php echo esc_html__( 'なぜ“アートを飾る”という選択をしたのか。', 'bankofart' ); ?></p>
-			<p><?php echo esc_html__( '作品との出会いは空間だけでなく、人や会話、働く空気までも少しずつ変えていく。', 'bankofart' ); ?></p>
+			<p><?php echo esc_html__( '作品との出会いは空間だけでなく、', 'bankofart' ); ?><br><?php echo esc_html__( '人や会話、働く空気までも少しずつ変えていく。', 'bankofart' ); ?></p>
 		</div>
 	</section>
 
