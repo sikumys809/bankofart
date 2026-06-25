@@ -91,7 +91,7 @@ $privacy_url   = home_url( '/privacy-policy/' );
 			<div class="boa-form-eyebrow">Resale Waitlist</div>
 			<h1 class="boa-form-title">リセール待機リスト登録</h1>
 			<p class="boa-form-lead">
-				「OWNED（応援企業が所有中）」の作品が、リセールにより入荷した際にご案内します。<br class="br-pc">
+				「OWNED（応援企業が所有中）」の作品が、<br class="br-pc">リセールにより入荷した際にご案内します。<br class="br-pc">
 				下記フォームよりご登録ください。
 			</p>
 		</div>

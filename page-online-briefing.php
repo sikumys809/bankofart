@@ -85,7 +85,7 @@ $recaptcha_key = defined( 'BANKOFART_RECAPTCHA_SITE_KEY' ) ? constant( 'BANKOFAR
 				<div class="ob-intro-text">
 					<div class="boa-form-eyebrow">ONLINE BRIEFING</div>
 					<h1 class="ob-title">オンライン説明会<span class="ob-duration"><span class="ob-duration-num boa-num">30</span> 分</span></h1>
-					<p class="ob-lead">Bank of Art のサービスを、貴社の課題に合わせてご説明します。即時償却・画家支援・アート活用について、オンラインでお気軽にご相談ください。</p>
+					<p class="ob-lead">Bank of Art のサービスを、貴社の課題に合わせてご説明します。<br class="br-pc">即時償却・画家支援・アート活用について、オンラインでお気軽にご相談ください。</p>
 				</div>
 				<dl class="ob-meta">
 					<div class="ob-meta-item"><dt>所要時間</dt><dd>約30分</dd></div>

@@ -214,6 +214,13 @@ select:focus {
 	.br-sp { display: inline; }
 }
 
+/* PC専用の改行。760px以下では出さない（モバイルは自然折り返し or br-sp で制御）。
+ * 各テンプレの該当ステートメントに <br class="br-pc"> を挿入して使う。 */
+.br-pc { display: inline; }
+@media (max-width: 760px) {
+	.br-pc { display: none; }
+}
+
 /* モバイル（375px完全対応） */
 @media (max-width: 480px) {
 	.container {
