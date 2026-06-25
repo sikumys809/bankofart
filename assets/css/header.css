@@ -281,6 +281,26 @@ html {
 	}
 }
 
+/* スマホ：ロゴを左寄せ（≡の右隣）＋拡大。CONTACTは右端のまま、間は伸びる余白で離す。
+   グリッドを「≡(auto) ロゴ(auto) 余白(1fr)＝右端CONTACT」に再構成（PCの中央配置は不変）。 */
+@media (max-width: 760px) {
+	.site-header {
+		grid-template-columns: auto auto 1fr;
+		column-gap: 12px;
+	}
+
+	/* ロゴは自トラックの左端に置き、≡ のすぐ右隣でひとかたまりにする */
+	.h-logo {
+		justify-self: start;
+	}
+
+	/* 現状32px比 約1.25倍（初期値40px。実機で最終調整） */
+	.h-logo .logo-base,
+	.h-logo .logo-hover {
+		height: 40px;
+	}
+}
+
 /* スマホ：MENUラベルを隠してアイコンのみ、ドロワーは1カラム */
 @media (max-width: 700px) {
 	.site-header {
@@ -300,11 +320,6 @@ html {
 		grid-template-columns: 1fr;
 		padding: 28px 24px 36px;
 		gap: 6px;
-	}
-
-	.h-logo .logo-base,
-	.h-logo .logo-hover {
-		height: 32px;
 	}
 }
 
