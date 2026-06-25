@@ -1345,7 +1345,7 @@ body.reveal-ready .frame.flipped { opacity: 1; transform: translateY(0); }
   /* HEADER モバイル */
   .h-menu-btn span:not(.h-menu-icon) { display: none; }
   .h-drawer-inner { grid-template-columns: 1fr; padding: 28px 24px 36px; gap: 6px; }
-  .h-logo .logo-base, .h-logo .logo-hover { height: 32px; }
+  /* ロゴサイズは header.css のモバイル指定（clamp）に一元化。ここでは上書きしない。 */
   /* FOOTER */
   .footer-top { grid-template-columns: 1fr; gap: 32px; }
   .footer-bottom { flex-direction: column; gap: 12px; height: auto; padding: 20px 24px; }
