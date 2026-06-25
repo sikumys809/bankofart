@@ -306,7 +306,7 @@ $client_logos = array(
 			<div class="sim-eyebrow rv">Simulator</div>
 			<h2 class="sim-title rv d1">コレクトシミュレーター</h2>
 			<p class="sim-lead rv d2">
-				バンク・オブ・アートでアートを資産として持つことで<br class="br-sp">生まれる節税効果と回収を、<br class="br-pc"><br class="br-sp">ご自身の条件で試算いただけます。<br class="br-pc"><br class="br-sp">
+				バンク・オブ・アートでアートを資産として持つことで<br class="br-sp">生まれる節税効果と回収を、<br class="br-pc"><br class="br-sp">ご自身の条件で試算いただけます。<br class="br-pc"><br class="br-sp"><br class="br-sp">
 				即時償却タイプは「実質コスト」を、<br class="br-pc"><br class="br-sp">減価償却タイプは「年ごとの経費計上額・期末帳簿価額」を確認いただけます。
 			</p>
 
