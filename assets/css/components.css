@@ -879,3 +879,14 @@
 .boa-honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .boa-section-divider { border: 0; border-top: 1px solid var(--border-soft); margin: 36px 0; }
 .boa-form-subhead { font-family: var(--f-deco); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--brand); margin: 0 0 20px; }
+
+/* ===== モバイル：マッチングバナー3種の見出し階層を改善 =====
+ * Artist / Issue / For Artists の全バナーで共通クラス（.match-banner-title /
+ * .match-banner-sub）を使用。モバイルで title が縮み sub(700) に主役を奪われるため、
+ * title=700（太字化）／sub=500（一段下げ）で見出しを主役化する。
+ * 各ページCSSの基本ウェイト指定を確実に上書きするため !important。
+ * モバイル境界(760px)内のみ。PC・タブレットは不変。for-artists の色上書きは無関係で維持。 */
+@media (max-width: 760px) {
+	.match-banner-title { font-weight: 700 !important; }
+	.match-banner-sub { font-weight: 500 !important; }
+}
