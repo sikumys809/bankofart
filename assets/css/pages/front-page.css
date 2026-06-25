@@ -1306,6 +1306,10 @@ body.reveal-ready .frame.flipped { opacity: 1; transform: translateY(0); }
   .collector-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; }
   .collector-logos-label { display: none; }
 }
+@media (max-width: 760px) {
+  /* モバイルは ARTIST を3名までに（縦スクロールの負担軽減）。PCは5名のまま。 */
+  .artist-rail .artist-card:nth-child(n+4) { display: none; }
+}
 @media (max-width: 700px) {
   :root { --space-section: 80px; --space-section-sm: 60px; --fs-body: 15px; --fs-head: 24px; }
   body { line-height: 1.75; }

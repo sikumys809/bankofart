@@ -421,7 +421,7 @@ $front_top_size_map = array(
 					<div class="how-txt-wrap">
 						<div class="how-step-label">Deposited</div>
 						<div class="how-step-ja">作品を預ける</div>
-						<div class="how-step-desc">アーティストから作品を全買取形式で預託。<br class="br-pc">画家のキャッシュフローを改善します。</div>
+						<div class="how-step-desc">アーティストから作品を全買取形式で預託。<br class="br-pc"><br class="br-sp">画家のキャッシュフローを改善します。</div>
 					</div>
 				</div>
 				<div class="how-row left rv d1">
@@ -429,7 +429,7 @@ $front_top_size_map = array(
 					<div class="how-txt-wrap">
 						<div class="how-step-label">Purchased</div>
 						<div class="how-step-ja">企業が購入</div>
-						<div class="how-step-desc">即時償却・少額減価償却特例を活用して購入。<br class="br-pc">節税と芸術支援を同時に実現します。</div>
+						<div class="how-step-desc">即時償却・少額減価償却特例を活用して購入。<br class="br-pc"><br class="br-sp">節税と芸術支援を同時に実現します。</div>
 					</div>
 				</div>
 				<div class="how-row right rv d2">
@@ -437,7 +437,7 @@ $front_top_size_map = array(
 					<div class="how-txt-wrap">
 						<div class="how-step-label">Exhibited</div>
 						<div class="how-step-ja">オフィスに飾る</div>
-						<div class="how-step-desc">作品をオフィスや公共施設に展示。<br class="br-pc">作家の認知向上にも直接つながります。</div>
+						<div class="how-step-desc">作品をオフィスや公共施設に展示。<br class="br-pc"><br class="br-sp">作家の認知向上にも直接つながります。</div>
 					</div>
 				</div>
 				<div class="how-row left rv d3">
@@ -445,7 +445,7 @@ $front_top_size_map = array(
 					<div class="how-txt-wrap">
 						<div class="how-step-label">Recovered</div>
 						<div class="how-step-ja">リセールで回収</div>
-						<div class="how-step-desc">最大70%のリセールで資産を回収。<br class="br-pc">売却益も期待できます。</div>
+						<div class="how-step-desc">最大70%のリセールで資産を回収。<br class="br-pc"><br class="br-sp">売却益も期待できます。</div>
 					</div>
 				</div>
 			</div>
@@ -460,8 +460,8 @@ $front_top_size_map = array(
 
 			<div class="founder-layout">
 				<div class="founder-message rv d1">
-					<p class="founder-quote">「画家という生き方を、<br class="br-sp">当たり前に。」</p>
-					<p class="founder-quote-sub">誰にも見つかっていない才能に最初のスポンサーを。</p>
+					<p class="founder-quote">「画家という<br class="br-sp">生き方を、当たり前に。」</p>
+					<p class="founder-quote-sub">誰にも見つかっていない<br class="br-sp">才能に最初のスポンサーを。</p>
 				</div>
 				<div class="founder-portraits rv d2">
 					<div class="founder-card">

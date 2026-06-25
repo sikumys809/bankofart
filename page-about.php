@@ -188,7 +188,7 @@ $client_logos = array(
 			</div>
 
 			<p class="dep-intro rv d1">
-				取得価額が1点100万円未満の美術品等は原則として減価償却資産に該当します。<br class="br-pc">税制改正により少額減価償却資産の特例上限が30万円→40万円に拡大されました。
+				取得価額が1点100万円未満の美術品等は<br class="br-sp">原則として減価償却資産に該当します。<br class="br-pc"><br class="br-sp">税制改正により少額減価償却資産の特例上限が30万円→40万円に拡大されました。
 			</p>
 
 			<div class="dep-bar rv">
@@ -306,8 +306,8 @@ $client_logos = array(
 			<div class="sim-eyebrow rv">Simulator</div>
 			<h2 class="sim-title rv d1">コレクトシミュレーター</h2>
 			<p class="sim-lead rv d2">
-				バンク・オブ・アートでアートを資産として持つことで生まれる節税効果と回収を、<br class="br-pc">ご自身の条件で試算いただけます。<br class="br-pc">
-				即時償却タイプは「実質コスト」を、<br class="br-pc">減価償却タイプは「年ごとの経費計上額・期末帳簿価額」を確認いただけます。
+				バンク・オブ・アートでアートを資産として持つことで<br class="br-sp">生まれる節税効果と回収を、<br class="br-pc"><br class="br-sp">ご自身の条件で試算いただけます。<br class="br-pc"><br class="br-sp">
+				即時償却タイプは「実質コスト」を、<br class="br-pc"><br class="br-sp">減価償却タイプは「年ごとの経費計上額・期末帳簿価額」を確認いただけます。
 			</p>
 
 			<div class="sim-tabs rv d3">

@@ -27,7 +27,7 @@
 .match-banner-sub { font-family: var(--f-jp); font-size: 22px; font-weight: var(--fw-bold); letter-spacing: var(--ls-2); line-height: 1.6; color: var(--white); margin-bottom: 14px; }
 .match-banner-body { font-family: var(--f-jp); font-size: var(--fs-body); font-weight: var(--fw-medium); letter-spacing: var(--ls-1); line-height: 1.9; color: rgba(255,255,255,.85); }
 .match-banner-right { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
-.match-banner-btn { font-family: var(--f-deco); font-size: 14px; font-weight: var(--fw-medium); letter-spacing: var(--ls-3); text-transform: uppercase; padding: 20px 44px; display: inline-flex; align-items: center; gap: 14px; white-space: nowrap; transition: all .3s; background: var(--ink); color: var(--white); text-decoration: none; }
+.match-banner-btn { font-family: var(--f-deco); font-size: 14px; font-weight: var(--fw-medium); letter-spacing: var(--ls-3); text-transform: uppercase; padding: 20px 44px; display: inline-flex; align-items: center; justify-content: center; gap: 14px; white-space: nowrap; transition: all .3s; background: var(--ink); color: var(--white); text-decoration: none; }
 .match-banner-btn:hover { background: var(--white); color: var(--brand); }
 .match-banner-btn::after { content: ''; width: 8px; height: 8px; border-top: 1px solid currentColor; border-right: 1px solid currentColor; transform: rotate(45deg); }
 .match-banner-meta { font-family: var(--f-deco); font-size: 13px; font-weight: var(--fw-medium); letter-spacing: var(--ls-2); text-transform: uppercase; color: rgba(255,255,255,.85); }
