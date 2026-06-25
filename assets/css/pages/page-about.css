@@ -1101,8 +1101,18 @@ body.reveal-ready .rv.on { opacity: 1; transform: translateY(0); }
   .resale-card, .step-card { padding-left: 18px !important; padding-right: 18px !important; }
   .contact-menu { min-width: 200px !important; }
   .btn-o { min-width: 0 !important; }
-  .cycle-node { width: 280px !important; height: 280px !important; }
+  /* 円を大きくして文字のはみ出しを解消（画面幅に応じて拡大・上限340px）。
+     左右パディングとキャラ画像も少し詰めて内側の余白を確保。 */
+  .cycle-node,
+  .cycle-node.node-top,
+  .cycle-node.node-left,
+  .cycle-node.node-right {
+    width: min(340px, 88vw) !important;
+    height: min(340px, 88vw) !important;
+    padding: 26px !important;
+  }
   .node-right { width: auto !important; }
+  .cycle-node-char { width: 60px !important; height: 60px !important; margin-bottom: 6px !important; }
   .logo-item { width: 160px !important; }
   *, *::before, *::after { max-width: 100% !important; min-width: 0 !important; box-sizing: border-box !important; }
   img { height: auto; }
