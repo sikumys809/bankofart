@@ -888,5 +888,5 @@
  * モバイル境界(760px)内のみ。PC・タブレットは不変。for-artists の色上書きは無関係で維持。 */
 @media (max-width: 760px) {
 	.match-banner-title { font-weight: 700 !important; }
-	.match-banner-sub { font-weight: 500 !important; }
+	.match-banner-sub { font-size: 18px !important; font-weight: 500 !important; }
 }
