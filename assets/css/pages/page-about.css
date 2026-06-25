@@ -1038,6 +1038,11 @@ body.reveal-ready .rv.on { opacity: 1; transform: translateY(0); }
   /* RESALE：SP破線撤廃（PCレイアウト前提のため正しい位置に置けない） */
   .resale-bars-diff { display: none; }
 }
+@media (max-width: 760px) {
+  /* 償却グラフの左縦軸ラベル（0円 / 40万円 / 100万円）は画面外へはみ出て
+     見切れるため、モバイルでは非表示。右側の「○万円ライン」表示で代替する。 */
+  .dep-axis-label { display: none; }
+}
 @media (max-width: 700px) {
   :root { --fs-body: 15px; --fs-head: 24px; }
   body { line-height: 1.75; }
