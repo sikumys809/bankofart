@@ -28,7 +28,7 @@ $apply_url      = isset( $args['apply_url'] ) ? $args['apply_url'] : bankofart_a
 		<div class="match-banner-left">
 			<span class="match-banner-label">For Artists</span>
 			<h2 class="match-banner-title">若手画家募集中</h2>
-			<p class="match-banner-sub"><?php echo esc_html__( 'BANK OF ART は、', 'bankofart' ); ?><br class="br-sp"><?php echo esc_html__( 'ともに歩む画家を募集しています。', 'bankofart' ); ?></p>
+			<p class="match-banner-sub"><?php echo esc_html__( 'BANK OF ART は、ともに歩む画家を募集しています。', 'bankofart' ); ?></p>
 			<p class="match-banner-body"><?php echo esc_html__( '全作品買取制で、制作に専念できる環境を提供します。ご縁のある方には登録画家としてご活動いただき、公認画家としてご契約に至る場合もあります。', 'bankofart' ); ?></p>
 		</div>
 		<div class="match-banner-right">
