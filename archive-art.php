@@ -217,13 +217,13 @@ $render_filter_row = static function ( $axis, $label, $terms, $en = false ) {
 			<div class="resale-eyebrow rv">RESALE SERVICE</div>
 			<h2 class="resale-title rv d1">リセールサービス</h2>
 			<p class="resale-body rv d2">
-				「OWNED」と表示されている作品は、<br class="br-pc"><br class="br-sp">現在いずれかの応援企業様が所有されている作品です。<br class="br-pc">
+				<span class="rs-em">「OWNED」</span>と表示されている作品は、<br class="br-pc"><br class="br-sp">現在いずれかの応援企業様が<span class="rs-em">所有されている作品</span>です。<br class="br-pc">
 				バンク・オブ・アートでは、所有企業様が手放される際の<br class="br-pc">
-				最大 <span class="boa-num">70</span>% リセール買取制度を設けており、<br class="br-pc">
-				戻ってきた作品は再び新たなオーナー様にお迎えいただけます。
+				<span class="rs-em">最大 <span class="boa-num">70</span>% リセール</span>買取制度を設けており、<br class="br-pc">
+				戻ってきた作品は再び<span class="rs-em">新たなオーナー様</span>にお迎えいただけます。
 			</p>
 			<p class="resale-body rv d3" style="margin-bottom:32px;">
-				気になる作品がございましたら、<br class="br-pc"><br class="br-sp">リセール待機リストへご登録を<br class="br-sp">お願いいたします。
+				気になる作品がございましたら、<br class="br-pc"><br class="br-sp"><span class="rs-em">リセール待機リスト</span>へご登録を<br class="br-sp">お願いいたします。
 			</p>
 			<a href="<?php echo esc_url( home_url( '/resale-waitlist/' ) ); ?>" class="resale-waitlist-btn rv d3">リセール待機リストへ登録する</a>
 		</div>

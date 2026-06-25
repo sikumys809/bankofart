@@ -118,6 +118,8 @@ body.reveal-ready .rv.on { opacity: 1; transform: translateY(0); }
 .resale-eyebrow { font-family: var(--f-deco); font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--brand); margin-bottom: 28px; }
 .resale-title { font-family: var(--f-display); font-size: var(--fs-heading); font-weight: 400; letter-spacing: 3px; line-height: 1.2; margin-bottom: 36px; color: var(--white); text-transform: uppercase; }
 .resale-body { font-family: var(--f-jp); font-size: var(--fs-body); line-height: 2.1; color: rgba(255,255,255,.8); letter-spacing: 1px; margin-bottom: 48px; }
+/* リセール本文の強調フレーズをブランドカラーに（PC・モバイル共通） */
+.resale-body .rs-em { color: var(--brand); }
 .resale-waitlist-btn { display: inline-block; font-family: var(--f-deco); font-size: 14px; letter-spacing: 2px; text-transform: uppercase; color: var(--white); background: var(--brand); border: 1px solid var(--brand); padding: 18px 48px; text-decoration: none; transition: background .3s, border-color .3s; cursor: pointer; }
 .resale-waitlist-btn:hover { background: var(--brand-deep); border-color: var(--brand-deep); color: var(--white); }
 @media (max-width: 700px) {
