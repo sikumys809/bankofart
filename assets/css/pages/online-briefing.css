@@ -88,8 +88,9 @@
 .ob-month-legend { font-family: var(--f-jp); font-size: 12px; color: var(--mid); letter-spacing: .5px; text-align: center; margin-top: 12px; }
 .ob-month-day { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border-soft); }
 .ob-month-day-label { font-family: var(--f-jp); font-size: 14px; font-weight: 700; letter-spacing: .5px; color: var(--ink); margin-bottom: 12px; }
-.ob-month-day .ob-day-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(74px, 1fr)); gap: 8px; }
-.ob-month-day .ob-slot { width: auto; max-width: none; }
+/* 時間スロットは縦1列・横長の長方形で並べる（モバイルで見やすく） */
+.ob-month-day .ob-day-slots { display: flex; flex-direction: column; gap: 8px; }
+.ob-month-day .ob-slot { width: 100%; max-width: none; padding: 14px 16px; font-size: 15px; }
 
 @media (max-width: 760px) {
   /* モバイルは週グリッドを隠して月カレンダーに切替（PC=週グリッドは不変） */
