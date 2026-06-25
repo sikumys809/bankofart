@@ -132,3 +132,79 @@ function bankofart_booking_week() {
 }
 add_action( 'wp_ajax_boa_booking_week', 'bankofart_booking_week' );
 add_action( 'wp_ajax_nopriv_boa_booking_week', 'bankofart_booking_week' );
+
+/**
+ * 月サマリー用（読み取り専用）：指定月の各日を 〇(o)/△(tri)/✕(x) で返す。
+ *
+ * モバイルの月カレンダー表示用。空き算出はコア関数
+ * bankofart_booking_available_for_date() を日数分ループして流用する
+ * （Google差し込み口・予約範囲チェックが自動で効くため、新たな空き算出は書かない）。
+ * フェーズ1は素直なループ（最大31日×1クエリ＝許容）。将来重ければ
+ * 「月内予約を1クエリ一括取得→日別集計」に最適化する（その際も
+ * bankofart_booking_busy_slots フィルタとの整合を保つこと）。
+ *
+ * エンドポイント：action=boa_booking_month&month=YYYY-MM
+ * レスポンス：{ month, today, maxDate, days:[{date,day,wd,dow,isToday,isPast,inRange,status,freeCount,totalCount}] }
+ *
+ * @return void
+ */
+function bankofart_booking_month() {
+	check_ajax_referer( 'boa_booking', 'nonce' );
+	$month = isset( $_GET['month'] ) ? sanitize_text_field( wp_unslash( $_GET['month'] ) ) : '';
+	if ( ! preg_match( '/^\d{4}-\d{2}$/', $month ) ) {
+		wp_send_json_error( array( 'message' => '月が不正です。' ), 400 );
+	}
+
+	$today    = current_time( 'Y-m-d' );
+	$max_date = gmdate( 'Y-m-d', strtotime( $today . ' +' . BANKOFART_BOOKING_DAYS_AHEAD . ' days' ) );
+	$wd_names = array( '日', '月', '火', '水', '木', '金', '土' );
+
+	// 「空き多い（〇）」とみなす空きスロット割合の閾値（既定60%）。フィルタで調整可。
+	$open_ratio = (float) apply_filters( 'bankofart_booking_month_open_ratio', 0.6 );
+	$total      = count( bankofart_booking_all_slots() );
+
+	$dim = (int) gmdate( 't', strtotime( $month . '-01' ) );
+
+	$days = array();
+	for ( $d = 1; $d <= $dim; $d++ ) {
+		$ts       = strtotime( sprintf( '%s-%02d', $month, $d ) );
+		$date     = gmdate( 'Y-m-d', $ts );
+		$in_range = ( $date >= $today && $date <= $max_date );
+
+		$free   = $in_range ? count( bankofart_booking_available_for_date( $date ) ) : 0;
+		$status = '';
+		if ( $in_range ) {
+			if ( 0 === $free ) {
+				$status = 'x';
+			} elseif ( $total > 0 && ( $free / $total ) >= $open_ratio ) {
+				$status = 'o';
+			} else {
+				$status = 'tri';
+			}
+		}
+
+		$days[] = array(
+			'date'       => $date,
+			'day'        => $d,
+			'wd'         => $wd_names[ (int) gmdate( 'w', $ts ) ],
+			'dow'        => (int) gmdate( 'w', $ts ),
+			'isToday'    => ( $date === $today ),
+			'isPast'     => ( $date < $today ),
+			'inRange'    => $in_range,
+			'status'     => $status,
+			'freeCount'  => $free,
+			'totalCount' => $total,
+		);
+	}
+
+	wp_send_json_success(
+		array(
+			'month'   => $month,
+			'today'   => $today,
+			'maxDate' => $max_date,
+			'days'    => $days,
+		)
+	);
+}
+add_action( 'wp_ajax_boa_booking_month', 'bankofart_booking_month' );
+add_action( 'wp_ajax_nopriv_boa_booking_month', 'bankofart_booking_month' );

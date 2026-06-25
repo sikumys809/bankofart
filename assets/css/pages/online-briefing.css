@@ -67,7 +67,35 @@
 .ob-confirm dd { font-family: var(--f-jp); font-size: 15px; color: var(--ink); margin: 0; letter-spacing: .5px; word-break: break-all; }
 .ob-form-msg { font-family: var(--f-jp); font-size: 14px; color: #c44; margin: 8px 0; min-height: 1em; }
 
+/* ═════ モバイル用：月カレンダー（〇△✕）。PCでは非表示（週グリッドのまま）═════ */
+.ob-month { display: none; }
+.ob-month-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.ob-month-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.ob-cal-wd { font-family: var(--f-deco); font-size: 11px; letter-spacing: 1px; color: var(--mid); text-align: center; padding: 4px 0 6px; }
+.ob-cal-cell { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; aspect-ratio: 1 / 1; min-height: 46px; padding: 4px 2px; background: var(--white); border: 1px solid var(--border-soft); border-radius: 6px; cursor: pointer; transition: background .2s, border-color .2s; }
+.ob-cal-cell.is-empty { background: transparent; border: 0; cursor: default; }
+.ob-cal-cell:not(.is-out):not(.is-empty):hover { border-color: var(--brand); background: var(--brand-soft); }
+.ob-cal-cell.is-out { opacity: .4; background: var(--paper); cursor: not-allowed; }
+.ob-cal-cell.is-today { border-color: var(--brand); }
+.ob-cal-cell.is-selected { background: var(--brand); border-color: var(--brand); }
+.ob-cal-cell.is-selected .ob-cal-num, .ob-cal-cell.is-selected .ob-cal-mark { color: var(--white); }
+.ob-cal-num { font-family: var(--f-jp); font-size: 14px; font-weight: 500; line-height: 1; color: var(--ink); }
+/* 記号を主・色を従（色覚多様性に配慮し記号で判別可能に） */
+.ob-cal-mark { font-family: var(--f-jp); font-size: 15px; line-height: 1; }
+.ob-cal-mark.is-o { color: var(--brand); }
+.ob-cal-mark.is-tri { color: var(--mid); }
+.ob-cal-mark.is-x { color: var(--border); }
+.ob-month-legend { font-family: var(--f-jp); font-size: 12px; color: var(--mid); letter-spacing: .5px; text-align: center; margin-top: 12px; }
+.ob-month-day { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border-soft); }
+.ob-month-day-label { font-family: var(--f-jp); font-size: 14px; font-weight: 700; letter-spacing: .5px; color: var(--ink); margin-bottom: 12px; }
+.ob-month-day .ob-day-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(74px, 1fr)); gap: 8px; }
+.ob-month-day .ob-slot { width: auto; max-width: none; }
+
 @media (max-width: 760px) {
+  /* モバイルは週グリッドを隠して月カレンダーに切替（PC=週グリッドは不変） */
+  .ob-week { display: none; }
+  .ob-month { display: block; }
+
   .ob-section { padding: 44px 16px 84px; }
   .ob-wizard { padding: 24px 18px 28px; }
   .ob-steps li { font-size: 0; padding: 8px 2px; }

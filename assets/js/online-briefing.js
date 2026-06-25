@@ -165,6 +165,147 @@
 			if ( btn ) { btn.disabled = true; btn.textContent = '送信中…'; }
 		} );
 
-		renderWeek();
+		// ═════════ モバイル：月カレンダー（〇△✕）═════════
+		// PCは週グリッド、モバイル(≤760px)は月カレンダーを描画（案A・レスポンシブ出し分け）。
+		var mq          = window.matchMedia( '(max-width: 760px)' );
+		var monthCache  = {}; // 'YYYY-MM' => data（取得済み月のキャッシュ）。
+		var todayDate   = fromYmd( today );
+		var monthCursor = new Date( todayDate.getFullYear(), todayDate.getMonth(), 1 );
+
+		function ym( dt ) { return dt.getFullYear() + '-' + pad( dt.getMonth() + 1 ); }
+
+		var hasMonthUI = !! document.getElementById( 'ob-month-grid' );
+
+		function paintMonth( data ) {
+			var grid = document.getElementById( 'ob-month-grid' );
+			grid.innerHTML = '';
+			WD.forEach( function ( w ) {
+				var h = document.createElement( 'div' );
+				h.className = 'ob-cal-wd';
+				h.textContent = w;
+				grid.appendChild( h );
+			} );
+			var firstDow = data.days.length ? data.days[0].dow : 0;
+			for ( var b = 0; b < firstDow; b++ ) {
+				var sp = document.createElement( 'div' );
+				sp.className = 'ob-cal-cell is-empty';
+				grid.appendChild( sp );
+			}
+			data.days.forEach( function ( day ) {
+				var clickable = day.inRange && ! day.isPast;
+				var cell = document.createElement( 'button' );
+				cell.type = 'button';
+				cell.className = 'ob-cal-cell'
+					+ ( clickable ? '' : ' is-out' )
+					+ ( day.isToday ? ' is-today' : '' )
+					+ ( state.date === day.date ? ' is-selected' : '' );
+				var icon = '';
+				if ( clickable ) {
+					if ( 'o' === day.status ) { icon = '<span class="ob-cal-mark is-o">〇</span>'; }
+					else if ( 'tri' === day.status ) { icon = '<span class="ob-cal-mark is-tri">△</span>'; }
+					else { icon = '<span class="ob-cal-mark is-x">✕</span>'; }
+				}
+				cell.innerHTML = '<span class="ob-cal-num">' + day.day + '</span>' + icon;
+				if ( clickable ) {
+					( function ( dd ) {
+						cell.addEventListener( 'click', function () { selectDay( dd, cell ); } );
+					} )( day.date );
+				} else {
+					cell.disabled = true;
+				}
+				grid.appendChild( cell );
+			} );
+		}
+
+		function renderMonth() {
+			if ( ! hasMonthUI ) { return; }
+			var grid = document.getElementById( 'ob-month-grid' );
+			var key  = ym( monthCursor );
+
+			// 月送りナビ可否（範囲：今日の月〜maxDateの月）。
+			var maxD       = fromYmd( maxDate );
+			var curFirst   = new Date( monthCursor.getFullYear(), monthCursor.getMonth(), 1 );
+			var todayFirst = new Date( todayDate.getFullYear(), todayDate.getMonth(), 1 );
+			var maxFirst   = new Date( maxD.getFullYear(), maxD.getMonth(), 1 );
+			document.getElementById( 'ob-month-prev' ).disabled = ( curFirst <= todayFirst );
+			document.getElementById( 'ob-month-next' ).disabled = ( curFirst >= maxFirst );
+			document.getElementById( 'ob-month-label' ).textContent = monthCursor.getFullYear() + '年' + ( monthCursor.getMonth() + 1 ) + '月';
+
+			if ( monthCache[ key ] ) { paintMonth( monthCache[ key ] ); return; }
+			grid.innerHTML = '<p class="ob-slots-loading">読み込み中…</p>';
+			var url = cfg.ajaxUrl + '?action=boa_booking_month&nonce=' + encodeURIComponent( cfg.nonce ) + '&month=' + encodeURIComponent( key );
+			fetch( url, { credentials: 'same-origin' } )
+				.then( function ( r ) { return r.json(); } )
+				.then( function ( res ) {
+					if ( ! res || ! res.success || ! res.data ) { grid.innerHTML = '<p class="ob-slots-empty">空き状況を取得できませんでした。</p>'; return; }
+					monthCache[ key ] = res.data;
+					paintMonth( res.data );
+				} )
+				.catch( function () { grid.innerHTML = '<p class="ob-slots-empty">通信エラーが発生しました。</p>'; } );
+		}
+
+		// 日タップ → その日の時間スロットを縦展開（既存の単日ajaxを流用）。
+		function selectDay( date, cellEl ) {
+			document.querySelectorAll( '#ob-month-grid .ob-cal-cell.is-selected' ).forEach( function ( x ) { x.classList.remove( 'is-selected' ); } );
+			if ( cellEl ) { cellEl.classList.add( 'is-selected' ); }
+
+			var dayBox   = document.getElementById( 'ob-month-day' );
+			var slotsBox = document.getElementById( 'ob-month-slots' );
+			var dt       = fromYmd( date );
+			document.getElementById( 'ob-month-day-label' ).textContent =
+				dt.getFullYear() + '年' + ( dt.getMonth() + 1 ) + '月' + dt.getDate() + '日（' + WD[ dt.getDay() ] + '）の空き時間';
+			dayBox.hidden = false;
+			slotsBox.innerHTML = '<p class="ob-slots-loading">読み込み中…</p>';
+
+			var url = cfg.ajaxUrl + '?action=boa_booking_availability&nonce=' + encodeURIComponent( cfg.nonce ) + '&date=' + encodeURIComponent( date );
+			fetch( url, { credentials: 'same-origin' } )
+				.then( function ( r ) { return r.json(); } )
+				.then( function ( res ) {
+					if ( ! res || ! res.success || ! res.data ) { slotsBox.innerHTML = '<p class="ob-slots-empty">取得できませんでした。</p>'; return; }
+					var avail = res.data.available || [];
+					if ( ! avail.length ) { slotsBox.innerHTML = '<p class="ob-slots-empty">この日は満席です。別の日をお選びください。</p>'; return; }
+					slotsBox.innerHTML = '';
+					res.data.slots.forEach( function ( slot ) {
+						var open = avail.indexOf( slot ) !== -1;
+						var btn  = document.createElement( 'button' );
+						btn.type = 'button';
+						btn.textContent = slot;
+						if ( open ) {
+							btn.className = 'ob-slot' + ( ( state.date === date && state.time === slot ) ? ' is-selected' : '' );
+							( function ( tt ) { btn.addEventListener( 'click', function () { selectSlot( date, tt ); } ); } )( slot );
+						} else {
+							btn.className = 'ob-slot is-off';
+							btn.disabled = true;
+						}
+						slotsBox.appendChild( btn );
+					} );
+					dayBox.scrollIntoView( { behavior: 'smooth', block: 'nearest' } );
+				} )
+				.catch( function () { slotsBox.innerHTML = '<p class="ob-slots-empty">通信エラーが発生しました。</p>'; } );
+		}
+
+		if ( hasMonthUI ) {
+			document.getElementById( 'ob-month-prev' ).addEventListener( 'click', function () {
+				monthCursor = new Date( monthCursor.getFullYear(), monthCursor.getMonth() - 1, 1 );
+				document.getElementById( 'ob-month-day' ).hidden = true;
+				renderMonth();
+			} );
+			document.getElementById( 'ob-month-next' ).addEventListener( 'click', function () {
+				monthCursor = new Date( monthCursor.getFullYear(), monthCursor.getMonth() + 1, 1 );
+				document.getElementById( 'ob-month-day' ).hidden = true;
+				renderMonth();
+			} );
+		}
+
+		// ───── PC=週 / モバイル=月 の出し分け（初期＋リサイズ）─────
+		function renderActive() {
+			if ( hasMonthUI && mq.matches ) { renderMonth(); }
+			else { renderWeek(); }
+		}
+		var onMqChange = function () { renderActive(); };
+		if ( mq.addEventListener ) { mq.addEventListener( 'change', onMqChange ); }
+		else if ( mq.addListener ) { mq.addListener( onMqChange ); } // 旧Safari互換.
+
+		renderActive();
 	} );
 } )();

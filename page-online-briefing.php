@@ -127,6 +127,21 @@ $recaptcha_key = defined( 'BANKOFART_RECAPTCHA_SITE_KEY' ) ? constant( 'BANKOFAR
 							</div>
 							<p class="ob-week-hint">空いている時間枠をタップすると、お客様情報の入力に進みます。</p>
 						</div>
+
+						<!-- モバイル用：月カレンダー（〇△✕）。PCでは CSS で非表示（週グリッドのまま） -->
+						<div class="ob-month" id="ob-month">
+							<div class="ob-month-head">
+								<button type="button" class="ob-week-nav" id="ob-month-prev">‹ 前月</button>
+								<span class="ob-week-range" id="ob-month-label"></span>
+								<button type="button" class="ob-week-nav" id="ob-month-next">翌月 ›</button>
+							</div>
+							<div class="ob-month-grid" id="ob-month-grid"><p class="ob-slots-loading">読み込み中…</p></div>
+							<p class="ob-month-legend"><span class="ob-cal-mark is-o">〇</span> 空きあり　<span class="ob-cal-mark is-tri">△</span> 残りわずか　<span class="ob-cal-mark is-x">✕</span> 満席</p>
+							<div class="ob-month-day" id="ob-month-day" hidden>
+								<div class="ob-month-day-label" id="ob-month-day-label"></div>
+								<div class="ob-day-slots" id="ob-month-slots"></div>
+							</div>
+						</div>
 					</div>
 
 					<!-- Step2 フォーム -->
