@@ -223,7 +223,7 @@ $render_filter_row = static function ( $axis, $label, $terms, $en = false ) {
 				戻ってきた作品は再び新たなオーナー様にお迎えいただけます。
 			</p>
 			<p class="resale-body rv d3" style="margin-bottom:32px;">
-				気になる作品がございましたら、<br class="br-pc"><br class="br-sp">リセール待機リストへご登録をお願いいたします。
+				気になる作品がございましたら、<br class="br-pc"><br class="br-sp">リセール待機リストへご登録を<br class="br-sp">お願いいたします。
 			</p>
 			<a href="<?php echo esc_url( home_url( '/resale-waitlist/' ) ); ?>" class="resale-waitlist-btn rv d3">リセール待機リストへ登録する</a>
 		</div>
