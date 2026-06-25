@@ -125,6 +125,11 @@ $matching_url = home_url( '/matching-purpose/' );
 				wp_reset_postdata();
 				?>
 			</div>
+
+			<!-- もっと見る（JSが matched 件数に応じて表示制御。PC12/モバイル6） -->
+			<div class="archive-loadmore" id="artistLoadMore">
+				<button type="button" class="archive-loadmore-btn" id="artistLoadMoreBtn"><?php echo esc_html__( 'もっと見る', 'bankofart' ); ?></button>
+			</div>
 		<?php else : ?>
 			<div class="news-empty">
 				<p><?php echo esc_html__( 'アーティストがまだ登録されていません。', 'bankofart' ); ?></p>

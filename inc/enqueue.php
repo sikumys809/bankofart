@@ -149,9 +149,16 @@ function bankofart_enqueue_assets() {
 			$ver
 		);
 		wp_enqueue_script(
+			'bankofart-archive-paging',
+			"{$theme_uri}/assets/js/archive-paging.js",
+			array(),
+			$ver,
+			true
+		);
+		wp_enqueue_script(
 			'bankofart-archive-artist-filter',
 			"{$theme_uri}/assets/js/archive-artist-filter.js",
-			array(),
+			array( 'bankofart-archive-paging' ),
 			$ver,
 			true
 		);
@@ -166,9 +173,16 @@ function bankofart_enqueue_assets() {
 			$ver
 		);
 		wp_enqueue_script(
+			'bankofart-archive-paging',
+			"{$theme_uri}/assets/js/archive-paging.js",
+			array(),
+			$ver,
+			true
+		);
+		wp_enqueue_script(
 			'bankofart-archive-collector-filter',
 			"{$theme_uri}/assets/js/archive-collector-filter.js",
-			array(),
+			array( 'bankofart-archive-paging' ),
 			$ver,
 			true
 		);
@@ -436,9 +450,16 @@ function bankofart_enqueue_assets() {
 			$ver
 		);
 		wp_enqueue_script(
+			'bankofart-archive-paging',
+			"{$theme_uri}/assets/js/archive-paging.js",
+			array(),
+			$ver,
+			true
+		);
+		wp_enqueue_script(
 			'bankofart-archive-art-filter',
 			"{$theme_uri}/assets/js/archive-art-filter.js",
-			array(),
+			array( 'bankofart-archive-paging' ),
 			$ver,
 			true
 		);

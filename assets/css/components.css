@@ -890,3 +890,60 @@
 	.match-banner-title { font-weight: 700 !important; }
 	.match-banner-sub { font-size: 18px !important; font-weight: 500 !important; }
 }
+
+/* ===== アーカイブ：もっと見る（artist）＝共通ボタン ===== */
+.archive-loadmore { display: none; justify-content: center; margin-top: 56px; }
+.archive-loadmore.is-active { display: flex; }
+.archive-loadmore-btn {
+	font-family: var(--f-jp);
+	font-size: var(--fs-body);
+	letter-spacing: var(--ls-1);
+	color: var(--ink);
+	background: transparent;
+	border: 1px solid var(--border);
+	padding: 15px 56px;
+	cursor: pointer;
+	transition: background .25s, color .25s, border-color .25s;
+}
+.archive-loadmore-btn:hover { background: var(--brand); color: var(--white); border-color: var(--brand); }
+
+/* ===== アーカイブ：ページ番号式ページャー（art / collector）＝共通 ===== */
+.archive-pager { display: flex; justify-content: center; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 56px; }
+.archive-pager .pager-num,
+.archive-pager .pager-arrow {
+	font-family: var(--f-deco);
+	font-size: 15px;
+	letter-spacing: 1px;
+	color: var(--ink);
+	background: transparent;
+	border: 0;
+	min-width: 34px;
+	height: 38px;
+	padding: 0 8px;
+	line-height: 38px;
+	text-align: center;
+	cursor: pointer;
+	position: relative;
+	transition: opacity .2s, color .2s;
+}
+.archive-pager .pager-num:hover,
+.archive-pager .pager-arrow:hover { opacity: .6; }
+.archive-pager .pager-num.is-current { color: var(--brand); cursor: default; }
+.archive-pager .pager-num.is-current::after {
+	content: '';
+	position: absolute;
+	left: 8px;
+	right: 8px;
+	bottom: 4px;
+	height: 2px;
+	background: var(--brand);
+}
+.archive-pager .pager-arrow.is-disabled { opacity: .25; cursor: default; }
+.archive-pager .pager-ellipsis {
+	font-family: var(--f-deco);
+	font-size: 15px;
+	color: var(--mid);
+	min-width: 20px;
+	padding: 0 2px;
+	text-align: center;
+}

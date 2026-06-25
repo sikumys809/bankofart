@@ -59,22 +59,6 @@
 .filter-count { font-family: var(--f-deco); font-size: 14px; letter-spacing: var(--ls-3); text-transform: uppercase; color: var(--brand); flex-shrink: 0; }
 .filter-count .boa-num { color: var(--brand); margin-right: 4px; }
 
-/* もっと見る（モバイル限定。JSが .is-active を付けたときだけ表示） */
-.collector-loadmore { display: none; justify-content: center; margin-top: 48px; }
-.collector-loadmore.is-active { display: flex; }
-.collector-loadmore-btn {
-	font-family: var(--f-jp);
-	font-size: var(--fs-body);
-	letter-spacing: var(--ls-1);
-	color: var(--ink);
-	background: transparent;
-	border: 1px solid var(--border);
-	padding: 15px 56px;
-	cursor: pointer;
-	transition: background .25s, color .25s, border-color .25s;
-}
-.collector-loadmore-btn:hover { background: var(--brand); color: var(--white); border-color: var(--brand); }
-
 /* マッチング導線ボタン */
 .filter-match-btn { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; padding: 12px 22px; border: 1px solid var(--brand); background: transparent; transition: background .25s; margin-left: auto; }
 .filter-match-btn:hover { background: var(--brand); }

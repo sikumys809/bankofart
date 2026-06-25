@@ -137,10 +137,8 @@ $matching_url = home_url( '/matching-issue/' );
 				?>
 			</div>
 
-			<!-- もっと見る（モバイル限定。PC は全件表示で JS が非表示にする） -->
-			<div class="collector-loadmore" id="collectorLoadMore">
-				<button type="button" class="collector-loadmore-btn" id="collectorLoadMoreBtn"><?php echo esc_html__( 'もっと見る', 'bankofart' ); ?></button>
-			</div>
+			<!-- ページ番号式ページャー（JSが matched に応じて生成） -->
+			<nav class="archive-pager" id="collectorPager" aria-label="<?php echo esc_attr__( 'ページ送り', 'bankofart' ); ?>"></nav>
 		<?php else : ?>
 			<div class="news-empty">
 				<p><?php echo esc_html__( '画家応援企業がまだ登録されていません。', 'bankofart' ); ?></p>

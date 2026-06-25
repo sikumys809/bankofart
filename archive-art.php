@@ -204,6 +204,9 @@ $render_filter_row = static function ( $axis, $label, $terms, $en = false ) {
 				wp_reset_postdata();
 				?>
 			</div>
+
+			<!-- ページ番号式ページャー（JSが matched/ソート後に生成） -->
+			<nav class="archive-pager" id="artPager" aria-label="<?php echo esc_attr__( 'ページ送り', 'bankofart' ); ?>"></nav>
 		<?php else : ?>
 			<div class="news-empty">
 				<p><?php echo esc_html__( '作品がまだ登録されていません。', 'bankofart' ); ?></p>
