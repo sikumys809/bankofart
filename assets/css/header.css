@@ -294,10 +294,11 @@ html {
 		justify-self: start;
 	}
 
-	/* 現状32px比 約1.25倍（初期値40px。実機で最終調整） */
+	/* ロゴを主役に。画面幅に応じて拡大しつつ上限50px（390pxで約47px）。
+	   横長ロゴのため、狭い端末では自動縮小して CONTACT との干渉を防ぐ。 */
 	.h-logo .logo-base,
 	.h-logo .logo-hover {
-		height: 40px;
+		height: clamp(40px, 12vw, 50px);
 	}
 }
 
