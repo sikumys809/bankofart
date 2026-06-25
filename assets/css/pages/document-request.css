@@ -26,4 +26,6 @@
   .dr-hero { padding: 32px 16px 0; }
   .dr-hero-inner { gap: 28px; }
   .dr-hero-cover, .dr-hero-cover img, .dr-cover-placeholder { width: 160px; }
+  /* モバイル：表紙 boxを内容幅にして中央寄せ（flex-basis 220px のままだと画像が左に寄るため） */
+  .dr-hero-cover { flex: 0 0 auto; margin-left: auto; margin-right: auto; }
 }
