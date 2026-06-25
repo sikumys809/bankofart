@@ -70,9 +70,9 @@
 /* ═════ モバイル用：月カレンダー（〇△✕）。PCでは非表示（週グリッドのまま）═════ */
 .ob-month { display: none; }
 .ob-month-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
-.ob-month-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.ob-month-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: 100%; }
 .ob-cal-wd { font-family: var(--f-deco); font-size: 11px; letter-spacing: 1px; color: var(--mid); text-align: center; padding: 4px 0 6px; }
-.ob-cal-cell { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; aspect-ratio: 1 / 1; min-height: 46px; padding: 4px 2px; background: var(--white); border: 1px solid var(--border-soft); border-radius: 6px; cursor: pointer; transition: background .2s, border-color .2s; }
+.ob-cal-cell { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 0; aspect-ratio: 1 / 1; min-height: 46px; padding: 4px 2px; background: var(--white); border: 1px solid var(--border-soft); border-radius: 6px; cursor: pointer; transition: background .2s, border-color .2s; }
 .ob-cal-cell.is-empty { background: transparent; border: 0; cursor: default; }
 .ob-cal-cell:not(.is-out):not(.is-empty):hover { border-color: var(--brand); background: var(--brand-soft); }
 .ob-cal-cell.is-out { opacity: .4; background: var(--paper); cursor: not-allowed; }
