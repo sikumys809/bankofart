@@ -439,6 +439,14 @@ function bankofart_enqueue_assets() {
 			$ver,
 			true
 		);
+		// ヒーローの画像スライドショー（依存なし・slideshow時のみ実働）。
+		wp_enqueue_script(
+			'bankofart-hero-slideshow',
+			"{$theme_uri}/assets/js/hero-slideshow.js",
+			array(),
+			$ver,
+			true
+		);
 	}
 
 	// ページ別アセット：ART アーカイブ（CSS + 7軸AND+ソートJS）。

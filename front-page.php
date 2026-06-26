@@ -18,11 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-// ---- HERO 背景画像（仮）。assets/images/hero_test.jpg を置くと反映。無ければCSSのグラデが出る。
-// 差し替えはこの1変数 or 画像ファイルの入れ替えのみ。
-$hero_bg_file  = get_theme_file_path( 'assets/images/hero_test.jpg' );
-$hero_bg_url   = get_theme_file_uri( 'assets/images/hero_test.jpg' );
-$hero_bg_style = file_exists( $hero_bg_file ) ? ' style="background-image:url(\'' . esc_url( $hero_bg_url ) . '\');"' : '';
+// ---- HERO 背景：カスタマイザー（外観→カスタマイズ→ヒーロー）で管理。
+// 表示タイプ（画像スライドショー / 動画）と各メディアは theme_mod から取得。
+// 未設定時は最下層 .hero-bg のCSSグラデにフォールバック。上層（ブラー/ロゴ/キャッチ）は不変。
+$hero_type     = bankofart_hero_type();
+$hero_images   = bankofart_hero_images();
+$hero_interval = bankofart_hero_interval();
+$hero_video    = bankofart_hero_video();
+$hero_poster   = bankofart_hero_poster();
 
 // ロゴ（hero）。boa-12=回転する円マーク / boa-17=白ワードマーク。
 $logo_circle = get_theme_file_uri( 'assets/img/logo/boa-12.png' );
@@ -179,7 +182,27 @@ $front_top_size_map = array(
 		<!-- レイヤー1：背景 + ロゴ + キャッチ（スクロールで blur） -->
 		<section class="hero-stack-layer hero-layer-logo">
 			<div class="hero-blur-target">
-				<div class="hero-bg"<?php echo $hero_bg_style; // phpcs:ignore WordPress.Security.EscapeOutput -- URLは上で esc_url 済み ?>></div>
+				<?php if ( 'video' === $hero_type ) : ?>
+					<?php if ( $hero_video || $hero_poster ) : ?>
+						<div class="hero-bg hero-bg--video"<?php echo $hero_poster ? ' style="background-image:url(\'' . esc_url( $hero_poster ) . '\');"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput -- URLは esc_url 済み ?>>
+							<?php if ( $hero_video ) : ?>
+								<video class="hero-video" autoplay muted loop playsinline<?php echo $hero_poster ? ' poster="' . esc_url( $hero_poster ) . '"' : ''; ?>>
+									<source src="<?php echo esc_url( $hero_video ); ?>" type="video/mp4">
+								</video>
+							<?php endif; ?>
+						</div>
+					<?php else : ?>
+						<div class="hero-bg"></div>
+					<?php endif; ?>
+				<?php elseif ( ! empty( $hero_images ) ) : ?>
+					<div class="hero-bg hero-bg--slideshow" data-hero-interval="<?php echo esc_attr( $hero_interval ); ?>">
+						<?php foreach ( $hero_images as $bankofart_si => $bankofart_simg ) : ?>
+							<div class="hero-slide<?php echo 0 === $bankofart_si ? ' is-active' : ''; ?>" style="background-image:url('<?php echo esc_url( $bankofart_simg ); ?>');"></div>
+						<?php endforeach; ?>
+					</div>
+				<?php else : ?>
+					<div class="hero-bg"></div>
+				<?php endif; ?>
 				<div class="hero-content">
 					<div class="hero-logo-stack">
 						<img class="logo-circle" src="<?php echo esc_url( $logo_circle ); ?>" alt="">
